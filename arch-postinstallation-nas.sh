@@ -513,7 +513,7 @@ sudo docker compose -f ~/server/immich/docker-compose.yml up -d
 #==============================================================================
 
 ## Remove unnecessary files
-yay -Yc
+yay -Yc --noconfirm
 yay -Scc --noconfirm
 sudo rm -rf ~/.cache/go-build
 sudo rm -rf ~/.config/go
