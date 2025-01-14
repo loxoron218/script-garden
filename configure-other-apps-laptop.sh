@@ -1,3 +1,13 @@
+## Configure Alacritty theme
+mkdir -p ~/.config/alacritty/themes
+git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
+cat > ~/.alacritty.toml <<EOF
+[general]
+import = [
+    "~/.config/alacritty/themes/themes/gnome_terminal.toml"
+]
+EOF
+
 ## Create desktop icon for Jackett
 sudo curl -o /usr/share/pixmaps/jacket_medium.svg https://raw.githubusercontent.com/Jackett/Jackett/95384a92ee9d86301743b10d33dd72d3846372da/src/Jackett.Common/Content/jacket_medium.png
 sudo sh -c 'echo "[Desktop Entry]" >> ~/.local/share/applications/Jackett.desktop'
