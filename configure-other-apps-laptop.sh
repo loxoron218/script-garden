@@ -1,4 +1,10 @@
-## Configure Alacritty theme
+# ============================================
+# 1. Theme & Application Configuration
+# ============================================
+
+# ----------------------------
+# Alacritty Theme Configuration
+# ----------------------------
 mkdir -p ~/.config/alacritty/themes
 git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
 cat > ~/.alacritty.toml <<EOF
@@ -8,10 +14,18 @@ import = [
 ]
 EOF
 
-## Configure Ghostty theme
+# ----------------------------
+# Ghostty Theme Configuration
+# ----------------------------
 echo 'theme = Adwaita Dark' >> ~/.config/ghostty/config
 
-## Create desktop icon for Jackett
+# ============================================
+# 2. Desktop Icons for Applications
+# ============================================
+
+# ----------------------------
+# Jackett Desktop Icon
+# ----------------------------
 sudo curl -o /usr/share/pixmaps/jacket_medium.svg https://raw.githubusercontent.com/Jackett/Jackett/95384a92ee9d86301743b10d33dd72d3846372da/src/Jackett.Common/Content/jacket_medium.png
 sudo sh -c 'echo "[Desktop Entry]" >> ~/.local/share/applications/Jackett.desktop'
 sudo sh -c 'echo "Name=Jackett" >> ~/.local/share/applications/Jackett.desktop'
@@ -20,7 +34,9 @@ sudo sh -c 'echo "Terminal=False" >> ~/.local/share/applications/Jackett.desktop
 sudo sh -c 'echo "Type=Application" >> ~/.local/share/applications/Jackett.desktop'
 sudo sh -c 'echo "Icon=/usr/share/pixmaps/jacket_medium.svg" >> ~/.local/share/applications/Jackett.desktop'
 
-## Create desktop icon for Radarr
+# ----------------------------
+# Radarr Desktop Icon
+# ----------------------------
 sudo curl -o /usr/share/pixmaps/Radarr.svg https://raw.githubusercontent.com/Radarr/Radarr/refs/heads/develop/Logo/Radarr.svg
 sudo sh -c 'echo "[Desktop Entry]" >> ~/.local/share/applications/Radarr.desktop'
 sudo sh -c 'echo "Name=Radarr" >> ~/.local/share/applications/Radarr.desktop'
@@ -29,13 +45,17 @@ sudo sh -c 'echo "Terminal=False" >> ~/.local/share/applications/Radarr.desktop'
 sudo sh -c 'echo "Type=Application" >> ~/.local/share/applications/Radarr.desktop'
 sudo sh -c 'echo "Icon=/usr/share/pixmaps/Radarr.svg" >> ~/.local/share/applications/Radarr.desktop'
 
-## Create desktop icon for SABnzbd
+# ----------------------------
+# SABnzbd Desktop Icon
+# ----------------------------
 sudo curl -o /usr/share/pixmaps/logo-arrow.svg https://raw.githubusercontent.com/sabnzbd/sabnzbd/refs/heads/develop/icons/logo-arrow.svg
 sudo cp /usr/lib/sabnzbd/linux/sabnzbd.desktop ~/.local/share/applications/
 sudo sed -i 's|^Exec=.*|Exec=/usr/lib/sabnzbd/SABnzbd.py --browser 1|' ~/.local/share/applications/sabnzbd.desktop
 sudo sed -i 's|^Icon=.*|Icon=/usr/share/pixmaps/logo-arrow.svg|' ~/.local/share/applications/sabnzbd.desktop
 
-## Select best mirrors after Archinstall
+# ============================================
+# 3. Repository Configuration
+# ============================================
 sudo pacman -Syyu
 sudo pacman -S reflector
 sudo reflector -c DE -l 10 -p https --save /etc/pacman.d/mirrorlist
