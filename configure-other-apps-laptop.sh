@@ -17,7 +17,7 @@ EOF
 # ----------------------------
 # Ghostty Theme Configuration
 # ----------------------------
-echo 'theme = Adwaita Dark' >> ~/.config/ghostty/config
+echo 'theme = Adwaita Dark' >> ~/.config/ghostty/config # Manual config reload required
 
 # ============================================
 # 2. Desktop Icons for Applications
