@@ -43,7 +43,7 @@ sudo pacman -S audacity bleachbit dconf-editor evince gnome-calculator gnome-con
 sudo pacman -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost xorg-xset
 
 ## Install GUI applications from AUR
-yay -S blackbox-terminal electronmail-bin extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin whatsapp-for-linux
+yay -S blackbox-terminal extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin whatsapp-for-linux
 
 ## Install other applications from AUR
 yay -S --noconfirm brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell nautilus-open-any-terminal
