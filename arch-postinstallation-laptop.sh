@@ -127,6 +127,7 @@ echo "NoDisplay=true" | sudo tee /usr/share/applications/nm-connection-editor.de
 echo "NoDisplay=true" | sudo tee /usr/share/applications/org.gnome.Extensions.desktop
 echo "NoDisplay=true" | sudo tee /usr/share/applications/qv4l2.desktop
 echo "NoDisplay=true" | sudo tee /usr/share/applications/qvidcap.desktop
+echo "StartupNotify=true" | sudo tee -a /usr/share/applications/org.keepassxc.KeePassXC.desktop
 
 ## Change name of VSCodium
 sudo sed -i 's/VSCodium - Wayland/VSCodium/' /usr/share/applications/codium-wayland.desktop
