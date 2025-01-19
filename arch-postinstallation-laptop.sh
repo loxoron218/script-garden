@@ -127,7 +127,6 @@ echo "NoDisplay=true" | sudo tee ~/.local/share/applications/nm-connection-edito
 echo "NoDisplay=true" | sudo tee ~/.local/share/applications/org.gnome.Extensions.desktop
 echo "NoDisplay=true" | sudo tee ~/.local/share/applications/qv4l2.desktop
 echo "NoDisplay=true" | sudo tee ~/.local/share/applications/qvidcap.desktop
-echo "StartupNotify=true" | sudo tee ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
 
 ## Change name of VSCodium
 sudo sed -i 's/VSCodium - Wayland/VSCodium/' ~/.local/share/applications/codium-wayland.desktop
@@ -143,6 +142,9 @@ fastfetch --gen-config
 echo "fastfetch" >> ~/.bashrc
 echo "alias clearfetch='clear && fastfetch'" >> ~/.bashrc
 source ~/.bashrc
+
+## Configure KeePassXC
+echo "StartupNotify=true" | sudo tee ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
 
 ## Configure other apps
 gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal blackbox
