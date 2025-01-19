@@ -111,22 +111,22 @@ sudo sed -i 's|^Icon=.*|Icon=/usr/share/pixmaps/logo-arrow.svg|' /usr/share/appl
 #==============================================================================
 
 ## Hide unwanted desktop icons
-echo "NoDisplay=true" | sudo tee /usr/share/applications/avahi-discover.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/bssh.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/bvnc.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/bvnc.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/codium.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/cups.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/libreoffice-base.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/libreoffice-calc.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/libreoffice-draw.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/libreoffice-impress.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/libreoffice-math.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/libreoffice-writer.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/nm-connection-editor.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/org.gnome.Extensions.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/qv4l2.desktop
-echo "NoDisplay=true" | sudo tee /usr/share/applications/qvidcap.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/avahi-discover.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/bssh.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/bvnc.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/bvnc.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/codium.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/cups.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/libreoffice-base.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/libreoffice-calc.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/libreoffice-draw.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/libreoffice-impress.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/libreoffice-math.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/libreoffice-writer.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/nm-connection-editor.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/org.gnome.Extensions.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/qv4l2.desktop
+echo "NoDisplay=true" | sudo tee -a /usr/share/applications/qvidcap.desktop
 echo "StartupNotify=true" | sudo tee -a /usr/share/applications/org.keepassxc.KeePassXC.desktop
 
 ## Change name of VSCodium
