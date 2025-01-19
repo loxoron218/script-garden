@@ -175,7 +175,7 @@ services:
     restart: unless-stopped
 
   homarr: 
-    image: ghcr.io/ajnart/homarr:latest # Beta channel already out
+    image: ghcr.io/ajnart/homarr:latest
     container_name: homarr
     environment:
       - PUID=1000
