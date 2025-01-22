@@ -143,6 +143,14 @@ echo "fastfetch" >> ~/.bashrc
 echo "alias clearfetch='clear && fastfetch'" >> ~/.bashrc
 source ~/.bashrc
 
+## Configure Ghostty
+cat > ~/.config/ghostty/config << 'EOF'
+clipboard-paste-protection = false
+font-family = Noto Sans Mono
+font-size = 11
+theme = Adwaita Dark
+EOF
+
 ## Configure KeePassXC
 echo "StartupNotify=true" | sudo tee ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
 
