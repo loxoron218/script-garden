@@ -145,6 +145,7 @@ source ~/.bashrc
 
 ## Configure Ghostty
 cat >> ~/.config/ghostty/config << EOF
+clipboard-paste-bracketed-safe = true
 clipboard-paste-protection = false
 font-family = Noto Sans Mono
 font-size = 11
