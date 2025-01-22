@@ -90,7 +90,7 @@ yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc nicotine+ 
 
 ## Configure Radarr
 sudo curl -o /usr/share/pixmaps/Radarr.svg https://raw.githubusercontent.com/Radarr/Radarr/refs/heads/develop/Logo/Radarr.svg
-sudo sh -c 'cat > ~/.local/share/applications/Radarr.desktop << EOF
+sudo sh -c 'cat >> ~/.local/share/applications/Radarr.desktop << EOF
 [Desktop Entry]
 Name=Radarr
 Exec=/usr/lib/radarr/bin/Radarr -browser
@@ -144,7 +144,7 @@ echo "alias clearfetch='clear && fastfetch'" >> ~/.bashrc
 source ~/.bashrc
 
 ## Configure Ghostty
-cat > ~/.config/ghostty/config << 'EOF'
+cat >> ~/.config/ghostty/config << EOF
 clipboard-paste-protection = false
 font-family = Noto Sans Mono
 font-size = 11
