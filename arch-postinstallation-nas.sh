@@ -104,7 +104,7 @@ sudo sed -i "s/DB_PASSWORD/${DB_PASSWORD}/" ~/server/immich/docker-compose.yml
 
 
 ## Create environment file
-cat > ~/server/immich/.env << EOF
+cat >> ~/server/immich/.env << EOF
 # You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables
 
 # The location where your uploaded files are stored
@@ -138,7 +138,7 @@ sudo chown -R $(whoami) ~/server
 #==============================================================================
 
 ## Create docker-compose file
-cat > ~/server/immich/docker-compose.yml << 'EOF'
+cat >> ~/server/immich/docker-compose.yml << 'EOF'
 services:
   duckdns:
     image: lscr.io/linuxserver/duckdns:latest
