@@ -129,6 +129,7 @@ echo "NoDisplay=true" | sudo tee ~/.local/share/applications/qv4l2.desktop
 echo "NoDisplay=true" | sudo tee ~/.local/share/applications/qvidcap.desktop
 
 ## Change name of VSCodium
+cp /usr/share/applications/codium-wayland.desktop ~/.local/share/applications/
 sudo sed -i 's/VSCodium - Wayland/VSCodium/' ~/.local/share/applications/codium-wayland.desktop
 
 ## Add BleachBit as root
