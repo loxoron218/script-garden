@@ -154,7 +154,8 @@ theme = Adwaita Dark
 EOF ## Manual configuration reload still needed
 
 ## Configure KeePassXC
-echo "StartupNotify=true" | sudo tee ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
+cp /usr/share/applications/org.keepassxc.KeePassXC.desktop ~/.local/share/applications/
+sed -i '/^StartupNotify=true$/d' ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
 
 ## Configure other apps
 gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal ghostty
