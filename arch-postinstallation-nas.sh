@@ -100,8 +100,6 @@ while true; do
         echo "Passwords do not match. Please try again."
     fi
 done
-sudo sed -i "s/DB_PASSWORD/${DB_PASSWORD}/" ~/server/immich/docker-compose.yml
-
 
 ## Create environment file
 cat >> ~/server/immich/.env << EOF
