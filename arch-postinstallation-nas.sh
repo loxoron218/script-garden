@@ -79,22 +79,9 @@ sudo firewall-cmd --reload
 # SECTION 4: Immich preparation
 #==============================================================================
 
-## Set password for immich database
-mkdir -p ~/server/immich
-while true; do
-    read -s -p "Enter your Immich database password: " DB_PASSWORD
-    echo
-    read -s -p "Confirm your Immich database password: " DB_PASSWORD_CONFIRM
-    if [[ "$DB_PASSWORD" == "$DB_PASSWORD_CONFIRM" ]]; then
-        echo "Immich database password confirmed."
-        break
-    else
-        echo "Passwords do not match. Please try again."
-    fi
-done
-
 ## Create environment file
-cat >> ~/server/immich/.env << EOF
+mkdir -p ~/server/immich
+cat >> ~/server/immich/.env << 'EOF'
 # You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables
 
 # The location where your uploaded files are stored
@@ -110,7 +97,7 @@ IMMICH_VERSION=release
 
 # Connection secret for postgres. You should change it to a random password
 # Please use only the characters `A-Za-z0-9`, without special characters or spaces
-DB_PASSWORD=${DB_PASSWORD}
+DB_PASSWORD=secure_psswd
 
 # The values below this line do not need to be changed
 ###################################################################################
@@ -474,7 +461,7 @@ while true; do
         echo "Passwords do not match. Please try again."
     fi
 done
-sudo sed -i "s/secure_psswd/${secure_psswd}/" ~/server/immich/docker-compose.yml
+sudo sed -i "s/secure_psswd/${secure_psswd}/" ~/server/immich/.env ~/server/immich/docker-compose.yml
 
 ## Add Duck DNS credentials
 read -p "Enter your Duck DNS domain: " duck_domain
