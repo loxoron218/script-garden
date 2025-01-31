@@ -52,10 +52,8 @@ echo "alias clearfetch='clear && fastfetch'" >> ~/.bashrc
 # SECTION 3: SSH Configuration
 #==============================================================================
 
-## Block container ports for SSH
-blocked_ports=$(grep -oP '(?<=- )\d{1,5}(?=:)' "$(dirname "$0")/archserver.sh" | tr '\n' ' ')
-
 ## Set port for SSH
+blocked_ports=$(grep -oP '(?<=- )\d{1,5}(?=:)' "$(dirname "$0")/archserver.sh" | tr '\n' ' ')
 while true; do
     random_port=$(shuf -i 1000-9999 -n 1)
     
