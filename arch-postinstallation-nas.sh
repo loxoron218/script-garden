@@ -476,7 +476,6 @@ while true; do
 done
 sudo sed -i "s/secure_psswd/${secure_psswd}/" ~/server/immich/docker-compose.yml
 
-
 ## Add Duck DNS credentials
 read -p "Enter your Duck DNS domain: " duck_domain
 sudo sed -i "s/duck_domain/${duck_domain}/" ~/server/immich/docker-compose.yml
