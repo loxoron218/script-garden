@@ -75,7 +75,6 @@ sudo firewall-cmd --zone=public --add-port=${random_port}/tcp --permanent
 for port in $blocked_ports; do
     sudo firewall-cmd --zone=public --add-port=${port}/tcp --permanent
 done
-
 sudo firewall-cmd --reload
 
 #==============================================================================
