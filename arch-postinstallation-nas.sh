@@ -56,8 +56,6 @@ echo "alias clearfetch='clear && fastfetch'" >> ~/.bashrc
 blocked_ports=$(grep -oP '(?<=- )\d{1,5}(?=:)' "$(dirname "$0")/archserver.sh" | tr '\n' ' ')
 while true; do
     random_port=$(shuf -i 1000-9999 -n 1)
-    
-    # Check if the generated port is in the blocked list
     if [[ ! " ${blocked_ports} " =~ " ${random_port} " ]]; then
         break
     fi
