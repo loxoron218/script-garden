@@ -351,6 +351,26 @@ services:
       - 443:443
     restart: unless-stopped
 
+  nicotine-plus:
+    image: ghcr.io/fletchto99/nicotine-plus-docker:latest
+    container_name: nicotine-plus
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - PASSWORD=secure_psswd
+    volumes:
+      - /home/archuser/server/nicotine-plus/data:/config
+      - /mnt/sda1:/data/downloads
+      - /mnt/sda1/nicotine-plus:/data/incomplete_downloads
+      - /home/archuser/server/nicotine-plus/shared:/data/shared #optional
+    ports:
+      - 6080:6080
+      - 2234-2239:2234-2239
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined #optional
+
   radarr:
     image: lscr.io/linuxserver/radarr:nightly
     container_name: radarr
