@@ -45,7 +45,6 @@ yay -S --noconfirm lazydocker-bin
 sudo systemctl enable dhcpcd.service
 
 ## Configure fastfetch
-fastfetch --gen-config
 echo "fastfetch" >> ~/.bashrc
 echo "alias clearfetch='clear && fastfetch'" >> ~/.bashrc
 
