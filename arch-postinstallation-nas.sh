@@ -90,8 +90,6 @@ while true; do
     read -s -p "Enter your Immich database password: " DB_PASSWORD
     echo
     read -s -p "Confirm your Immich database password: " DB_PASSWORD_CONFIRM
-    echo
-
     if [[ "$DB_PASSWORD" == "$DB_PASSWORD_CONFIRM" ]]; then
         echo "Immich database password confirmed."
         break
@@ -474,8 +472,6 @@ while true; do
     read -s -p "Enter a secure password for your apps: " secure_psswd
     echo
     read -s -p "Confirm your secure password: " secure_psswd_confirm
-    echo
-
     if [[ "$secure_psswd" == "$secure_psswd_confirm" ]]; then
         echo "Password confirmed."
         break
@@ -489,10 +485,8 @@ sudo sed -i "s/secure_psswd/${secure_psswd}/" ~/server/immich/docker-compose.yml
 ## Add Duck DNS credentials
 read -p "Enter your Duck DNS domain: " duck_domain
 sudo sed -i "s/duck_domain/${duck_domain}/" ~/server/immich/docker-compose.yml
-echo
 read -p "Enter your Duck DNS token: " duck_token
 sudo sed -i "s/duck_token/${duck_token}/" ~/server/immich/docker-compose.yml
-echo
 
 #==============================================================================
 # SECTION 7: Intall Docker containers
