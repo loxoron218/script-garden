@@ -88,6 +88,10 @@ sudo lpoptions -d HLL2350DW # Manual configuaration still needed
 ## Install apps that can be replaced by self hosting
 yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc nicotine+ par2cmdline-turbo python-orjson radarr sabnzbd syncthing syncthing-gtk
 
+## Configure KeePassXC
+cp /usr/share/applications/org.keepassxc.KeePassXC.desktop ~/.local/share/applications/
+sed -i '/^StartupNotify=true$/d' ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
+
 ## Configure Radarr
 sudo curl -o /usr/share/pixmaps/Radarr.svg https://raw.githubusercontent.com/Radarr/Radarr/refs/heads/develop/Logo/Radarr.svg
 sudo sh -c 'cat >> ~/.local/share/applications/Radarr.desktop << EOF
@@ -152,10 +156,6 @@ font-family = Noto Sans Mono
 font-size = 11
 theme = Adwaita Dark
 EOF ## Manual configuration reload still needed
-
-## Configure KeePassXC
-cp /usr/share/applications/org.keepassxc.KeePassXC.desktop ~/.local/share/applications/
-sed -i '/^StartupNotify=true$/d' ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
 
 ## Configure other apps
 gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal ghostty
