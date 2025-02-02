@@ -445,11 +445,7 @@ EOF
 ## Set username
 sed -i "s/archuser/$(whoami)/" ~/server/immich/.env ~/server/immich/docker-compose.yml
 
-## Set Ryot random token
-ryot_token=$(openssl rand -hex 10)
-sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/immich/docker-compose.yml
-
-## Set secure app password
+## Set secure app passwords
 while true; do
     read -s -p "Enter a secure password for your apps: " secure_psswd
     echo
@@ -468,6 +464,10 @@ read -p "Enter your Duck DNS domain: " duck_domain
 sudo sed -i "s/duck_domain/${duck_domain}/" ~/server/immich/docker-compose.yml
 read -p "Enter your Duck DNS token: " duck_token
 sudo sed -i "s/duck_token/${duck_token}/" ~/server/immich/docker-compose.yml
+
+## Set Ryot random token
+ryot_token=$(openssl rand -hex 10)
+sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/immich/docker-compose.yml
 
 #==============================================================================
 # SECTION 7: Intall Docker containers
