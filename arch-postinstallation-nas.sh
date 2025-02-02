@@ -62,7 +62,7 @@ while true; do
 done
 
 ## Edit SSH config
-sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
+sudo sed -i "s/#PermitRootLogin prohibit-password/PermitRootLogin no/" /etc/ssh/sshd_config
 sudo sed -i "s/#Port 22/Port ${random_port}/" /etc/ssh/sshd_config
 sudo systemctl enable sshd.service
 
