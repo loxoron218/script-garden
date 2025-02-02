@@ -7,7 +7,7 @@
 # ----------------------------
 mkdir -p ~/.config/alacritty/themes
 git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
-cat > ~/.alacritty.toml <<EOF
+cat > ~/.alacritty.toml << EOF
 [general]
 import = [
     "~/.config/alacritty/themes/themes/gnome_terminal.toml"
