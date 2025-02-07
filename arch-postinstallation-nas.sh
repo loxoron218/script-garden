@@ -33,7 +33,7 @@ sudo rm -rf ~/yay
 #==============================================================================
 
 ## Install necessary applilcations
-yay -S --noconfirm dhcpcd docker docker-compose firewalld openssh
+yay -S --noconfirm networkmanager docker docker-compose firewalld openssh
 
 ## Install recommended applications
 yay -S --noconfirm bash-completion btop fastfetch nano restic powertop xorg-xset
@@ -383,6 +383,69 @@ services:
     security_opt:
       - seccomp:unconfined #optional
 
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - /home/enrique/server/grafana:/var/lib/grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - /home/enrique/server/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /home/enrique/server/prometheus:/prometheus
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    command: "--config.file=/etc/prometheus/prometheus.yml"
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cadvisor
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    devices:
+      - /dev/kmsg
+    # privileged: true
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - '/:/host:ro,rslave'
+    restart: unless-stopped
+    command:
+      - '--path.rootfs=/host'
+    # network_mode: host
+    # pid: host
+
   radarr:
     image: lscr.io/linuxserver/radarr:nightly
     container_name: radarr
@@ -491,6 +554,38 @@ read -p "Enter your Duck DNS domain: " duck_domain
 sudo sed -i "s/duck_domain/${duck_domain}/" ~/server/immich/docker-compose.yml
 read -p "Enter your Duck DNS token: " duck_token
 sudo sed -i "s/duck_token/${duck_token}/" ~/server/immich/docker-compose.yml
+
+## Create Prometheus configuration
+cat >> ~ /server/prometheus/compose.yml << 'EOF'
+---
+global:
+  scrape_interval: 15s  # By default, scrape targets every 15 seconds.
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  # external_labels:
+  #  monitor: 'codelab-monitor'
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+
+# Example job for node_exporter
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['node_exporter:9100']
+
+# Example job for cadvisor
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+EOF
 
 ## Set Ryot random token
 ryot_token=$(openssl rand -hex 10)
