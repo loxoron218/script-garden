@@ -36,10 +36,7 @@ sudo rm -rf ~/yay
 yay -S --noconfirm networkmanager docker docker-compose firewalld openssh
 
 ## Install recommended applications
-yay -S --noconfirm bash-completion btop fastfetch nano restic powertop xorg-xset
-
-## Install recommended AUR applications
-yay -S --noconfirm lazydocker-bin
+yay -S --noconfirm bash-completion fastfetch nano restic powertop xorg-xset
 
 ## Configure NetworkManager
 sudo systemctl enable NetworkManager.service
