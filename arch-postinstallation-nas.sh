@@ -22,21 +22,15 @@ sudo sed -i "s/#Color/Color/" /etc/pacman.conf
 sudo sed -i "s/#VerbosePkgLists/VerbosePkgLists/" /etc/pacman.conf
 sudo sed -i "s/#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
 
-## Add yay
-sudo pacman -Syyu --noconfirm git
-git clone https://aur.archlinux.org/yay.git
-(cd yay && makepkg -si --noconfirm)
-sudo rm -rf ~/yay
-
 #==============================================================================
 # SECTION 2: Package Installation and Configuration
 #==============================================================================
 
 ## Install necessary applilcations
-yay -S --noconfirm networkmanager docker docker-compose firewalld openssh
+sudo pacman -S --noconfirm networkmanager docker docker-compose firewalld openssh
 
 ## Install recommended applications
-yay -S --noconfirm bash-completion fastfetch nano restic powertop xorg-xset
+sudo pacman -S --noconfirm bash-completion fastfetch nano restic powertop xorg-xset
 
 ## Configure NetworkManager
 sudo systemctl enable NetworkManager.service
@@ -604,13 +598,13 @@ sudo docker compose -f ~/server/immich/docker-compose.yml up -d
 #==============================================================================
 
 ## Remove unnecessary files
-yay -Yc --noconfirm
-yay -Scc --noconfirm
+sudo pacman -Rns $(pacman -Qdtq) --noconfirm
+sudo pacman -Scc --noconfirm
 sudo rm -rf ~/.cache/go-build
 sudo rm -rf ~/.config/go
 
 ## Update system
-yay -Syyu --noconfirm
+sudo pacman -Syyu --noconfirm
 sudo powertop --calibrate
 sudo powertop --auto-tune
 
