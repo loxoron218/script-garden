@@ -36,7 +36,7 @@ sudo rm -rf ~/yay
 yay -S --noconfirm dhcpcd docker docker-compose firewalld openssh
 
 ## Install recommended applications
-yay -S --noconfirm bash-completion btop fastfetch nano powertop xorg-xset
+yay -S --noconfirm bash-completion btop fastfetch nano restic powertop xorg-xset
 
 ## Install recommended AUR applications
 yay -S --noconfirm lazydocker-bin
@@ -76,11 +76,56 @@ done
 sudo firewall-cmd --reload
 
 #==============================================================================
-# SECTION 4: Immich preparation
+# SECTION 4: Restic Backup Configuration
+#==============================================================================
+
+## Create restic backup script
+mkdir ~/server
+cat >> ~/server/restic-backup.sh << EOF
+export RESTIC_PASSWORD="secure_psswd"
+restic backup /home/$(whoami)/server -r /mnt/sda1/Server --exclude=/home/$(whoami)/server/immich/postgres --exclude=/home/$(whoami)/server/ryot/postgres_storage --verbose
+restic forget --keep-last 7 -r /mnt/sda1/Server
+restic prune -r /mnt/sda1/Server
+EOF
+chmod +x ~/server/restic-backup.sh
+
+# Create systemd service file
+cat >> ~/restic.service << EOF
+[Unit]
+Description=Backup Arch User Server Directory
+
+[Service]
+ExecStart=/bin/bash /home/$(whoami)/server/restic-backup.sh
+User=$(whoami)
+EOF
+sudo mv ~/restic.service /etc/systemd/system/restic.service 
+
+# Create systemd timer file
+sudo sh -c 'cat >> /etc/systemd/system/restic.timer << 'EOF'
+[Unit]
+Description=Run backup script every day at 2 AM
+
+[Timer]
+OnCalendar=*-*-* 02:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF'
+
+# Start restic
+sudo mkdir -p /mnt/sda1/Server
+sudo chown -R $(whoami):$(whoami) /mnt/sda1/Server
+restic init -r /mnt/sda1/Server --verbose
+sudo systemctl daemon-reload
+sudo systemctl enable restic.timer
+
+#==============================================================================
+# SECTION 5: Immich preparation
 #==============================================================================
 
 ## Create environment file
-mkdir -p ~/server/immich
+mkdir ~/server/immich
 cat >> ~/server/immich/.env << 'EOF'
 # You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables
 
@@ -111,7 +156,7 @@ curl -L -o ~/server/immich/hwaccel.ml.yml https://github.com/immich-app/immich/r
 sudo chown -R $(whoami) ~/server
 
 #==============================================================================
-# SECTION 5: Create docker-compose file
+# SECTION 6: Create docker-compose file
 #==============================================================================
 
 ## Create docker-compose file
@@ -132,24 +177,6 @@ services:
       - /home/archuser/server/duckdns/config:/config # Optional
     restart: unless-stopped
     network_mode: host # Optional
-
-  duplicati:
-    image: lscr.io/linuxserver/duplicati:development
-    container_name: duplicati
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Berlin
-      - SETTINGS_ENCRYPTION_KEY=
-      - CLI_ARGS= # Optional
-      - DUPLICATI__WEBSERVICE_PASSWORD=secure_psswd
-    volumes:
-      - /home/archuser/server/duplicati/config:/config
-      - /mnt/sda1/server:/backups
-      - /:/source
-    ports:
-      - 8200:8200
-    restart: unless-stopped
 
   homarr: 
     image: ghcr.io/ajnart/homarr:latest
@@ -439,7 +466,7 @@ services:
 EOF
 
 #==============================================================================
-# SECTION 6: Configure Docker containers
+# SECTION 7: Configure Docker containers
 #==============================================================================
 
 ## Set username
@@ -457,7 +484,7 @@ while true; do
         echo "Passwords do not match. Please try again."
     fi
 done
-sudo sed -i "s/secure_psswd/${secure_psswd}/" ~/server/immich/.env ~/server/immich/docker-compose.yml
+sudo sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/immich/docker-compose.yml
 
 ## Add Duck DNS credentials
 read -p "Enter your Duck DNS domain: " duck_domain
@@ -470,7 +497,7 @@ ryot_token=$(openssl rand -hex 10)
 sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/immich/docker-compose.yml
 
 #==============================================================================
-# SECTION 7: Intall Docker containers
+# SECTION 8: Intall Docker containers
 #==============================================================================
 
 ## Start Docker
@@ -481,7 +508,7 @@ sudo systemctl start docker.service
 sudo docker compose -f ~/server/immich/docker-compose.yml up -d
 
 #==============================================================================
-# SECTION 8: Cleanup
+# SECTION 9: Cleanup
 #==============================================================================
 
 ## Remove unnecessary files
