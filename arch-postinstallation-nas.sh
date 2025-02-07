@@ -41,8 +41,8 @@ yay -S --noconfirm bash-completion btop fastfetch nano restic powertop xorg-xset
 ## Install recommended AUR applications
 yay -S --noconfirm lazydocker-bin
 
-## Configure dhcpcd
-sudo systemctl enable dhcpcd.service
+## Configure NetworkManager
+sudo systemctl enable NetworkManager.service
 
 ## Configure fastfetch
 echo "fastfetch" >> ~/.bashrc
