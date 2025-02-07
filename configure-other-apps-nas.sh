@@ -11,13 +11,21 @@ sudo systemctl enable cronie.service
 ~/duckdns/duck.sh
 
 ## Setup server backup with rsync
-sudo mkdir /mnt/sda1/server # Change directory if you are using RAID
-echo "rsync -avh --delete --exclude='~/server/immich/postgres' ~/ /mnt/sda1/server" > ~/server/server_backup.sh
-chmod 700 ~/server/server_backup.sh
-sudo chown -R $(whoami) /mnt/sda1 # Change directory if you are using RAID
-sudo chown -R $(whoami) ~/
-(crontab -l 2>/dev/null; echo "0 3 * * * ~/server/server_backup.sh") | crontab -
-~/server/server_backup.sh
+cat >> /home/$(whoami)/server/backup.sh << EOF
+# Run rsync to sync files to a temporary backup directory
+rsync -av --delete /home/$(whoami)/server/ /tmp/server-backup/
+
+# Create a zip file from the synced files with the current timestamp
+zip -r -P "secure_psswd""/mnt/sda1/server-backup-$(date +'%Y%m%d%H%M%S').zip" /tmp/server-backup/
+
+# Clean up temporary files
+rm -rf /tmp/server-backup
+
+# Keep only the 7 most recent backups, remove older ones
+find /mnt/sda1 -name "server-backup-*.zip" | sort | head -n -7 | xargs rm -f
+EOF
+chmod +x /home/$(whoami)/backup.sh
+(crontab -l; echo "0 2 * * * /home/$(whoami)/backup.sh") | crontab -
 
 ## Configure Vaultwarden Web
 sudo sed -i 's/# WEB_VAULT_FOLDER=\/usr\/share\/webapps\/vaultwarden-web/WEB_VAULT_FOLDER=\/usr\/share\/webapps\/vaultwarden-web/' /etc/vaultwarden.env
