@@ -128,6 +128,7 @@ echo "NoDisplay=true" | sudo tee ~/.local/share/applications/libreoffice-impress
 echo "NoDisplay=true" | sudo tee ~/.local/share/applications/libreoffice-math.desktop
 echo "NoDisplay=true" | sudo tee ~/.local/share/applications/libreoffice-writer.desktop
 echo "NoDisplay=true" | sudo tee ~/.local/share/applications/nm-connection-editor.desktop
+echo "NoDisplay=true" | sudo tee ~/.local/share/applications/nvim.desktop
 echo "NoDisplay=true" | sudo tee ~/.local/share/applications/org.gnome.Extensions.desktop
 echo "NoDisplay=true" | sudo tee ~/.local/share/applications/qv4l2.desktop
 echo "NoDisplay=true" | sudo tee ~/.local/share/applications/qvidcap.desktop
