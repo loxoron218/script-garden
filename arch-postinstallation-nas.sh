@@ -168,6 +168,69 @@ services:
     restart: unless-stopped
     network_mode: host # Optional
 
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - /home/enrique/server/grafana:/var/lib/grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - /home/enrique/server/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /home/enrique/server/prometheus:/prometheus
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    command: "--config.file=/etc/prometheus/prometheus.yml"
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cadvisor
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - 8081:8080
+    restart: unless-stopped
+    devices:
+      - /dev/kmsg
+    # privileged: true
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - '/:/host:ro,rslave'
+    restart: unless-stopped
+    command:
+      - '--path.rootfs=/host'
+    # network_mode: host
+    # pid: host
+
   homarr: 
     image: ghcr.io/ajnart/homarr:latest
     container_name: homarr
@@ -372,69 +435,6 @@ services:
     restart: unless-stopped
     security_opt:
       - seccomp:unconfined #optional
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Berlin
-    volumes:
-      - /home/enrique/server/grafana:/var/lib/grafana
-    ports:
-      - 3000:3000
-    restart: unless-stopped
-
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Berlin
-    volumes:
-      - /home/enrique/server/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - /home/enrique/server/prometheus:/prometheus
-    ports:
-      - 9090:9090
-    restart: unless-stopped
-    command: "--config.file=/etc/prometheus/prometheus.yml"
-
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor
-    container_name: cadvisor
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Berlin
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    ports:
-      - 8081:8080
-    restart: unless-stopped
-    devices:
-      - /dev/kmsg
-    # privileged: true
-
-  node_exporter:
-    image: quay.io/prometheus/node-exporter:latest
-    container_name: node_exporter
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Berlin
-    volumes:
-      - '/:/host:ro,rslave'
-    restart: unless-stopped
-    command:
-      - '--path.rootfs=/host'
-    # network_mode: host
-    # pid: host
 
   radarr:
     image: lscr.io/linuxserver/radarr:nightly
