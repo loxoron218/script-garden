@@ -594,7 +594,7 @@ sudo systemctl start docker.service
 sudo docker compose -f ~/server/immich/docker-compose.yml up -d
 
 ## Change permissions of server folder
-sudo chown -R $(whoami) ~/server
+sudo chown -R $(whoami) /home/$(whoami)/server
 
 #==============================================================================
 # SECTION 9: Cleanup
