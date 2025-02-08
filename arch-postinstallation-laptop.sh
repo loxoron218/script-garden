@@ -37,10 +37,10 @@ sudo rm -rf ~/yay
 #==============================================================================
 
 ## Install GUI applications from official repository
-sudo pacman -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh mission-center nautilus pdfarranger picard soundconverter strawberry telegram-desktop vlc
+sudo pacman -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus pdfarranger picard soundconverter strawberry telegram-desktop vlc
 
 ## Install other applications from official repository
-sudo pacman -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost xorg-xset
+sudo pacman -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers neovim power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost xorg-xset
 
 ## Install GUI applications from AUR
 yay -S extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin whatsapp-for-linux
