@@ -27,7 +27,7 @@ sudo sed -i "s/#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
 #==============================================================================
 
 ## Install necessary applilcations
-sudo pacman -S --noconfirm networkmanager docker docker-compose firewalld openssh
+sudo pacman -Syyu --noconfirm networkmanager docker docker-compose firewalld openssh
 
 ## Install recommended applications
 sudo pacman -S --noconfirm bash-completion fastfetch nano restic powertop xorg-xset
@@ -106,7 +106,7 @@ EOF'
 
 # Start restic
 sudo mkdir -p /mnt/sda1/Server
-sudo chown -R $(whoami) /mnt/sda1/Server
+sudo chmod -R 777 /mnt/sda1/Server
 restic init -r /mnt/sda1/Server --verbose
 sudo systemctl daemon-reload
 sudo systemctl enable restic.timer
@@ -582,6 +582,9 @@ EOF
 ryot_token=$(openssl rand -hex 10)
 sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/immich/docker-compose.yml
 
+## Change permissions of server folder
+sudo chmod -R 777 /home/$(whoami)/server
+
 #==============================================================================
 # SECTION 8: Intall Docker containers
 #==============================================================================
@@ -592,9 +595,6 @@ sudo systemctl start docker.service
 
 ## Run docker-compose file
 sudo docker compose -f ~/server/immich/docker-compose.yml up -d
-
-## Change permissions of server folder
-sudo chown -R $(whoami) /home/$(whoami)/server
 
 #==============================================================================
 # SECTION 9: Cleanup
