@@ -546,7 +546,8 @@ read -p "Enter your Duck DNS token: " duck_token
 sudo sed -i "s/duck_token/${duck_token}/" ~/server/immich/docker-compose.yml
 
 ## Create Prometheus configuration
-cat >> ~/server/prometheus/compose.yml << 'EOF'
+mkdir ~/server/prometheus
+cat >> ~/server/prometheus/prometheus.yml << 'EOF'
 ---
 global:
   scrape_interval: 15s  # By default, scrape targets every 15 seconds.
