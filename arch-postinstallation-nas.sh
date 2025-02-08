@@ -601,13 +601,11 @@ sudo docker compose -f ~/server/immich/docker-compose.yml up -d
 #==============================================================================
 
 ## Remove unnecessary files
-sudo pacman -Rns $(pacman -Qdtq) --noconfirm 2>/dev/null || echo "No orphaned packages to remove"
 sudo pacman -Scc --noconfirm
 sudo rm -rf ~/.cache/go-build
 sudo rm -rf ~/.config/go
 
 ## Update system
-sudo pacman -Syyu --noconfirm
 sudo powertop --calibrate
 sudo powertop --auto-tune
 
