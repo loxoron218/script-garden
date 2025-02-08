@@ -106,7 +106,7 @@ EOF'
 
 # Start restic
 sudo mkdir -p /mnt/sda1/Server
-sudo chown -R $(whoami):$(whoami) /mnt/sda1/Server
+sudo chown -R $(whoami) /mnt/sda1/Server
 restic init -r /mnt/sda1/Server --verbose
 sudo systemctl daemon-reload
 sudo systemctl enable restic.timer
@@ -144,7 +144,6 @@ EOF
 ## Download hardware acceleration files
 curl -L -o ~/server/immich/hwaccel.transcoding.yml https://github.com/immich-app/immich/releases/latest/download/hwaccel.transcoding.yml
 curl -L -o ~/server/immich/hwaccel.ml.yml https://github.com/immich-app/immich/releases/latest/download/hwaccel.ml.yml
-sudo chown -R $(whoami) ~/server
 
 #==============================================================================
 # SECTION 6: Create docker-compose file
@@ -592,6 +591,9 @@ sudo systemctl start docker.service
 
 ## Run docker-compose file
 sudo docker compose -f ~/server/immich/docker-compose.yml up -d
+
+## Change permissions of server folder
+sudo chown -R $(whoami) ~/server
 
 #==============================================================================
 # SECTION 9: Cleanup
