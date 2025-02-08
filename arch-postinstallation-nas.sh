@@ -605,7 +605,7 @@ sudo pacman -Scc --noconfirm
 sudo rm -rf ~/.cache/go-build
 sudo rm -rf ~/.config/go
 
-## Update system
+## Run powertop
 sudo powertop --calibrate
 sudo powertop --auto-tune
 
