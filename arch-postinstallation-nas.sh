@@ -176,7 +176,7 @@ services:
       - PGID=1000
       - TZ=Europe/Berlin
     volumes:
-      - /home/enrique/server/grafana:/var/lib/grafana
+      - /home/archuser/server/grafana:/var/lib/grafana
     ports:
       - 3000:3000
     restart: unless-stopped
@@ -189,8 +189,8 @@ services:
       - PGID=1000
       - TZ=Europe/Berlin
     volumes:
-      - /home/enrique/server/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - /home/enrique/server/prometheus:/prometheus
+      - /home/archuser/server/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /home/archuser/server/prometheus:/prometheus
     ports:
       - 9090:9090
     restart: unless-stopped
