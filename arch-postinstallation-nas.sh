@@ -30,7 +30,7 @@ sudo sed -i "s/#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
 sudo pacman -Syyu --noconfirm networkmanager docker docker-compose firewalld openssh
 
 ## Install recommended applications
-sudo pacman -S --noconfirm bash-completion fastfetch nano restic powertop xorg-xset
+sudo pacman -S --noconfirm bash-completion fastfetch neovim restic powertop xorg-xset
 
 ## Configure NetworkManager
 sudo systemctl enable NetworkManager.service
