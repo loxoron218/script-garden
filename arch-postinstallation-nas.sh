@@ -415,7 +415,7 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
     ports:
-      - 8080:8080
+      - 8081:8080
     restart: unless-stopped
     devices:
       - /dev/kmsg
@@ -574,7 +574,7 @@ scrape_configs:
 # Example job for cadvisor
   - job_name: 'cadvisor'
     static_configs:
-      - targets: ['cadvisor:8080']
+      - targets: ['cadvisor:8081']
 EOF
 
 ## Set Ryot random token
