@@ -490,7 +490,7 @@ services:
     container_name: ryot-db
     environment:
       - TZ=Europe/Berlin
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=secure_psswd
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
     volumes:
