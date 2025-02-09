@@ -27,7 +27,7 @@ sudo sed -i "s/#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
 #==============================================================================
 
 ## Install necessary applilcations
-sudo pacman -Syyu --noconfirm networkmanager docker docker-compose firewalld openssh
+sudo pacman -Syyu --noconfirm networkmanager podman podman-compose firewalld openssh
 
 ## Install recommended applications
 sudo pacman -S --noconfirm bash-completion fastfetch neovim restic powertop xorg-xset
@@ -146,11 +146,31 @@ curl -L -o ~/server/immich/hwaccel.transcoding.yml https://github.com/immich-app
 curl -L -o ~/server/immich/hwaccel.ml.yml https://github.com/immich-app/immich/releases/latest/download/hwaccel.ml.yml
 
 #==============================================================================
-# SECTION 6: Create docker-compose file
+# SECTION 6: Create podman-compose files
 #==============================================================================
 
-## Create docker-compose file
-cat >> ~/server/immich/docker-compose.yml << 'EOF'
+## Create Portainer podman-compose file
+cat >> ~/server/portainer/portainer-compose.yml << 'EOF'
+services:
+  portainer-ce:
+    image: docker.io/portainer/portainer-ce:2.27.0-rc2-alpine # Version must be updated
+    container_name: portainer
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - /run/podman/podman.sock:/var/run/docker.sock
+      - /home/archuser/server/portainer:/data
+    ports:
+      - 8000:8000
+      - 9443:9443
+    restart: unless-stopped
+    privileged: true
+EOF
+
+## Create stack podman-compose file
+cat >> ~/server/portainer/stack-compose.yml << 'EOF'
 services:
   duckdns:
     image: lscr.io/linuxserver/duckdns:latest
@@ -239,7 +259,7 @@ services:
       - PGID=1000
       - TZ=Europe/Berlin
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - /run/podman/podman.sock:/var/run/docker.sock # Optional, only if you want docker integration
       - /home/archuser/server/homarr/configs:/app/data/configs
       - /home/archuser/server/homarr/icons:/app/public/icons
       - /home/archuser/server/homarr/data:/data
@@ -461,7 +481,7 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@ryot-db:5432/postgres
       - SERVER_ADMIN_ACCESS_TOKEN=ryot_token # CHANGE THIS
     ports:
-      - 8000:8000
+      - 8001:8000
     restart: unless-stopped
     pull_policy: always
 
@@ -514,16 +534,16 @@ services:
       - PGID=1000
       - TZ=Europe/Berlin
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/podman/podman.sock:/var/run/docker.sock
     restart: unless-stopped
 EOF
 
 #==============================================================================
-# SECTION 7: Configure Docker containers
+# SECTION 7: Configure Podman containers
 #==============================================================================
 
 ## Set username
-sed -i "s/archuser/$(whoami)/" ~/server/immich/.env ~/server/immich/docker-compose.yml
+sed -i "s/archuser/$(whoami)/" ~/server/immich/.env ~/server/portainer/podman-compose.yml ~/server/portainer/portainer-compose.yml
 
 ## Set secure app passwords
 while true; do
@@ -537,13 +557,13 @@ while true; do
         echo "Passwords do not match. Please try again."
     fi
 done
-sudo sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/immich/docker-compose.yml
+sudo sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/portainer/stack-compose.yml
 
 ## Add Duck DNS credentials
 read -p "Enter your Duck DNS domain: " duck_domain
-sudo sed -i "s/duck_domain/${duck_domain}/" ~/server/immich/docker-compose.yml
+sudo sed -i "s/duck_domain/${duck_domain}/" ~/server/portainer/stack-compose.yml
 read -p "Enter your Duck DNS token: " duck_token
-sudo sed -i "s/duck_token/${duck_token}/" ~/server/immich/docker-compose.yml
+sudo sed -i "s/duck_token/${duck_token}/" ~/server/portainer/stack-compose.yml
 
 ## Create Prometheus configuration
 mkdir ~/server/prometheus
@@ -580,21 +600,21 @@ EOF
 
 ## Set Ryot random token
 ryot_token=$(openssl rand -hex 10)
-sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/immich/docker-compose.yml
+sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/portainer/stack-compose.yml
 
 ## Change permissions of server folder
 sudo chmod -R 777 /home/$(whoami)/server
 
 #==============================================================================
-# SECTION 8: Intall Docker containers
+# SECTION 8: Intall Portainer
 #==============================================================================
 
-## Start Docker
-sudo systemctl enable docker.service
-sudo systemctl start docker.service
+## Start Podman
+sudo systemctl enable podman.socket
+sudo systemctl start podman.socket
 
-## Run docker-compose file
-sudo docker compose -f ~/server/immich/docker-compose.yml up -d
+## Run podman-compose file
+sudo podman-compose -f ~/server/portainer/stack-compose.yml up -d
 
 #==============================================================================
 # SECTION 9: Cleanup
