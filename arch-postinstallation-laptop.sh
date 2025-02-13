@@ -10,8 +10,8 @@ sudo sed -i 's/#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
 ## Set up Chaotic AUR
 sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
 sudo pacman-key --lsign-key 3056513887B78AEB
-sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
-sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+sudo pacman -U https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst
+sudo pacman -U https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst
 
 ## Add repositories
 sudo sh -c 'cat >> /etc/pacman.conf << EOF
@@ -94,14 +94,14 @@ sed -i '/^StartupNotify=true$/d' ~/.local/share/applications/org.keepassxc.KeePa
 
 ## Configure Radarr
 sudo curl -o /usr/share/pixmaps/Radarr.svg https://raw.githubusercontent.com/Radarr/Radarr/refs/heads/develop/Logo/Radarr.svg
-sudo sh -c 'cat >> ~/.local/share/applications/Radarr.desktop << EOF
+cat >> ~/.local/share/applications/Radarr.desktop << 'EOF'
 [Desktop Entry]
 Name=Radarr
 Exec=/usr/lib/radarr/bin/Radarr -browser
 Terminal=False
 Type=Application
 Icon=/usr/share/pixmaps/Radarr.svg
-EOF'
+EOF
 
 ## Configure SABnzbd
 sudo curl -o /usr/share/pixmaps/logo-arrow.svg https://raw.githubusercontent.com/sabnzbd/sabnzbd/refs/heads/develop/icons/logo-arrow.svg
@@ -115,23 +115,23 @@ sudo sed -i 's|^Icon=.*|Icon=/usr/share/pixmaps/logo-arrow.svg|' ~/.local/share/
 #==============================================================================
 
 ## Hide unwanted desktop icons
-echo "NoDisplay=true" | tee ~/.local/share/applications/avahi-discover.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/bssh.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/bvnc.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/bvnc.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/codium.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/cups.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/libreoffice-base.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/libreoffice-calc.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/libreoffice-draw.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/libreoffice-impress.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/libreoffice-math.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/libreoffice-writer.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/nm-connection-editor.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/nvim.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/org.gnome.Extensions.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/qv4l2.desktop
-echo "NoDisplay=true" | tee ~/.local/share/applications/qvidcap.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/avahi-discover.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/bssh.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/bvnc.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/bvnc.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/codium.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/cups.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-base.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-calc.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-draw.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-impress.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-math.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-writer.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/nm-connection-editor.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/nvim.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/org.gnome.Extensions.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/qv4l2.desktop
+echo NoDisplay=true | tee ~/.local/share/applications/qvidcap.desktop
 
 ## Change name of VSCodium
 cp /usr/share/applications/codium-wayland.desktop ~/.local/share/applications/
@@ -145,12 +145,12 @@ sudo sed -i 's|^StartupWMClass=.*|StartupWMClass=pkexec bleachbit|' ~/.local/sha
 
 ## Configure fastfetch
 fastfetch --gen-config
-echo "fastfetch" >> ~/.bashrc
-echo "alias clearfetch='clear && fastfetch'" >> ~/.bashrc
+echo fastfetch >> ~/.bashrc
+echo alias clearfetch='clear && fastfetch' >> ~/.bashrc
 source ~/.bashrc
 
 ## Configure Ghostty
-cat >> ~/.config/ghostty/config << EOF
+cat >> ~/.config/ghostty/config << 'EOF'
 clipboard-paste-bracketed-safe = true
 clipboard-paste-protection = false
 font-family = Noto Sans Mono
@@ -161,7 +161,7 @@ EOF ## Manual configuration reload still needed
 ## Configure other apps
 gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal ghostty
 gsettings set org.gnome.desktop.privacy remember-recent-files false
-gsettings set org.gnome.nautilus.preferences show-image-thumbnails 'always'
+gsettings set org.gnome.nautilus.preferences show-image-thumbnails always
 
 #==============================================================================
 # SECTION 7: Cleanup
