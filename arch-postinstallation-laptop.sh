@@ -3,9 +3,9 @@
 #==============================================================================
 
 ## Configure pacman
-sudo sed -i 's/#Color/Color/' /etc/pacman.conf
-sudo sed -i 's/#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf
-sudo sed -i 's/#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
+sudo sed -i "s/#Color/Color/" /etc/pacman.conf
+sudo sed -i "s/#VerbosePkgLists/VerbosePkgLists/" /etc/pacman.conf
+sudo sed -i "s/#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
 
 ## Set up Chaotic AUR
 sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
@@ -14,7 +14,7 @@ sudo pacman -U https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar
 sudo pacman -U https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst
 
 ## Add repositories
-sudo sh -c 'cat >> /etc/pacman.conf << EOF
+sudo sh -c "cat >> /etc/pacman.conf << EOF
 
 [gnome-unstable]
 Include = /etc/pacman.d/mirrorlist
@@ -24,7 +24,7 @@ Include = /etc/pacman.d/mirrorlist
 
 [chaotic-aur]
 Include = /etc/pacman.d/chaotic-mirrorlist
-EOF'
+EOF"
 
 ## Install yay
 sudo pacman -Syyu --noconfirm git
@@ -73,7 +73,7 @@ yay -S --noconfirm network-manager-applet
 sudo systemctl enable NetworkManager.service
 
 ## Configure Bluetooth
-sudo sed -i 's/#AutoEnable=true/AutoEnable=false/' /etc/bluetooth/main.conf
+sudo sed -i "s/#AutoEnable=true/AutoEnable=false/" /etc/bluetooth/main.conf
 sudo systemctl enable bluetooth.service
 
 ## Configure printer
@@ -90,7 +90,7 @@ yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc nicotine+ 
 
 ## Configure KeePassXC
 cp /usr/share/applications/org.keepassxc.KeePassXC.desktop ~/.local/share/applications/
-sed -i '/^StartupNotify=true$/d' ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
+sed -i "/^StartupNotify=true$/d" ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
 
 ## Configure Radarr
 sudo curl -o /usr/share/pixmaps/Radarr.svg https://raw.githubusercontent.com/Radarr/Radarr/refs/heads/develop/Logo/Radarr.svg
@@ -106,8 +106,8 @@ EOF
 ## Configure SABnzbd
 sudo curl -o /usr/share/pixmaps/logo-arrow.svg https://raw.githubusercontent.com/sabnzbd/sabnzbd/refs/heads/develop/icons/logo-arrow.svg
 sudo cp /usr/lib/sabnzbd/linux/sabnzbd.desktop ~/.local/share/applications
-sudo sed -i 's|^Exec=.*|Exec=/usr/lib/sabnzbd/SABnzbd.py --browser 1|' ~/.local/share/applications/sabnzbd.desktop
-sudo sed -i 's|^Icon=.*|Icon=/usr/share/pixmaps/logo-arrow.svg|' ~/.local/share/applications/sabnzbd.desktop
+sudo sed -i "s|^Exec=.*|Exec=/usr/lib/sabnzbd/SABnzbd.py --browser 1|" ~/.local/share/applications/sabnzbd.desktop
+sudo sed -i "s|^Icon=.*|Icon=/usr/share/pixmaps/logo-arrow.svg|" ~/.local/share/applications/sabnzbd.desktop
 
 
 #==============================================================================
@@ -135,19 +135,18 @@ echo NoDisplay=true | tee ~/.local/share/applications/qvidcap.desktop
 
 ## Change name of VSCodium
 cp /usr/share/applications/codium-wayland.desktop ~/.local/share/applications/
-sudo sed -i 's/VSCodium - Wayland/VSCodium/' ~/.local/share/applications/codium-wayland.desktop
+sudo sed -i "s/VSCodium - Wayland/VSCodium/" ~/.local/share/applications/codium-wayland.desktop
 
 ## Add BleachBit as root
 sudo cp /usr/share/applications/org.bleachbit.BleachBit.desktop ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
-sudo sed -i 's/BleachBit/BleachBit (as root)/' ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
-sudo sed -i 's|^Exec=.*|Exec=pkexec bleachbit|' ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
-sudo sed -i 's|^StartupWMClass=.*|StartupWMClass=pkexec bleachbit|' ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
+sudo sed -i "s/BleachBit/BleachBit (as root)/" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
+sudo sed -i "s|^Exec=.*|Exec=pkexec bleachbit|" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
+sudo sed -i "s|^StartupWMClass=.*|StartupWMClass=pkexec bleachbit|" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
 
 ## Configure fastfetch
 fastfetch --gen-config
-echo fastfetch >> ~/.bashrc
-echo alias clearfetch='clear && fastfetch' >> ~/.bashrc
-source ~/.bashrc
+echo fastfetch --battery-key Battery >> ~/.bashrc
+echo alias "clearfetch='clear && fastfetch --battery-key Battery'" >> ~/.bashrc
 
 ## Configure Ghostty
 cat >> ~/.config/ghostty/config << 'EOF'
