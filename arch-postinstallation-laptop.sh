@@ -64,9 +64,9 @@ sudo systemctl set-default graphical.target
 
 ## Configure Plymouth
 # yay -S --noconfirm plymouth
-# sudo sed -i 's/^HOOKS=(/HOOKS=(plymouth /' /etc/mkinitcpio.conf
+# sudo sed -i "s/^HOOKS=(/HOOKS=(plymouth /" /etc/mkinitcpio.conf
 # sudo plymouth-set-default-theme -R bgrt
-# sudo sed -i 's/$/ quiet splash/' /boot/loader/entries/*.conf
+# sudo sed -i "s/$/ quiet splash/" /boot/loader/entries/*.conf
 
 ## Configure network
 yay -S --noconfirm network-manager-applet
