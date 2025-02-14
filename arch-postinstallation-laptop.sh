@@ -94,7 +94,7 @@ sed -i "/^StartupNotify=true$/d" ~/.local/share/applications/org.keepassxc.KeePa
 
 ## Configure Radarr
 sudo curl -o /usr/share/pixmaps/Radarr.svg https://raw.githubusercontent.com/Radarr/Radarr/refs/heads/develop/Logo/Radarr.svg
-cat >> ~/.local/share/applications/Radarr.desktop << 'EOF'
+cat > ~/.local/share/applications/Radarr.desktop << 'EOF'
 [Desktop Entry]
 Name=Radarr
 Exec=/usr/lib/radarr/bin/Radarr -browser
@@ -105,9 +105,9 @@ EOF
 
 ## Configure SABnzbd
 sudo curl -o /usr/share/pixmaps/logo-arrow.svg https://raw.githubusercontent.com/sabnzbd/sabnzbd/refs/heads/develop/icons/logo-arrow.svg
-sudo cp /usr/lib/sabnzbd/linux/sabnzbd.desktop ~/.local/share/applications
-sudo sed -i "s|^Exec=.*|Exec=/usr/lib/sabnzbd/SABnzbd.py --browser 1|" ~/.local/share/applications/sabnzbd.desktop
-sudo sed -i "s|^Icon=.*|Icon=/usr/share/pixmaps/logo-arrow.svg|" ~/.local/share/applications/sabnzbd.desktop
+cp /usr/lib/sabnzbd/linux/sabnzbd.desktop ~/.local/share/applications
+sed -i "s|^Exec=.*|Exec=/usr/lib/sabnzbd/SABnzbd.py --browser 1|" ~/.local/share/applications/sabnzbd.desktop
+sed -i "s|^Icon=.*|Icon=/usr/share/pixmaps/logo-arrow.svg|" ~/.local/share/applications/sabnzbd.desktop
 
 
 #==============================================================================
@@ -115,33 +115,32 @@ sudo sed -i "s|^Icon=.*|Icon=/usr/share/pixmaps/logo-arrow.svg|" ~/.local/share/
 #==============================================================================
 
 ## Hide unwanted desktop icons
-echo NoDisplay=true | tee ~/.local/share/applications/avahi-discover.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/bssh.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/bvnc.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/bvnc.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/codium.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/cups.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-base.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-calc.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-draw.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-impress.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-math.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/libreoffice-writer.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/nm-connection-editor.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/nvim.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/org.gnome.Extensions.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/qv4l2.desktop
-echo NoDisplay=true | tee ~/.local/share/applications/qvidcap.desktop
+echo NoDisplay=true > ~/.local/share/applications/avahi-discover.desktop
+echo NoDisplay=true > ~/.local/share/applications/bssh.desktop
+echo NoDisplay=true > ~/.local/share/applications/bvnc.desktop
+echo NoDisplay=true > ~/.local/share/applications/codium.desktop
+echo NoDisplay=true > ~/.local/share/applications/cups.desktop
+echo NoDisplay=true > ~/.local/share/applications/libreoffice-base.desktop
+echo NoDisplay=true > ~/.local/share/applications/libreoffice-calc.desktop
+echo NoDisplay=true > ~/.local/share/applications/libreoffice-draw.desktop
+echo NoDisplay=true > ~/.local/share/applications/libreoffice-impress.desktop
+echo NoDisplay=true > ~/.local/share/applications/libreoffice-math.desktop
+echo NoDisplay=true > ~/.local/share/applications/libreoffice-writer.desktop
+echo NoDisplay=true > ~/.local/share/applications/nm-connection-editor.desktop
+echo NoDisplay=true > ~/.local/share/applications/nvim.desktop
+echo NoDisplay=true > ~/.local/share/applications/org.gnome.Extensions.desktop
+echo NoDisplay=true > ~/.local/share/applications/qv4l2.desktop
+echo NoDisplay=true > ~/.local/share/applications/qvidcap.desktop
 
 ## Change name of VSCodium
 cp /usr/share/applications/codium-wayland.desktop ~/.local/share/applications/
-sudo sed -i "s/VSCodium - Wayland/VSCodium/" ~/.local/share/applications/codium-wayland.desktop
+sed -i "s/VSCodium - Wayland/VSCodium/" ~/.local/share/applications/codium-wayland.desktop
 
 ## Add BleachBit as root
-sudo cp /usr/share/applications/org.bleachbit.BleachBit.desktop ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
-sudo sed -i "s/BleachBit/BleachBit (as root)/" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
-sudo sed -i "s|^Exec=.*|Exec=pkexec bleachbit|" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
-sudo sed -i "s|^StartupWMClass=.*|StartupWMClass=pkexec bleachbit|" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
+cp /usr/share/applications/org.bleachbit.BleachBit.desktop ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
+sed -i "s/BleachBit/BleachBit (as root)/" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
+sed -i "s|^Exec=.*|Exec=pkexec bleachbit|" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
+sed -i "s|^StartupWMClass=.*|StartupWMClass=pkexec bleachbit|" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
 
 ## Configure fastfetch
 fastfetch --gen-config
@@ -174,7 +173,7 @@ yay -Rns --noconfirm powertop xorg-xset
 ## Remove unnecessary files
 yay -Yc --noconfirm
 yay -Scc --noconfirm
-sudo rm -rf ~/.cache/
-sudo rm -rf ~/.cargo/
-sudo rm -rf ~/.npm/
+sudo rm -rf ~/.cache
+sudo rm -rf ~/.cargo
+sudo rm -rf ~/.npm
 yay -Syyu --noconfirm
