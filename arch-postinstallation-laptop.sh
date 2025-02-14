@@ -90,7 +90,8 @@ yay -S --noconfirm par2cmdline-turbo
 yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc nicotine+ python-orjson radarr sabnzbd syncthing syncthing-gtk
 
 ## Configure KeePassXC
-cp /usr/share/applications/org.keepassxc.KeePassXC.desktop ~/.local/share/applications/
+mkdir ~/.local/share/applications
+cp /usr/share/applications/org.keepassxc.KeePassXC.desktop ~/.local/share/applications
 sed -i "/^StartupNotify=true$/d" ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
 
 ## Configure Radarr
@@ -149,7 +150,8 @@ echo fastfetch --battery-key Battery >> ~/.bashrc
 echo alias "clearfetch='clear && fastfetch --battery-key Battery'" >> ~/.bashrc
 
 ## Configure Ghostty
-cat >> ~/.config/ghostty/config << 'EOF'
+mkdir ~/.config/ghostty
+cat > ~/.config/ghostty/config << 'EOF'
 clipboard-paste-bracketed-safe = true
 clipboard-paste-protection = false
 font-family = Noto Sans Mono
