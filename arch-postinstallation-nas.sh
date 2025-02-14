@@ -27,7 +27,7 @@ sudo sed -i "s/#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
 #==============================================================================
 
 ## Install necessary applilcations
-sudo pacman -Syyu --noconfirm networkmanager podman podman-compose firewalld openssh
+sudo pacman -Syyu --noconfirm networkmanager podman firewalld openssh
 
 ## Install recommended applications
 sudo pacman -S --noconfirm bash-completion fastfetch neovim restic powertop xorg-xset
