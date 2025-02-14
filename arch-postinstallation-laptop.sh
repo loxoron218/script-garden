@@ -10,8 +10,8 @@ sudo sed -i "s/#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
 ## Set up Chaotic AUR
 sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
 sudo pacman-key --lsign-key 3056513887B78AEB
-sudo pacman -U https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst
-sudo pacman -U https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst
+sudo pacman -U --noconfirm https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst
+sudo pacman -U --noconfirm https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst
 
 ## Add repositories
 sudo sh -c "cat >> /etc/pacman.conf << EOF
@@ -43,7 +43,7 @@ yay -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-con
 yay -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers neovim power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost xorg-xset
 
 ## Install GUI applications from AUR
-yay -S extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin whatsapp-for-linux
+yay -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin whatsapp-for-linux
 
 ## Install other applications from AUR
 yay -S --noconfirm brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell nautilus-open-any-terminal
@@ -168,12 +168,13 @@ gsettings set org.gnome.nautilus.preferences show-image-thumbnails always
 ## Use powertop
 sudo powertop --calibrate
 sudo powertop --auto-tune
-yay -Rns --noconfirm powertop xorg-xset
+yay -Rns --noconfirm powertop
 
 ## Remove unnecessary files
 yay -Yc --noconfirm
 yay -Scc --noconfirm
 sudo rm -rf ~/.cache
 sudo rm -rf ~/.cargo
+sudo rm -rf ~/.config/go
 sudo rm -rf ~/.npm
 yay -Syyu --noconfirm
