@@ -40,7 +40,7 @@ sudo rm -rf ~/yay
 yay -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus pdfarranger picard soundconverter strawberry telegram-desktop vlc
 
 ## Install other applications from official repository
-yay -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers neovim power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost xorg-xset
+yay -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers neovim power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost
 
 ## Install GUI applications from AUR
 yay -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin whatsapp-for-linux
@@ -86,7 +86,8 @@ sudo lpoptions -d HLL2350DW # Manual configuaration still needed
 #==============================================================================
 
 ## Install apps that can be replaced by self hosting
-yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc nicotine+ par2cmdline-turbo python-orjson radarr sabnzbd syncthing syncthing-gtk
+yay -S --noconfirm par2cmdline-turbo
+yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc nicotine+ python-orjson radarr sabnzbd syncthing syncthing-gtk
 
 ## Configure KeePassXC
 cp /usr/share/applications/org.keepassxc.KeePassXC.desktop ~/.local/share/applications/
@@ -154,7 +155,7 @@ clipboard-paste-protection = false
 font-family = Noto Sans Mono
 font-size = 11
 theme = Adwaita Dark
-EOF ## Manual configuration reload still needed
+EOF
 
 ## Configure other apps
 gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal ghostty
