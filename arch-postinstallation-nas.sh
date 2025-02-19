@@ -603,9 +603,6 @@ EOF
 ryot_token=$(openssl rand -hex 10)
 sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/portainer/stack-compose.yml
 
-## Change permissions of server folder
-sudo chmod -R 777 /home/$(whoami)/server
-
 #==============================================================================
 # SECTION 8: Intall Portainer
 #==============================================================================
@@ -616,6 +613,9 @@ sudo systemctl start podman.socket
 
 ## Run portainer-compose file
 sudo podman compose -f ~/server/portainer/portainer-compose.yml up -d
+
+## Change permissions of server folder
+sudo chmod -R 777 /home/$(whoami)/server
 
 #==============================================================================
 # SECTION 9: Cleanup
