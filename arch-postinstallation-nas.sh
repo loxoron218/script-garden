@@ -170,7 +170,7 @@ services:
     network_mode: host # Optional
 
   grafana:
-    image: grafana/grafana
+    image: docker.io/grafana/grafana
     container_name: grafana
     environment:
       - TZ=Europe/Berlin
@@ -181,7 +181,7 @@ services:
     restart: unless-stopped
 
   prometheus:
-    image: prom/prometheus
+    image: docker.io/prom/prometheus
     container_name: prometheus
     environment:
       - TZ=Europe/Berlin
@@ -205,11 +205,11 @@ services:
       - /var/lib/containers:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
     ports:
-      - 8081:8080
+      - 8080:8080
     restart: unless-stopped
     devices:
       - /dev/kmsg
-    # privileged: true
+    privileged: true
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
@@ -456,7 +456,7 @@ services:
       - /mnt/sda1:/downloads # Optional
       - /mnt/sda1/sabnzbd:/incomplete-downloads # Optional
     ports:
-      - 8080:8080
+      - 8081:8080
     restart: unless-stopped
 
   vaultwarden:
