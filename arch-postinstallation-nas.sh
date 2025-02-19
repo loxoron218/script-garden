@@ -207,7 +207,7 @@ services:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - /run/user/1000/podman:/var/run/podman:ro
     ports:
-      - 8080:8080
+      - 8081:8080
     restart: unless-stopped
     devices:
       - /dev/kmsg
@@ -375,8 +375,8 @@ services:
       - /home/archuser/server/nextcloud/config:/config
       - /home/archuser/server/nextcloud/data:/data
     ports:
-      - 444:443
-      - 83:80
+      - 4444:443
+      - 8082:80
     restart: unless-stopped
 
   nginx-proxy-manager:
@@ -385,12 +385,12 @@ services:
     environment:
       - TZ=Europe/Berlin
     volumes:
-      - /home/archuser/server/nginx-proxy-manager/data:/data
-      - /home/archuser/server/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - /home/enrique/server/nginx-proxy-manager/data:/data
+      - /home/enrique/server/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
     ports:
-      - 80:80
-      - 81:81
-      - 443:443
+      - 8080:80
+      - 8181:81
+      - 4433:443
     restart: unless-stopped
 
   nicotine-plus:
@@ -458,7 +458,7 @@ services:
       - /mnt/sda1:/downloads # Optional
       - /mnt/sda1/sabnzbd:/incomplete-downloads # Optional
     ports:
-      - 8081:8080
+      - 8083:8080
     restart: unless-stopped
 
   vaultwarden:
