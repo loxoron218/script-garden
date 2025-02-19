@@ -149,7 +149,8 @@ curl -L -o ~/server/immich/hwaccel.ml.yml https://github.com/immich-app/immich/r
 # SECTION 6: Create podman-compose files
 #==============================================================================
 
-## Create Portainer podman-compose file
+## Create portainer-compose file
+mkdir ~/server/portainer
 cat >> ~/server/portainer/portainer-compose.yml << 'EOF'
 services:
   portainer-ce:
@@ -169,7 +170,7 @@ services:
     privileged: true
 EOF
 
-## Create stack podman-compose file
+## Create stack-compose file
 cat >> ~/server/portainer/stack-compose.yml << 'EOF'
 services:
   duckdns:
@@ -543,7 +544,7 @@ EOF
 #==============================================================================
 
 ## Set username
-sed -i "s/archuser/$(whoami)/" ~/server/immich/.env ~/server/portainer/podman-compose.yml ~/server/portainer/portainer-compose.yml
+sed -i "s/archuser/$(whoami)/" ~/server/immich/.env ~/server/portainer/portainer-compose.yml ~/server/portainer/portainer-compose.yml
 
 ## Set secure app passwords
 while true; do
@@ -613,8 +614,8 @@ sudo chmod -R 777 /home/$(whoami)/server
 sudo systemctl enable podman.socket
 sudo systemctl start podman.socket
 
-## Run podman-compose file
-sudo podman-compose -f ~/server/portainer/stack-compose.yml up -d
+## Run portainer-compose file
+sudo podman compose -f ~/server/portainer/portainer-compose.yml up -d
 
 #==============================================================================
 # SECTION 9: Cleanup
