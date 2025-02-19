@@ -338,7 +338,7 @@ services:
     restart: unless-stopped
 
   makemkv:
-    image: jlesage/makemkv
+    image: docker.io/jlesage/makemkv
     container_name: makemkv
     environment:
       - TZ=Europe/Berlin
@@ -354,7 +354,7 @@ services:
       # - /dev/sg2:/dev/sg2
 
   maloja:
-    image: krateng/maloja
+    image: docker.io/krateng/maloja
     container_name: maloja
     environment:
       - TZ=Europe/Berlin
