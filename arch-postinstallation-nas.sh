@@ -191,7 +191,7 @@ services:
     ports:
       - 9090:9090
     restart: unless-stopped
-    command: "--config.file=/etc/prometheus/prometheus.yml"
+    command: --config.file=/etc/prometheus/prometheus.yml
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor
@@ -203,7 +203,7 @@ services:
       - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/containers:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
+      - /dev/disk:/dev/disk:ro
     ports:
       - 8080:8080
     restart: unless-stopped
@@ -217,10 +217,10 @@ services:
     environment:
       - TZ=Europe/Berlin
     volumes:
-      - '/:/host:ro,rslave'
+      - /:/host:ro,rslave
     restart: unless-stopped
     command:
-      - '--path.rootfs=/host'
+      - --path.rootfs=/host
     # network_mode: host
     # pid: host
 
@@ -284,25 +284,25 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_DB: ${DB_DATABASE_NAME}
-      POSTGRES_INITDB_ARGS: '--data-checksums'
+      POSTGRES_INITDB_ARGS: --data-checksums
     volumes:
     # Do not edit the next line. If you want to change the database storage location on your system, edit the value of DB_DATA_LOCATION in the .env file
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
     restart: unless-stopped
     healthcheck:
       test: >-
-        pg_isready --dbname="$${POSTGRES_DB}" --username="$${POSTGRES_USER}" || exit 1;
-        Chksum="$$(psql --dbname="$${POSTGRES_DB}" --username="$${POSTGRES_USER}" --tuples-only --no-align
-        --command='SELECT COALESCE(SUM(checksum_failures), 0) FROM pg_stat_database')";
-        echo "checksum failure count is $$Chksum";
-        [ "$$Chksum" = '0' ] || exit 1
+        pg_isready --dbname=$${POSTGRES_DB} --username=$${POSTGRES_USER} || exit 1;
+        Chksum=$$(psql --dbname=$${POSTGRES_DB} --username=$${POSTGRES_USER} --tuples-only --no-align
+        --command=SELECT COALESCE(SUM(checksum_failures), 0) FROM pg_stat_database);
+        echo checksum failure count is $$Chksum;
+        [ $$Chksum = 0 ] || exit 1
       interval: 5m
       start_interval: 30s
       start_period: 5m
     command: >-
       postgres
       -c shared_preload_libraries=vectors.so
-      -c 'search_path="$$user", public, vectors'
+      -c search_path=$$user, public, vectors
       -c logging_collector=on
       -c max_wal_size=2GB
       -c shared_buffers=512MB
@@ -464,7 +464,7 @@ services:
     container_name: vaultwarden
     environment: # Optional
       - TZ=Europe/Berlin
-      # DOMAIN: "https://vw.domain.tld"
+      # DOMAIN: https://vw.domain.tld
     volumes:
       - /home/archuser/server/vaultwarden/vw-data/:/data/
     ports:
