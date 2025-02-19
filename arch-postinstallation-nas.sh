@@ -205,6 +205,7 @@ services:
       - /var/lib/containers:/var/lib/docker:ro
       - /dev/disk:/dev/disk:ro
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /run/user/1000/podman:/var/run/podman:ro
     ports:
       - 8080:8080
     restart: unless-stopped
