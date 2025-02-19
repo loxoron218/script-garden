@@ -204,6 +204,7 @@ services:
       - /sys:/sys:ro
       - /var/lib/containers:/var/lib/docker:ro
       - /dev/disk:/dev/disk:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     ports:
       - 8080:8080
     restart: unless-stopped
