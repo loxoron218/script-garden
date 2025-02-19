@@ -159,8 +159,6 @@ services:
     image: lscr.io/linuxserver/duckdns:latest
     container_name: duckdns
     environment:
-      - PUID=1000 # Optional
-      - PGID=1000 # Optional
       - TZ=Europe/Berlin # Optional
       - SUBDOMAINS=duck_domain
       - TOKEN=duck_token
@@ -175,8 +173,6 @@ services:
     image: grafana/grafana
     container_name: grafana
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - /home/archuser/server/grafana:/var/lib/grafana
@@ -188,8 +184,6 @@ services:
     image: prom/prometheus
     container_name: prometheus
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - /home/archuser/server/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -203,8 +197,6 @@ services:
     image: gcr.io/cadvisor/cadvisor
     container_name: cadvisor
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - /:/rootfs:ro
@@ -223,8 +215,6 @@ services:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node_exporter
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - '/:/host:ro,rslave'
@@ -238,8 +228,6 @@ services:
     image: ghcr.io/ajnart/homarr:latest
     container_name: homarr
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - /run/podman/podman.sock:/var/run/docker.sock # Optional, only if you want docker integration
@@ -254,8 +242,6 @@ services:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     container_name: immich_server
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       # Do not edit the next line. If you want to change the media storage location on your system, edit the value of UPLOAD_LOCATION in the .env file
@@ -279,8 +265,6 @@ services:
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-openvino
     container_name: immich_machine_learning
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - /home/archuser/server/immich/model-cache:/cache
@@ -328,8 +312,6 @@ services:
     image: docker.io/redis:6.2-alpine@sha256:eaba718fecd1196d88533de7ba49bf903ad33664a92debb24660a922ecd9cac8
     container_name: immich_redis
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     restart: unless-stopped
     healthcheck:
@@ -339,8 +321,6 @@ services:
     image: lscr.io/linuxserver/jellyfin:nightly
     container_name: jellyfin
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
       # - JELLYFIN_PublishedServerUrl=http://192.168.0.5 # Optional
     volumes:
@@ -359,8 +339,6 @@ services:
     image: jlesage/makemkv
     container_name: makemkv
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - /home/archuser/server/makemkv/appdata/makemkv:/config:rw
@@ -377,8 +355,6 @@ services:
     image: krateng/maloja
     container_name: maloja
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
       - MALOJA_DATA_DIRECTORY=/mljdata
       - MALOJA_FORCE_PASSWORD=secure_psswd
@@ -392,8 +368,6 @@ services:
     image: lscr.io/linuxserver/nextcloud:develop
     container_name: nextcloud
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - /home/archuser/server/nextcloud/config:/config
@@ -407,8 +381,6 @@ services:
     image: docker.io/jc21/nginx-proxy-manager:latest
     container_name: nginx-proxy-manager
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - /home/archuser/server/nginx-proxy-manager/data:/data
@@ -423,8 +395,6 @@ services:
     image: ghcr.io/fletchto99/nicotine-plus-docker:latest
     container_name: nicotine-plus
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
       - PASSWORD=secure_psswd
     volumes:
@@ -443,8 +413,6 @@ services:
     image: lscr.io/linuxserver/radarr:nightly
     container_name: radarr
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - /home/archuser/server/radarr/data:/config
@@ -458,8 +426,6 @@ services:
     image: ignisda/ryot:develop # or ghcr.io/ignisda/ryot:v7
     container_name: ryot
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
       - DATABASE_URL=postgres://postgres:postgres@ryot-db:5432/postgres
       - SERVER_ADMIN_ACCESS_TOKEN=ryot_token # CHANGE THIS
@@ -484,8 +450,6 @@ services:
     image: lscr.io/linuxserver/sabnzbd:nightly
     container_name: sabnzbd
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - /home/archuser/server/sabnzbd/config:/config
@@ -499,8 +463,6 @@ services:
     image: vaultwarden/server:testing
     container_name: vaultwarden
     environment: # Optional
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
       # DOMAIN: "https://vw.domain.tld"
     volumes:
@@ -513,8 +475,6 @@ services:
     image: containrrr/watchtower
     container_name: watchtower
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Berlin
     volumes:
       - /run/podman/podman.sock:/var/run/docker.sock
