@@ -32,6 +32,9 @@ sudo pacman -Syyu --noconfirm networkmanager podman firewalld openssh
 ## Install recommended applications
 sudo pacman -S --noconfirm bash-completion fastfetch neovim restic powertop xorg-xset
 
+## Install cockpit
+sudo pacman -S --noconfirm cockpit cockpit-packagekit cockpit-podman cockpit-storaged pcp sscg sssd
+
 ## Configure NetworkManager
 sudo systemctl enable NetworkManager.service
 
@@ -149,29 +152,8 @@ curl -L -o ~/server/immich/hwaccel.ml.yml https://github.com/immich-app/immich/r
 # SECTION 6: Create podman-compose files
 #==============================================================================
 
-## Create portainer-compose file
-mkdir ~/server/portainer
-cat >> ~/server/portainer/portainer-compose.yml << 'EOF'
-services:
-  portainer-ce:
-    image: docker.io/portainer/portainer-ce:2.27.0-rc2-alpine # Version must be updated
-    container_name: portainer
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Berlin
-    volumes:
-      - /run/podman/podman.sock:/var/run/docker.sock
-      - /home/archuser/server/portainer:/data
-    ports:
-      - 8000:8000
-      - 9443:9443
-    restart: unless-stopped
-    privileged: true
-EOF
-
-## Create stack-compose file
-cat >> ~/server/portainer/stack-compose.yml << 'EOF'
+## Create podman-compose file
+cat >> ~/server/immich/podman-compose.yml << 'EOF'
 services:
   duckdns:
     image: lscr.io/linuxserver/duckdns:latest
@@ -228,7 +210,7 @@ services:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
       - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/lib/containers:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
     ports:
       - 8081:8080
@@ -544,7 +526,7 @@ EOF
 #==============================================================================
 
 ## Set username
-sed -i "s/archuser/$(whoami)/" ~/server/immich/.env ~/server/portainer/portainer-compose.yml ~/server/portainer/portainer-compose.yml
+sed -i "s/archuser/$(whoami)/" ~/server/immich/.env ~/server/immich/podman-compose.yml
 
 ## Set secure app passwords
 while true; do
@@ -558,13 +540,13 @@ while true; do
         echo "Passwords do not match. Please try again."
     fi
 done
-sudo sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/portainer/stack-compose.yml
+sudo sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/immich/podman-compose.yml
 
 ## Add Duck DNS credentials
 read -p "Enter your Duck DNS domain: " duck_domain
-sudo sed -i "s/duck_domain/${duck_domain}/" ~/server/portainer/stack-compose.yml
+sudo sed -i "s/duck_domain/${duck_domain}/" ~/server/immich/podman-compose.yml
 read -p "Enter your Duck DNS token: " duck_token
-sudo sed -i "s/duck_token/${duck_token}/" ~/server/portainer/stack-compose.yml
+sudo sed -i "s/duck_token/${duck_token}/" ~/server/immich/podman-compose.yml
 
 ## Create Prometheus configuration
 mkdir ~/server/prometheus
@@ -601,18 +583,18 @@ EOF
 
 ## Set Ryot random token
 ryot_token=$(openssl rand -hex 10)
-sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/portainer/stack-compose.yml
+sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/immich/podman-compose.yml
 
 #==============================================================================
-# SECTION 8: Intall Portainer
+# SECTION 8: Intall Podman containers
 #==============================================================================
 
 ## Start Podman
 sudo systemctl enable podman.socket
 sudo systemctl start podman.socket
 
-## Run portainer-compose file
-sudo podman compose -f ~/server/portainer/portainer-compose.yml up -d
+## Run podman-compose file
+podman compose -f ~/server/immich/podman-compose.yml up -d
 
 ## Change permissions of server folder
 sudo chmod -R 777 /home/$(whoami)/server
