@@ -117,13 +117,13 @@ sudo systemctl enable restic.timer
 
 ## Create environment file
 mkdir ~/server/immich
-cat >> ~/server/immich/.env << 'EOF'
+cat >> ~/server/immich/.env << EOF
 # You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables
 
 # The location where your uploaded files are stored
-UPLOAD_LOCATION=/home/archuser/server/immich/library
+UPLOAD_LOCATION=/home/$(whoami)/server/immich/library
 # The location where your database files are stored
-DB_DATA_LOCATION=/home/archuser/server/immich/postgres
+DB_DATA_LOCATION=/home/$(whoami)/server/immich/postgres
 
 # To set a timezone, uncomment the next line and change Etc/U TC to a TZ identifier from this list: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
 # TZ=Europe/Berlin
@@ -132,7 +132,7 @@ DB_DATA_LOCATION=/home/archuser/server/immich/postgres
 IMMICH_VERSION=release
 
 # Connection secret for postgres. You should change it to a random password
-# Please use only the characters `A-Za-z0-9`, without special characters or spaces
+# Please use only the characters A-Za-z0-9, without special characters or spaces
 DB_PASSWORD=secure_psswd
 
 # The values below this line do not need to be changed
@@ -158,7 +158,7 @@ services:
     container_name: portainer
     volumes:
       - /run/user/1000/podman/podman.sock:/var/run/docker.sock
-      - /home/archuser/server/portainer:/data
+      - /home/$(whoami)/server/portainer:/data
     ports:
       - 8000:8000
       - 9443:9443
@@ -168,13 +168,13 @@ services:
 EOF
 
 ## Create podman-compose file for Grafana
-cat >> ~/server/portainer/grafana-compose.yml << 'EOF'
+cat >> ~/server/portainer/grafana-compose.yml << EOF
 services:
   grafana:
     image: docker.io/grafana/grafana:main
     container_name: grafana
     volumes:
-      - /home/archuser/server/grafana:/var/lib/grafana
+      - /home/$(whoami)/server/grafana:/var/lib/grafana
     ports:
      - 3000:3000
     restart: unless-stopped
@@ -183,7 +183,7 @@ services:
     image: docker.io/prom/prometheus:main
     container_name: prometheus
     volumes:
-      - /home/archuser/server/prometheus:/etc/prometheus
+      - /home/$(whoami)/server/prometheus:/etc/prometheus
     ports:
       - 9090:9090
     restart: unless-stopped
@@ -220,7 +220,7 @@ services:
 EOF
 
 ## Create podman-compose file for Immich
-cat >> ~/server/portainer/immich-compose.yml << 'EOF'
+cat >> ~/server/portainer/immich-compose.yml << EOF
 services:
   immich-server:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
@@ -249,13 +249,13 @@ services:
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-openvino
     container_name: immich_machine_learning
     volumes:
-      - /home/archuser/server/immich/model-cache:/cache
+      - /home/$(whoami)/server/immich/model-cache:/cache
     restart: unless-stopped
     env_file:
       - stack.env
     extends: # uncomment this section for hardware acceleration - see https://immich.app/docs/features/ml-hardware-acceleration
       file: hwaccel.ml.yml
-      service: openvino # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the `-wsl` version for WSL2 where applicable
+      service: openvino # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the -wsl version for WSL2 where applicable
     healthcheck:
       disable: false
 
@@ -316,9 +316,6 @@ EOF
 #==============================================================================
 # SECTION 7: Configure Podman containers
 #==============================================================================
-
-## Set username
-sed -i "s/archuser/$(whoami)/" ~/server/immich/.env ~/server/portainer/portainer-compose.yml ~/server/portainer/stack-compose.yml
 
 ## Set secure app passwords
 while true; do
