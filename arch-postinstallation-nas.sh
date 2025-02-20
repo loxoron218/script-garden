@@ -33,7 +33,7 @@ sudo pacman -Syyu --noconfirm networkmanager podman podman-compose firewalld ope
 sudo pacman -S --noconfirm bash-completion fastfetch neovim restic powertop xorg-xset
 
 ## Install cockpit
-sudo pacman -S --noconfirm cockpit cockpit-packagekit cockpit-podman cockpit-storaged pcp sscg sssd
+sudo pacman -S cockpit cockpit-packagekit cockpit-podman cockpit-storaged pcp sscg sssd
 
 ## Configure NetworkManager
 sudo systemctl enable NetworkManager.service
