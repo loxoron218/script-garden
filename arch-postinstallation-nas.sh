@@ -425,11 +425,11 @@ services:
     restart: unless-stopped
 
   ryot:
-    image: ignisda/ryot:develop # or ghcr.io/ignisda/ryot:v7
+    image: docker.io/ignisda/ryot:develop # or ghcr.io/ignisda/ryot:v7
     container_name: ryot
     environment:
       - TZ=Europe/Berlin
-      - DATABASE_URL=postgres://postgres:postgres@ryot-db:5432/postgres
+      - DATABASE_URL=postgres://postgres:secure_psswd@ryot-db:5432/postgres
       - SERVER_ADMIN_ACCESS_TOKEN=ryot_token # CHANGE THIS
     ports:
       - 8001:8000
@@ -437,7 +437,7 @@ services:
     pull_policy: always
 
   ryot-db:
-    image: postgres:16-alpine # at-least version 15 is required
+    image: docker.io/postgres:16-alpine # at-least version 15 is required
     container_name: ryot-db
     environment:
       - TZ=Europe/Berlin
