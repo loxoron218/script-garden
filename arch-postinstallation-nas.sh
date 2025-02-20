@@ -494,7 +494,7 @@ EOF
 #==============================================================================
 
 ## Set username
-sed -i "s/archuser/$(whoami)/" ~/server/immich/.env ~/server/portainer/stack-compose.yml
+sed -i "s/archuser/$(whoami)/" ~/server/immich/.env ~/server/portainer/portainer-compose.yml ~/server/portainer/stack-compose.yml
 
 ## Set secure app passwords
 while true; do
