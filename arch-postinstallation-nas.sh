@@ -151,7 +151,7 @@ curl -L -o ~/server/immich/hwaccel.ml.yml https://github.com/immich-app/immich/r
 
 ## Create portainer-compose file
 mkdir ~/server/portainer
-cat >> ~/server/portainer/portainer-compose.yml << 'EOF'
+cat >> ~/server/portainer/portainer-compose.yml << EOF
 services:
   portainer-ce:
     image: docker.io/portainer/portainer-ce:sts
@@ -299,17 +299,17 @@ services:
 EOF
 
 ## Create podman-compose file for media containers
-cat >> ~/server/portainer/media-compose.yml << 'EOF'
+cat >> ~/server/portainer/media-compose.yml << EOF
 services:
 EOF
 
 ## Create podman-compose file for Server containers
-cat >> ~/server/portainer/server-compose.yml << 'EOF'
+cat >> ~/server/portainer/server-compose.yml << EOF
 services:
 EOF
 
 ## Create podman-compose file for other tools
-cat >> ~/server/portainer/tools-compose.yml << 'EOF'
+cat >> ~/server/portainer/tools-compose.yml << EOF
 services:
 EOF
 
@@ -342,7 +342,7 @@ mkdir -p ~/server/grafana/plugins
 
 ## Create Prometheus configuration
 mkdir ~/server/prometheus
-cat >> ~/server/prometheus/prometheus.yml << 'EOF'
+cat >> ~/server/prometheus/prometheus.yml << EOF
 ---
 global:
   scrape_interval: 15s  # By default, scrape targets every 15 seconds.
@@ -355,7 +355,7 @@ global:
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  # The job name is added as a label job=<job_name> to any timeseries scraped from this config.
   - job_name: prometheus
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
