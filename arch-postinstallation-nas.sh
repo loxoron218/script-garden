@@ -148,7 +148,7 @@ EOF
 curl -L -o ~/server/immich/hwaccel.transcoding.yml https://github.com/immich-app/immich/releases/latest/download/hwaccel.transcoding.yml
 curl -L -o ~/server/immich/hwaccel.ml.yml https://github.com/immich-app/immich/releases/latest/download/hwaccel.ml.yml
 
-## Disable device_cgroup_rules for rootles Podman
+## Disable device_cgroup_rules for rootless Podman
 sed -i "s/device_cgroup_rules:/# device_cgroup_rules:/" ~/server/immich/hwaccel.ml.yml
 sed -i "s/- 'c 189:\* rmw'/# - 'c 189:\* rmw'/" ~/server/immich/hwaccel.ml.yml
 
