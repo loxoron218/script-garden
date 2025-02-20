@@ -474,7 +474,7 @@ services:
     volumes:
       - /home/archuser/server/vaultwarden/vw-data/:/data/
     ports:
-      - 82:80
+      - 8282:80
     restart: unless-stopped
 EOF
 
