@@ -382,14 +382,14 @@ sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/portainer/stack-compose.yml
 #==============================================================================
 
 ## Start Podman
-systemctl enable podman.socket
-systemctl start podman.socket
+systemctl enable --user --now podman.socket
+systemctl start --user --now podman.socket
 
 ## Configure Podman auto-updates
-systemctl enable podman-auto-update.timer
-systemctl start podman-auto-update.timer
-systemctl enable podman-auto-update.service
-systemctl start podman-auto-update.service
+systemctl enable --user --now podman-auto-update.timer
+systemctl start --user --now podman-auto-update.timer
+systemctl enable --user --now podman-auto-update.service
+systemctl start --user --now podman-auto-update.service
 
 ## Run portainer-compose file
 podman compose -f ~/server/portainer/portainer-compose.yml up -d
