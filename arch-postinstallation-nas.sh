@@ -568,7 +568,7 @@ sudo systemctl enable podman-auto-update.service
 sudo systemctl start podman-auto-update.service
 
 ## Run portainer-compose file
-podman compose -f ~/server/portainer/portainer-compose.yml up -d
+sudo podman compose -f ~/server/portainer/portainer-compose.yml up -d
 
 ## Change permissions of server folder
 sudo chmod -R 777 /home/$(whoami)/server
