@@ -154,339 +154,89 @@ mkdir ~/server/portainer
 cat >> ~/server/portainer/portainer-compose.yml << 'EOF'
 services:
   portainer-ce:
-    image: docker.io/portainer/portainer-ce:latest
+    image: docker.io/portainer/portainer-ce:sts
     container_name: portainer
-    environment:
-      - TZ=Europe/Berlin
     volumes:
-      - /run/podman/podman.sock:/var/run/docker.sock
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock
       - /home/archuser/server/portainer:/data
     ports:
       - 8000:8000
       - 9443:9443
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
 EOF
 
-## Create podman-compose file
-cat >> ~/server/portainer/stack-compose.yml << 'EOF'
+## Create podman-compose file for Grafana
+cat >> ~/server/portainer/grafana-compose.yml << 'EOF'
 services:
-  duckdns:
-    image: lscr.io/linuxserver/duckdns:latest
-    container_name: duckdns
-    environment:
-      - TZ=Europe/Berlin # Optional
-      - SUBDOMAINS=duck_domain
-      - TOKEN=duck_token
-      - UPDATE_IP=both # Optional
-      - LOG_FILE=false # Optional
-    volumes:
-      - /home/archuser/server/duckdns/config:/config # Optional
-    restart: unless-stopped
-    network_mode: host # Optional
-
   grafana:
-    image: docker.io/grafana/grafana:latest
+    image: docker.io/grafana/grafana:main
     container_name: grafana
-    environment:
-      - TZ=Europe/Berlin
     volumes:
       - /home/archuser/server/grafana:/var/lib/grafana
     ports:
-      - 3000:3000
+     - 3000:3000
     restart: unless-stopped
-
+  
   prometheus:
-    image: docker.io/prom/prometheus:latest
+    image: docker.io/prom/prometheus:main
     container_name: prometheus
-    environment:
-      - TZ=Europe/Berlin
     volumes:
-      - /home/archuser/server/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - /home/archuser/server/prometheus:/prometheus
+      - /home/archuser/server/prometheus:/etc/prometheus
     ports:
       - 9090:9090
     restart: unless-stopped
     command: --config.file=/etc/prometheus/prometheus.yml
 
+  node_exporter:
+    image: docker.io/prom/node-exporter:master
+    container_name: node_exporter
+    volumes:
+      - /:/host
+    restart: unless-stopped
+    command:
+      - --path.rootfs=/host
+    network_mode: host
+    pid: host
+
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
-    environment:
-      - TZ=Europe/Berlin
     volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/containers:/var/lib/docker:ro
-      - /dev/disk:/dev/disk:ro
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - /run/user/1000/podman:/var/run/podman:ro
+      - /:/rootfs
+      - /var/run:/var/run
+      - /sys:/sys
+      - /var/lib/docker/:/var/lib/docker
+      - /dev/disk/:/dev/disk
+      - /run/user/1000/podman:/var/run/podman
+      - /sys/fs/cgroup:/sys/fs/cgroup
     ports:
       - 8081:8080
     restart: unless-stopped
     devices:
       - /dev/kmsg
     privileged: true
+EOF
 
-  node_exporter:
-    image: quay.io/prometheus/node-exporter:latest
-    container_name: node_exporter
-    environment:
-      - TZ=Europe/Berlin
-    volumes:
-      - /:/host:ro,rslave
-    restart: unless-stopped
-    command:
-      - --path.rootfs=/host
-    # network_mode: host
-    # pid: host
+## Create podman-compose file for Immich
+cat >> ~/server/portainer/immich-compose.yml << 'EOF'
+services:
+EOF
 
-  homarr: 
-    image: ghcr.io/ajnart/homarr:latest
-    container_name: homarr
-    environment:
-      - TZ=Europe/Berlin
-    volumes:
-      - /run/podman/podman.sock:/var/run/docker.sock # Optional, only if you want docker integration
-      - /home/archuser/server/homarr/configs:/app/data/configs
-      - /home/archuser/server/homarr/icons:/app/public/icons
-      - /home/archuser/server/homarr/data:/data
-    ports:
-      - 7575:7575
-    restart: unless-stopped
+## Create podman-compose file for media containers
+cat >> ~/server/portainer/media-compose.yml << 'EOF'
+services:
+EOF
 
-  immich-server:
-    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
-    container_name: immich_server
-    environment:
-      - TZ=Europe/Berlin
-    volumes:
-      # Do not edit the next line. If you want to change the media storage location on your system, edit the value of UPLOAD_LOCATION in the .env file
-      - ${UPLOAD_LOCATION}:/usr/src/app/upload
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - 2283:2283
-    restart: unless-stopped
-    extends:
-      file: hwaccel.transcoding.yml
-      service: quicksync # Set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
-    env_file:
-      - .env
-    depends_on:
-      - redis
-      - database
-    healthcheck:
-      disable: false
+## Create podman-compose file for Server containers
+cat >> ~/server/portainer/server-compose.yml << 'EOF'
+services:
+EOF
 
-  immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-openvino
-    container_name: immich_machine_learning
-    environment:
-      - TZ=Europe/Berlin
-    volumes:
-      - /home/archuser/server/immich/model-cache:/cache
-    restart: unless-stopped
-    extends:
-      file: hwaccel.ml.yml
-      service: openvino # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the `-wsl` version for WSL2 where applicable
-    env_file:
-      - .env
-    healthcheck:
-      disable: false
-
-  database:
-    image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
-    container_name: immich_postgres
-    environment: # PUID and PGID are missing
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_DB: ${DB_DATABASE_NAME}
-      POSTGRES_INITDB_ARGS: --data-checksums
-    volumes:
-    # Do not edit the next line. If you want to change the database storage location on your system, edit the value of DB_DATA_LOCATION in the .env file
-      - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
-    restart: unless-stopped
-    healthcheck:
-      test: >-
-        pg_isready --dbname=$${POSTGRES_DB} --username=$${POSTGRES_USER} || exit 1;
-        Chksum=$$(psql --dbname=$${POSTGRES_DB} --username=$${POSTGRES_USER} --tuples-only --no-align
-        --command=SELECT COALESCE(SUM(checksum_failures), 0) FROM pg_stat_database);
-        echo checksum failure count is $$Chksum;
-        [ $$Chksum = 0 ] || exit 1
-      interval: 5m
-      start_interval: 30s
-      start_period: 5m
-    command: >-
-      postgres
-      -c shared_preload_libraries=vectors.so
-      -c search_path=$$user, public, vectors
-      -c logging_collector=on
-      -c max_wal_size=2GB
-      -c shared_buffers=512MB
-      -c wal_compression=on
-
-  redis:
-    image: docker.io/redis:6.2-alpine@sha256:eaba718fecd1196d88533de7ba49bf903ad33664a92debb24660a922ecd9cac8
-    container_name: immich_redis
-    environment:
-      - TZ=Europe/Berlin
-    restart: unless-stopped
-    healthcheck:
-      test: redis-cli ping || exit 1
-
-  jellyfin:
-    image: lscr.io/linuxserver/jellyfin:nightly
-    container_name: jellyfin
-    environment:
-      - TZ=Europe/Berlin
-      # - JELLYFIN_PublishedServerUrl=http://192.168.0.5 # Optional
-    volumes:
-      - /home/archuser/server/jellyfin/library:/config
-      - /mnt/sda1/Filme:/data/movies
-      - /mnt/sda1/Serien:/data/tvshows
-      - /mnt/sda1/Musik:/data/music
-    ports:
-      - 8096:8096
-      - 8920:8920 # Optional
-      - 7359:7359/udp # Optional
-      - 1900:1900/udp # Optional
-    restart: unless-stopped
-
-  makemkv:
-    image: docker.io/jlesage/makemkv:latest
-    container_name: makemkv
-    environment:
-      - TZ=Europe/Berlin
-    volumes:
-      - /home/archuser/server/makemkv/appdata/makemkv:/config
-      - /mnt/sda1:/storage
-      # - /mnt/sda1:/output
-    ports:
-      - 5800:5800
-    restart: unless-stopped
-    # devices: # Optional
-      # - /dev/sr0:/dev/sr0
-      # - /dev/sg2:/dev/sg2
-
-  maloja:
-    image: docker.io/krateng/maloja:latest
-    container_name: maloja
-    environment:
-      - TZ=Europe/Berlin
-      - MALOJA_DATA_DIRECTORY=/mljdata
-      - MALOJA_FORCE_PASSWORD=secure_psswd
-    volumes:
-      - /home/archuser/server/maloja:/mljdata
-    ports:
-      - 42010:42010
-    restart: unless-stopped
-
-  nextcloud:
-    image: lscr.io/linuxserver/nextcloud:develop
-    container_name: nextcloud
-    environment:
-      - TZ=Europe/Berlin
-    volumes:
-      - /home/archuser/server/nextcloud/config:/config
-      - /home/archuser/server/nextcloud/data:/data
-    ports:
-      - 4444:443
-      - 8082:80
-    restart: unless-stopped
-
-  nginx-proxy-manager:
-    image: docker.io/jc21/nginx-proxy-manager:latest
-    container_name: nginx-proxy-manager
-    environment:
-      - TZ=Europe/Berlin
-    volumes:
-      - /home/enrique/server/nginx-proxy-manager/data:/data
-      - /home/enrique/server/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
-    ports:
-      - 8080:80
-      - 8181:81
-      - 4433:443
-    restart: unless-stopped
-
-  nicotine-plus:
-    image: ghcr.io/fletchto99/nicotine-plus-docker:latest
-    container_name: nicotine-plus
-    environment:
-      - TZ=Europe/Berlin
-      - PASSWORD=secure_psswd
-    volumes:
-      - /home/archuser/server/nicotine-plus/data:/config
-      - /mnt/sda1:/data/downloads
-      - /mnt/sda1/nicotine-plus:/data/incomplete_downloads
-      - /home/archuser/server/nicotine-plus/shared:/data/shared #optional
-    ports:
-      - 6080:6080
-      - 2234-2239:2234-2239
-    restart: unless-stopped
-    security_opt:
-      - seccomp:unconfined #optional
-
-  radarr:
-    image: lscr.io/linuxserver/radarr:nightly
-    container_name: radarr
-    environment:
-      - TZ=Europe/Berlin
-    volumes:
-      - /home/archuser/server/radarr/data:/config
-      - /mnt/sda1/Filme:/movies # Optional
-      - /mnt/sda1:/downloads # Optional
-    ports:
-      - 7878:7878
-    restart: unless-stopped
-
-  ryot:
-    image: docker.io/ignisda/ryot:develop # or ghcr.io/ignisda/ryot:v7
-    container_name: ryot
-    environment:
-      - TZ=Europe/Berlin
-      - DATABASE_URL=postgres://postgres:secure_psswd@ryot-db:5432/postgres
-      - SERVER_ADMIN_ACCESS_TOKEN=ryot_token # CHANGE THIS
-    ports:
-      - 8001:8000
-    restart: unless-stopped
-    pull_policy: always
-
-  ryot-db:
-    image: docker.io/postgres:16-alpine # at-least version 15 is required
-    container_name: ryot-db
-    environment:
-      - TZ=Europe/Berlin
-      - POSTGRES_PASSWORD=secure_psswd
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
-    volumes:
-      - /home/archuser/server/ryot/postgres_storage:/var/lib/postgresql/data
-    restart: unless-stopped
-
-  sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:nightly
-    container_name: sabnzbd
-    environment:
-      - TZ=Europe/Berlin
-    volumes:
-      - /home/archuser/server/sabnzbd/config:/config
-      - /mnt/sda1:/downloads # Optional
-      - /mnt/sda1/sabnzbd:/incomplete-downloads # Optional
-    ports:
-      - 8083:8080
-    restart: unless-stopped
-
-  vaultwarden:
-    image: vaultwarden/server:testing
-    container_name: vaultwarden
-    environment: # Optional
-      - TZ=Europe/Berlin
-      # DOMAIN: https://vw.domain.tld
-    volumes:
-      - /home/archuser/server/vaultwarden/vw-data/:/data/
-    ports:
-      - 8282:80
-    restart: unless-stopped
+## Create podman-compose file for other tools
+cat >> ~/server/portainer/tools-compose.yml << 'EOF'
+services:
 EOF
 
 #==============================================================================
@@ -515,6 +265,9 @@ read -p "Enter your Duck DNS domain: " duck_domain
 sudo sed -i "s/duck_domain/${duck_domain}/" ~/server/portainer/stack-compose.yml
 read -p "Enter your Duck DNS token: " duck_token
 sudo sed -i "s/duck_token/${duck_token}/" ~/server/portainer/stack-compose.yml
+
+## Create folder for Grafana
+mkdir -p ~/server/grafana/plugins
 
 ## Create Prometheus configuration
 mkdir ~/server/prometheus
@@ -558,20 +311,17 @@ sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/portainer/stack-compose.yml
 #==============================================================================
 
 ## Start Podman
-sudo systemctl enable podman.socket
-sudo systemctl start podman.socket
+systemctl enable podman.socket
+systemctl start podman.socket
 
 ## Configure Podman auto-updates
-sudo systemctl enable podman-auto-update.timer
-sudo systemctl start podman-auto-update.timer
-sudo systemctl enable podman-auto-update.service
-sudo systemctl start podman-auto-update.service
+systemctl enable podman-auto-update.timer
+systemctl start podman-auto-update.timer
+systemctl enable podman-auto-update.service
+systemctl start podman-auto-update.service
 
 ## Run portainer-compose file
-sudo podman compose -f ~/server/portainer/portainer-compose.yml up -d
-
-## Change permissions of server folder
-sudo chmod -R 777 /home/$(whoami)/server
+podman compose -f ~/server/portainer/portainer-compose.yml up -d
 
 #==============================================================================
 # SECTION 9: Cleanup
