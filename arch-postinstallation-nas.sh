@@ -174,7 +174,7 @@ services:
     network_mode: host # Optional
 
   grafana:
-    image: docker.io/grafana/grafana
+    image: docker.io/grafana/grafana:latest
     container_name: grafana
     environment:
       - TZ=Europe/Berlin
@@ -185,7 +185,7 @@ services:
     restart: unless-stopped
 
   prometheus:
-    image: docker.io/prom/prometheus
+    image: docker.io/prom/prometheus:latest
     container_name: prometheus
     environment:
       - TZ=Europe/Berlin
@@ -198,7 +198,7 @@ services:
     command: --config.file=/etc/prometheus/prometheus.yml
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor
+    image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
     environment:
       - TZ=Europe/Berlin
@@ -342,14 +342,14 @@ services:
     restart: unless-stopped
 
   makemkv:
-    image: docker.io/jlesage/makemkv
+    image: docker.io/jlesage/makemkv:latest
     container_name: makemkv
     environment:
       - TZ=Europe/Berlin
     volumes:
-      - /home/archuser/server/makemkv/appdata/makemkv:/config:rw
-      - /mnt/sda1:/storage:rw
-      # - /mnt/sda1:/output:rw
+      - /home/archuser/server/makemkv/appdata/makemkv:/config
+      - /mnt/sda1:/storage
+      # - /mnt/sda1:/output
     ports:
       - 5800:5800
     restart: unless-stopped
@@ -358,7 +358,7 @@ services:
       # - /dev/sg2:/dev/sg2
 
   maloja:
-    image: docker.io/krateng/maloja
+    image: docker.io/krateng/maloja:latest
     container_name: maloja
     environment:
       - TZ=Europe/Berlin
