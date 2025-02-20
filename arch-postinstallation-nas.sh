@@ -472,15 +472,6 @@ services:
     ports:
       - 82:80
     restart: unless-stopped
-
-  watchtower:
-    image: containrrr/watchtower
-    container_name: watchtower
-    environment:
-      - TZ=Europe/Berlin
-    volumes:
-      - /run/podman/podman.sock:/var/run/docker.sock
-    restart: unless-stopped
 EOF
 
 #==============================================================================
@@ -554,6 +545,12 @@ sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/immich/podman-compose.yml
 ## Start Podman
 sudo systemctl enable podman.socket
 sudo systemctl start podman.socket
+
+## Configure Podman auto-updates
+sudo systemctl enable podman-auto-update.timer
+sudo systemctl start podman-auto-update.timer
+sudo systemctl enable podman-auto-update.service
+sudo systemctl start podman-auto-update.service
 
 ## Run podman-compose file
 podman compose -f ~/server/immich/podman-compose.yml up -d
