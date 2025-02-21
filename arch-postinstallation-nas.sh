@@ -141,10 +141,6 @@ DB_USERNAME=postgres
 DB_DATABASE_NAME=immich
 EOF
 
-## Download hardware acceleration files
-curl -L -o ~/server/immich/hwaccel.transcoding.yml https://github.com/immich-app/immich/releases/latest/download/hwaccel.transcoding.yml
-curl -L -o ~/server/immich/hwaccel.ml.yml https://github.com/immich-app/immich/releases/latest/download/hwaccel.ml.yml
-
 #==============================================================================
 # SECTION 6: Create podman-compose files
 #==============================================================================
@@ -234,12 +230,14 @@ services:
     restart: unless-stopped
     env_file:
       - stack.env
-    extends:
-        file: hwaccel.transcoding.yml
-        service: quicksync # set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
+    # extends:
+        # file: hwaccel.transcoding.yml
+        # service: quicksync # set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
     depends_on:
       - redis
       - database
+    devices:
+      - /dev/dri:/dev/dri
     healthcheck:
       disable: false
 
@@ -250,12 +248,17 @@ services:
     container_name: immich_machine_learning
     volumes:
       - /home/$(whoami)/server/immich/model-cache:/cache
+      - /dev/bus/usb:/dev/bus/usb
     restart: unless-stopped
+    # device_cgroup_rules:
+      # - c 189:* rmw
+    devices:
+      - /dev/dri:/dev/dri
     env_file:
       - stack.env
-    extends: # uncomment this section for hardware acceleration - see https://immich.app/docs/features/ml-hardware-acceleration
-      file: hwaccel.ml.yml
-      service: openvino # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the -wsl version for WSL2 where applicable
+    # extends: # uncomment this section for hardware acceleration - see https://immich.app/docs/features/ml-hardware-acceleration
+      # file: hwaccel.ml.yml
+      # service: openvino # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the -wsl version for WSL2 where applicable
     healthcheck:
       disable: false
 
@@ -287,7 +290,7 @@ services:
         echo checksum failure count is $$Chksum;
         [ $$Chksum = 0 ] || exit 1
       interval: 5m
-      start_interval: 30s
+      # start_interval: 30s
       start_period: 5m
 
   redis:
