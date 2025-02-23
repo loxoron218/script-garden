@@ -44,7 +44,7 @@ echo "alias clearfetch='clear && fastfetch'" >> ~/.bashrc
 #==============================================================================
 
 ## Set port for SSH
-blocked_ports=$(grep -oP '(?<=- )\d{1,5}(?=:)' "$(dirname "$0")/archserver.sh" | tr '\n' ' ')
+blocked_ports=$(grep -oP '(?<=- )\d{1,5}(?=:)' "$(dirname "$0")/arch-postinstallation-nas.sh" | tr '\n' ' ')
 while true; do
     random_port=$(shuf -i 1000-9999 -n 1)
     if [[ ! " ${blocked_ports} " =~ " ${random_port} " ]]; then
@@ -115,7 +115,7 @@ sudo systemctl enable restic.timer
 # SECTION 5: Immich preparation
 #==============================================================================
 
-## Create environment file
+## Create environment file for Immich
 mkdir ~/server/immich
 cat >> ~/server/immich/.env << EOF
 # You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables
@@ -174,7 +174,7 @@ services:
     ports:
      - 3000:3000
     restart: unless-stopped
-  
+
   prometheus:
     image: docker.io/prom/prometheus:main
     container_name: prometheus
@@ -208,7 +208,7 @@ services:
       - /run/user/1000/podman:/var/run/podman
       - /sys/fs/cgroup:/sys/fs/cgroup
     ports:
-      - 8081:8080
+      - 8082:8080
     restart: unless-stopped
     devices:
       - /dev/kmsg
@@ -309,6 +309,21 @@ EOF
 ## Create podman-compose file for Server containers
 cat >> ~/server/portainer/server-compose.yml << EOF
 services:
+  ### traefik
+
+  ### duckdns
+
+  homarr:
+    image: ghcr.io/homarr-labs/homarr:dev
+    container_name: homarr
+    environment:
+      - SECRET_ENCRYPTION_KEY=homarr_token # <--- can be generated with openssl rand -hex 32
+    volumes:
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - /home/$(whoami)/server/homarr:/appdata
+    ports:
+      - 7575:7575
+    restart: unless-stopped
 EOF
 
 ## Create podman-compose file for other tools
@@ -332,16 +347,20 @@ while true; do
         echo "Passwords do not match. Please try again."
     fi
 done
-sudo sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/portainer/stack-compose.yml
+sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env
 
 ## Add Duck DNS credentials
 read -p "Enter your Duck DNS domain: " duck_domain
-sudo sed -i "s/duck_domain/${duck_domain}/" ~/server/portainer/stack-compose.yml
+sed -i "s/duck_domain/${duck_domain}/" ~/server/portainer/server-compose.yml
 read -p "Enter your Duck DNS token: " duck_token
-sudo sed -i "s/duck_token/${duck_token}/" ~/server/portainer/stack-compose.yml
+sed -i "s/duck_token/${duck_token}/" ~/server/portainer/server-compose.yml
 
 ## Create folder for Grafana
 mkdir -p ~/server/grafana/plugins
+
+## Set Homarr random token
+homarr_token=$(openssl rand -hex 32)
+sed -i "s/homarr_token/${homarr_token}/" ~/server/portainer/server-compose.yml
 
 ## Create Prometheus configuration
 mkdir ~/server/prometheus
@@ -373,26 +392,26 @@ scrape_configs:
 # Example job for cadvisor
   - job_name: cadvisor
     static_configs:
-      - targets: [cadvisor:8081]
+      - targets: [cadvisor:8082]
 EOF
 
 ## Set Ryot random token
 ryot_token=$(openssl rand -hex 10)
-sudo sed -i "s/ryot_token/${ryot_token}/" ~/server/portainer/stack-compose.yml
+sed -i "s/ryot_token/${ryot_token}/" ~/server/portainer/media-compose.yml
 
 #==============================================================================
 # SECTION 8: Intall Podman containers
 #==============================================================================
 
 ## Start Podman
-systemctl enable --user --now podman.socket
-systemctl start --user --now podman.socket
+systemctl enable --user podman.socket
+systemctl start --user podman.socket
 
 ## Configure Podman auto-updates
-systemctl enable --user --now podman-auto-update.timer
-systemctl start --user --now podman-auto-update.timer
-systemctl enable --user --now podman-auto-update.service
-systemctl start --user --now podman-auto-update.service
+systemctl enable --user podman-auto-update.timer
+systemctl start --user podman-auto-update.timer
+systemctl enable --user podman-auto-update.service
+systemctl start --user podman-auto-update.service
 
 ## Run portainer-compose file
 podman compose -f ~/server/portainer/portainer-compose.yml up -d
@@ -403,8 +422,8 @@ podman compose -f ~/server/portainer/portainer-compose.yml up -d
 
 ## Remove unnecessary files
 sudo pacman -Scc --noconfirm
-sudo rm -rf ~/.cache/go-build
-sudo rm -rf ~/.config/go
+rm -rf ~/.cache/go-build
+rm -rf ~/.config/go
 
 ## Run powertop
 sudo powertop --calibrate
