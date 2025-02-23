@@ -159,8 +159,7 @@ services:
       - 8000:8000
       - 9443:9443
     restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
+    # privileged: true
 EOF
 
 ## Create podman-compose file for Grafana
@@ -312,7 +311,11 @@ services:
   ### traefik
 
   ### duckdns
+EOF
 
+## Create podman-compose file for core tools
+cat >> ~/server/portainer/core-compose.yml << EOF
+services:
   homarr:
     image: ghcr.io/homarr-labs/homarr:dev
     container_name: homarr
@@ -324,11 +327,29 @@ services:
     ports:
       - 7575:7575
     restart: unless-stopped
-EOF
 
-## Create podman-compose file for other tools
-cat >> ~/server/portainer/tools-compose.yml << EOF
-services:
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:develop
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /home/$(whoami)/server/nextcloud/config:/config
+      - /home/$(whoami)/server/nextcloud/data:/data
+    ports:
+      - 4433:443
+    restart: unless-stopped
+
+  vaultwarden:
+    image: docker.io/vaultwarden/server:testing
+    container_name: vaultwarden
+    volumes:
+      - /home/$(whoami)/server/vaultwarden:/data/
+    ports:
+      - 8083:80
+    restart: unless-stopped
 EOF
 
 #==============================================================================
