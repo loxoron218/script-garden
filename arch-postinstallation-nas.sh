@@ -148,6 +148,7 @@ EOF
 ## Create portainer-compose file
 mkdir ~/server/portainer
 cat >> ~/server/portainer/portainer-compose.yml << EOF
+name: portainer
 services:
   portainer-ce:
     image: docker.io/portainer/portainer-ce:sts
