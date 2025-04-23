@@ -467,7 +467,7 @@ DB_USERNAME=postgres
 DB_DATABASE_NAME=immich
 EOF
 
-## Create Prometheus configuration
+## Prometheus configuration
 mkdir ~/server/prometheus
 cat >> ~/server/prometheus/prometheus.yml << EOF
 ---
