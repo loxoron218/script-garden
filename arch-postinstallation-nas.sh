@@ -3,7 +3,7 @@
 #==============================================================================
 
 ## Configure drive
-sudo mkdir /mnt/sda1
+sudo mkdir -p /mnt/sda1
 sudo umount /dev/sda1
 sudo mkfs.btrfs -f /dev/sda1 # Don't forget to backup your data!
 sudo mount /dev/sda1 /mnt/sda1
@@ -11,7 +11,7 @@ sudo sh -c "echo 'dev/sda1 /mnt/sda1 btrfs defaults 0 2' >> /etc/fstab"
 sudo systemctl daemon-reload
 
 ## Configure RAID
-# sudo mkdir /mnt/raid
+# sudo mkdir -p /mnt/raid
 # sudo mkfs.btrfs -f -d raid1 -m raid1 /dev/sda /dev/sdb # Add more devices if you want
 # sudo mount /dev/sda /mnt/raid
 # sudo sh -c "echo '/dev/sda /mnt/raid btrfs defaults 0 2' >> /etc/fstab"
