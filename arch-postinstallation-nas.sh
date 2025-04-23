@@ -340,7 +340,7 @@ services:
     volumes:
       - /home/$(whoami)/server/makemkv:/config:rw,z
       - /mnt/sda1:/storage:ro,z
-      - /mnt/sda1:/output:rw,z
+      - /mnt/sda1/.downloads:/output:rw,z
     # devices:
        # - /dev/sr0
        # - /dev/sg2
@@ -356,7 +356,7 @@ services:
     volumes:
       - /home/$(whoami)/server/radarr:/config:z
       # - /mnt/sda1/Filme:/movies:z #optional
-      # - /mnt/sda1:/downloads:z #optional
+      # - /mnt/sda1/.downloads:/downloads:z #optional
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -370,8 +370,8 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /home/$(whoami)/server/sabnzbd:/config:z
-      - /mnt/sda1:/downloads:z #optional
-      - /mnt/sda1:/incomplete-downloads:z #optional
+      - /mnt/sda1/.downloads:/downloads:z #optional
+      - /mnt/sda1/.downloads/sabnzbd:/incomplete-downloads:z #optional
     ports:
       - 8081:8080
     restart: unless-stopped
@@ -466,9 +466,7 @@ sed -i "s/duck_token/${duck_token}/" ~/server/portainer/server-compose.yml
 
 ## Create folders
 mkdir -p ~/server/grafana/plugins
-mkdir -p ~/server/jellyfin
-sudo chmod -R 777 ~/server/jellyfin
-mkdir /mnt/sda1/Filme /mnt/sda1/Musik /mnt/sda1/Serien /mnt/sda1/sabnzbd
+mkdir /mnt/sda1/Filme /mnt/sda1/Musik /mnt/sda1/Serien
 
 ## Set Homarr random token
 homarr_token=$(openssl rand -hex 32)
