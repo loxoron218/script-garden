@@ -304,6 +304,93 @@ EOF
 ## Create podman-compose file for media containers
 cat >> ~/server/portainer/media-compose.yml << EOF
 services:
+  jellyfin:
+    image: docker.io/jellyfin/jellyfin:unstable
+    container_name: jellyfin
+    # environment:
+      # - JELLYFIN_PublishedServerUrl=http://example.com
+    volumes:
+      - /home/$(whoami)/server/jellyfin/cache:/cache:z
+      - /home/$(whoami)/server/jellyfin/config:/config:z
+      # - /home/$(whoami)/server/jellyfin/fonts:/usr/local/share/fonts/custom:z
+      - /mnt/sda1/Filme:/media/movies:z
+      - /mnt/sda1/Musik:/media/music:z
+      - /mnt/sda1/Serien:/media/tvshows:z
+      - /home/$(whoami)/server/jellyfin/tmp:/tmp/jellyfin:z
+    ports:
+      - 8096:8096
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
+    extra_hosts:
+      - host.docker.internal:10.88.0.1
+    labels:
+      io.containers.autoupdate: registry
+    # network_mode: host
+    # security_opt:
+      # - label=disable  # Only needed for container-selinux < 2.226
+    # user: 1000:1000
+    # userns_mode: keep-id
+
+  makemkv:
+    image: docker.io/jlesage/makemkv:latest
+    container_name: makemkv
+    ports:
+      - 5800:5800
+    volumes:
+      - /home/$(whoami)/server/makemkv:/config:rw,z
+      - /mnt/sda1:/storage:ro,z
+      - /mnt/sda1:/output:rw,z
+    # devices:
+       # - /dev/sr0
+       # - /dev/sg2
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:nightly
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /home/$(whoami)/server/radarr:/config:z
+      # - /mnt/sda1/Filme:/movies:z #optional
+      # - /mnt/sda1:/downloads:z #optional
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:nightly
+    container_name: sabnzbd
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /home/$(whoami)/server/sabnzbd:/config:z
+      - /mnt/sda1:/downloads:z #optional
+      - /mnt/sda1:/incomplete-downloads:z #optional
+    ports:
+      - 8081:8080
+    restart: unless-stopped
+
+  slskd:
+    image: docker.io/slskd/slskd:canary
+    container_name: slskd
+    environment:
+      - SLSKD_REMOTE_CONFIGURATION=true
+      # - SLSKD_SHARED_DIR=/music
+    volumes:
+      - /home/$(whoami)/server/slskd:/app:z
+      - /mnt/sda1/Musik:/music:z
+    ports:
+      - 5030:5030
+      - 5031:5031
+      - 50300:50300
+    restart: unless-stopped
+    # user: 1000:1000
 EOF
 
 ## Create podman-compose file for Server containers
