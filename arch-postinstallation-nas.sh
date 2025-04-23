@@ -437,27 +437,35 @@ EOF
 # SECTION 6: Configure Podman containers
 #==============================================================================
 
-## Set secure app passwords
-while true; do
-    read -s -p "Enter a secure password for your apps: " secure_psswd
-    echo
-    read -s -p "Confirm your secure password: " secure_psswd_confirm
-    if [[ "$secure_psswd" == "$secure_psswd_confirm" ]]; then
-        echo "Password confirmed."
-        break
-    else
-        echo "Passwords do not match. Please try again."
-    fi
-done
-sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env
-
-## Create folders
-mkdir -p ~/server/grafana/plugins
-mkdir /mnt/sda1/Filme /mnt/sda1/Musik /mnt/sda1/Serien
-
-## Set Homarr random token
+## Homarr configuration
 homarr_token=$(openssl rand -hex 32)
-sed -i "s/homarr_token/${homarr_token}/" ~/server/portainer/server-compose.yml
+sed -i "s/homarr_token/${homarr_token}/" ~/server/stack-compose.yaml
+
+## Immich configuration
+mkdir ~/server/immich
+cat >> ~/server/immich/.env << EOF
+# You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables
+
+# The location where your uploaded files are stored
+UPLOAD_LOCATION=/home/$(whoami)/server/immich/library
+# The location where your database files are stored
+DB_DATA_LOCATION=/home/$(whoami)/server/immich/postgres
+
+# To set a timezone, uncomment the next line and change Etc/U TC to a TZ identifier from this list: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
+# TZ=Europe/Berlin
+
+# The Immich version to use. You can pin this to a specific version like "v1.71.0"
+IMMICH_VERSION=release
+
+# Connection secret for postgres. You should change it to a random password
+# Please use only the characters A-Za-z0-9, without special characters or spaces
+DB_PASSWORD=secure_psswd
+
+# The values below this line do not need to be changed
+###################################################################################
+DB_USERNAME=postgres
+DB_DATABASE_NAME=immich
+EOF
 
 ## Create Prometheus configuration
 mkdir ~/server/prometheus
