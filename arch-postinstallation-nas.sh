@@ -522,9 +522,27 @@ scrape_configs:
       - targets: [cadvisor:8082]
 EOF
 
-## Set Ryot random token
+## Ryot configuration
 ryot_token=$(openssl rand -hex 10)
-sed -i "s/ryot_token/${ryot_token}/" ~/server/portainer/media-compose.yml
+sed -i "s/ryot_token/${ryot_token}/" ~/server/stack-compose.yaml
+
+## Folder creation
+mkdir -p ~/server/grafana/plugins
+mkdir -p /mnt/sda1/filme /mnt/sda1/musik /mnt/sda1/serien
+
+## Password creation
+while true; do
+    read -s -p "Enter a secure password for your apps: " secure_psswd
+    echo
+    read -s -p "Confirm your secure password: " secure_psswd_confirm
+    if [[ "$secure_psswd" == "$secure_psswd_confirm" ]]; then
+        echo "Password confirmed."
+        break
+    else
+        echo "Passwords do not match. Please try again."
+    fi
+done
+sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/stack-compose.yaml
 
 #==============================================================================
 # SECTION 8: Intall Podman containers
