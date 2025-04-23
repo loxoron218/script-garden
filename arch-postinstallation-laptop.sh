@@ -88,7 +88,7 @@ sudo lpoptions -d HLL2350DW # Manual configuaration still needed
 
 ## Install apps that can be replaced by self hosting
 yay -S --noconfirm par2cmdline-turbo
-yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc nicotine+ python-orjson radarr sabnzbd syncthing syncthing-gtk
+yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd syncthing syncthing-gtk
 
 ## Configure KeePassXC
 mkdir ~/.local/share/applications
