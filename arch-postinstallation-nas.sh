@@ -527,14 +527,11 @@ sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immi
 #==============================================================================
 
 ## Start Podman
-systemctl enable --user podman.socket
-systemctl start --user podman.socket
+systemctl enable --user --now podman.socket
 
 ## Configure Podman auto-updates
-systemctl enable --user podman-auto-update.timer
-systemctl start --user podman-auto-update.timer
-systemctl enable --user podman-auto-update.service
-systemctl start --user podman-auto-update.service
+systemctl enable --user --now podman-auto-update.timer
+systemctl enable --user --now podman-auto-update.service
 
 ## Run portainer-compose file
 podman compose -f ~/server/portainer/portainer-compose.yml up -d
