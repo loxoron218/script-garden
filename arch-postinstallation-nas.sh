@@ -163,39 +163,12 @@ services:
     # privileged: true
 EOF
 
-## Create podman-compose file for Grafana
-cat >> ~/server/portainer/grafana-compose.yml << EOF
+## Create stack-compose file
+cat >> ~/server/stack-compose.yml << EOF
+# ==============================
+# Monitoring Stack
+# ==============================
 services:
-  grafana:
-    image: docker.io/grafana/grafana:main
-    container_name: grafana
-    volumes:
-      - /home/$(whoami)/server/grafana:/var/lib/grafana
-    ports:
-     - 3000:3000
-    restart: unless-stopped
-
-  prometheus:
-    image: docker.io/prom/prometheus:main
-    container_name: prometheus
-    volumes:
-      - /home/$(whoami)/server/prometheus:/etc/prometheus
-    ports:
-      - 9090:9090
-    restart: unless-stopped
-    command: --config.file=/etc/prometheus/prometheus.yml
-
-  node_exporter:
-    image: docker.io/prom/node-exporter:master
-    container_name: node_exporter
-    volumes:
-      - /:/host
-    restart: unless-stopped
-    command:
-      - --path.rootfs=/host
-    network_mode: host
-    pid: host
-
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
@@ -208,16 +181,45 @@ services:
       - /run/user/1000/podman:/var/run/podman
       - /sys/fs/cgroup:/sys/fs/cgroup
     ports:
-      - 8082:8080
+      - 8081:8080
     restart: unless-stopped
     devices:
       - /dev/kmsg
     # privileged: true
-EOF
 
-## Create podman-compose file for Immich
-cat >> ~/server/portainer/immich-compose.yml << EOF
-services:
+  grafana:
+    image: docker.io/grafana/grafana:main
+    container_name: grafana
+    volumes:
+      - /home/$(whoami)/server/grafana:/var/lib/grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  node_exporter:
+    image: docker.io/prom/node-exporter:master
+    container_name: node_exporter
+    volumes:
+      - /:/host
+    restart: unless-stopped
+    command:
+      - --path.rootfs=/host
+    network_mode: host
+    pid: host
+
+  prometheus:
+    image: docker.io/prom/prometheus:main
+    container_name: prometheus
+    volumes:
+      - /home/$(whoami)/server/prometheus:/etc/prometheus
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    command: --config.file=/etc/prometheus/prometheus.yml
+
+# ==============================
+# Immich Stack
+# ==============================
   immich-server:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     container_name: immich_server
@@ -299,11 +301,10 @@ services:
     restart: unless-stopped
     healthcheck:
       test: redis-cli ping || exit 1
-EOF
 
-## Create podman-compose file for media containers
-cat >> ~/server/portainer/media-compose.yml << EOF
-services:
+# ==============================
+# Media Stack
+# ==============================
   jellyfin:
     image: docker.io/jellyfin/jellyfin:unstable
     container_name: jellyfin
@@ -313,9 +314,9 @@ services:
       - /home/$(whoami)/server/jellyfin/cache:/cache:z
       - /home/$(whoami)/server/jellyfin/config:/config:z
       # - /home/$(whoami)/server/jellyfin/fonts:/usr/local/share/fonts/custom:z
-      - /mnt/sda1/Filme:/media/movies:z
-      - /mnt/sda1/Musik:/media/music:z
-      - /mnt/sda1/Serien:/media/tvshows:z
+      - /mnt/sda1/filme:/media/movies:z
+      - /mnt/sda1/musik:/media/music:z
+      - /mnt/sda1/serien:/media/tvshows:z
       - /home/$(whoami)/server/jellyfin/tmp:/tmp/jellyfin:z
     ports:
       - 8096:8096
@@ -355,11 +356,35 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /home/$(whoami)/server/radarr:/config:z
-      # - /mnt/sda1/Filme:/movies:z #optional
-      # - /mnt/sda1/.downloads:/downloads:z #optional
+      - /mnt/sda1/filme:/movies:z #optional
+      - /mnt/sda1/.downloads:/downloads:z #optional
     ports:
       - 7878:7878
     restart: unless-stopped
+
+  ryot:
+    image: docker.io/ignisda/ryot:develop
+    container_name: ryot
+    environment:
+      - TZ=Europe/Amsterdam
+      - SERVER_ADMIN_ACCESS_TOKEN=ryot_token # CHANGE THIS
+      - DATABASE_URL=postgres://postgres:postgres@ryot-db:5432/postgres
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+    pull_policy: always
+
+  ryot-db:
+    image: docker.io/postgres:16-alpine
+    container_name: ryot-db
+    volumes:
+      - /home/enrique/server/ryot-db:/var/lib/postgresql/data
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Amsterdam
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secure_psswd
 
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:nightly
@@ -373,7 +398,7 @@ services:
       - /mnt/sda1/.downloads:/downloads:z #optional
       - /mnt/sda1/.downloads/sabnzbd:/incomplete-downloads:z #optional
     ports:
-      - 8081:8080
+      - 8082:8080
     restart: unless-stopped
 
   slskd:
@@ -384,34 +409,31 @@ services:
       # - SLSKD_SHARED_DIR=/music
     volumes:
       - /home/$(whoami)/server/slskd:/app:z
-      - /mnt/sda1/Musik:/music:z
+      - /mnt/sda1/musik:/music:z
     ports:
       - 5030:5030
       - 5031:5031
       - 50300:50300
     restart: unless-stopped
     # user: 1000:1000
-EOF
 
-## Create podman-compose file for Server containers
-cat >> ~/server/portainer/server-compose.yml << EOF
-services:
-  ### traefik
+# ==============================
+# Server Stack (Placeholders)
+# ==============================
+  # duckdns:
+  # traefik:
 
-  ### duckdns
-EOF
-
-## Create podman-compose file for core tools
-cat >> ~/server/portainer/core-compose.yml << EOF
-services:
+# ==============================
+# Core Tools
+# ==============================
   homarr:
     image: ghcr.io/homarr-labs/homarr:dev
     container_name: homarr
     environment:
       - SECRET_ENCRYPTION_KEY=homarr_token # <--- can be generated with openssl rand -hex 32
     volumes:
-      - /run/user/1000/podman/podman.sock:/var/run/docker.sock # Optional, only if you want docker integration
-      - /home/$(whoami)/server/homarr:/appdata
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock:z # <--- add this line here!
+      - /home/$(whoami)/server/homarr:/appdata:z
     ports:
       - 7575:7575
     restart: unless-stopped
@@ -424,8 +446,8 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /home/$(whoami)/server/nextcloud/config:/config
-      - /home/$(whoami)/server/nextcloud/data:/data
+      - /home/$(whoami)/server/nextcloud/config:/config:z
+      - /home/$(whoami)/server/nextcloud/data:/data:z
     ports:
       - 4443:443
     restart: unless-stopped
@@ -433,10 +455,12 @@ services:
   vaultwarden:
     image: docker.io/vaultwarden/server:testing
     container_name: vaultwarden
+    # environment:
+      # - DOMAIN=https://vw.domain.tld
     volumes:
-      - /home/$(whoami)/server/vaultwarden:/data/
+      - /home/$(whoami)/server/vaultwarden:/data:z
     ports:
-      - 8083:80
+      - 8080:80
     restart: unless-stopped
 EOF
 
