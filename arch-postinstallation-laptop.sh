@@ -50,7 +50,7 @@ yay -S --noconfirm brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer 
 
 ## Install Flatpak applications
 flatpak update
-flatpak install -y adw-gtk3-dark winezgui
+flatpak install -y adw-gtk3-dark bottles
 
 #==============================================================================
 # SECTION 3: System Configuration
@@ -140,6 +140,10 @@ cp /usr/share/applications/org.bleachbit.BleachBit.desktop ~/.local/share/applic
 sed -i "s/BleachBit/BleachBit (as root)/" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
 sed -i "s|^Exec=.*|Exec=pkexec bleachbit|" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
 sed -i "s|^StartupWMClass=.*|StartupWMClass=pkexec bleachbit|" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
+
+## Configure Bottles
+flatpak override --user com.usebottles.bottles --filesystem=host
+flatpak override --user com.usebottles.bottles --filesystem=xdg-data/applications
 
 ## Configure fastfetch
 fastfetch --gen-config
