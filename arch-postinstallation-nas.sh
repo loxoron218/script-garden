@@ -340,7 +340,7 @@ services:
       - /home/$(whoami)/server/nextcloud/config:/config
       - /home/$(whoami)/server/nextcloud/data:/data
     ports:
-      - 4433:443
+      - 4443:443
     restart: unless-stopped
 
   vaultwarden:
