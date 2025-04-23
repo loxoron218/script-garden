@@ -117,7 +117,7 @@ sudo systemctl enable restic.timer
 
 ## Create portainer-compose file
 mkdir ~/server/portainer
-cat >> ~/server/portainer/portainer-compose.yml << EOF
+cat >> ~/server/portainer-compose.yaml << EOF
 services:
   portainer-ce:
     image: docker.io/portainer/portainer-ce:sts
@@ -133,7 +133,7 @@ services:
 EOF
 
 ## Create stack-compose file
-cat >> ~/server/stack-compose.yml << EOF
+cat >> ~/server/stack-compose.yaml << EOF
 # ==============================
 # Monitoring Stack
 # ==============================
@@ -184,7 +184,7 @@ services:
     ports:
       - 9090:9090
     restart: unless-stopped
-    command: --config.file=/etc/prometheus/prometheus.yml
+    command: --config.file=/etc/prometheus/prometheus.yaml
 
 # ==============================
 # Immich Stack
@@ -202,7 +202,7 @@ services:
     env_file:
       - stack.env
     # extends:
-        # file: hwaccel.transcoding.yml
+        # file: hwaccel.transcoding.yaml
         # service: quicksync # set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
     depends_on:
       - redis
@@ -228,7 +228,7 @@ services:
     env_file:
       - stack.env
     # extends: # uncomment this section for hardware acceleration - see https://immich.app/docs/features/ml-hardware-acceleration
-      # file: hwaccel.ml.yml
+      # file: hwaccel.ml.yaml
       # service: openvino # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the -wsl version for WSL2 where applicable
     healthcheck:
       disable: false
@@ -469,7 +469,7 @@ EOF
 
 ## Prometheus configuration
 mkdir ~/server/prometheus
-cat >> ~/server/prometheus/prometheus.yml << EOF
+cat >> ~/server/prometheus/prometheus.yaml << EOF
 ---
 global:
   scrape_interval: 15s  # By default, scrape targets every 15 seconds.
@@ -534,7 +534,7 @@ systemctl enable --user --now podman-auto-update.timer
 systemctl enable --user --now podman-auto-update.service
 
 ## Run portainer-compose file
-podman compose -f ~/server/portainer/portainer-compose.yml up -d
+podman compose -f ~/server/portainer-compose.yaml up -d
 
 #==============================================================================
 # SECTION 8: Cleanup
