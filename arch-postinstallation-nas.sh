@@ -212,7 +212,7 @@ services:
     restart: unless-stopped
     devices:
       - /dev/kmsg
-    privileged: true
+    # privileged: true
 EOF
 
 ## Create podman-compose file for Immich
