@@ -112,37 +112,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable restic.timer
 
 #==============================================================================
-# SECTION 5: Immich preparation
-#==============================================================================
-
-## Create environment file for Immich
-mkdir ~/server/immich
-cat >> ~/server/immich/.env << EOF
-# You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables
-
-# The location where your uploaded files are stored
-UPLOAD_LOCATION=/home/$(whoami)/server/immich/library
-# The location where your database files are stored
-DB_DATA_LOCATION=/home/$(whoami)/server/immich/postgres
-
-# To set a timezone, uncomment the next line and change Etc/U TC to a TZ identifier from this list: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
-# TZ=Europe/Berlin
-
-# The Immich version to use. You can pin this to a specific version like "v1.71.0"
-IMMICH_VERSION=release
-
-# Connection secret for postgres. You should change it to a random password
-# Please use only the characters A-Za-z0-9, without special characters or spaces
-DB_PASSWORD=secure_psswd
-
-# The values below this line do not need to be changed
-###################################################################################
-DB_USERNAME=postgres
-DB_DATABASE_NAME=immich
-EOF
-
-#==============================================================================
-# SECTION 6: Create podman-compose files
+# SECTION 5: Create podman-compose files
 #==============================================================================
 
 ## Create portainer-compose file
@@ -464,7 +434,7 @@ services:
 EOF
 
 #==============================================================================
-# SECTION 7: Configure Podman containers
+# SECTION 6: Configure Podman containers
 #==============================================================================
 
 ## Set secure app passwords
@@ -545,7 +515,7 @@ done
 sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/stack-compose.yaml
 
 #==============================================================================
-# SECTION 8: Intall Podman containers
+# SECTION 7: Install Podman containers
 #==============================================================================
 
 ## Start Podman
@@ -562,7 +532,7 @@ systemctl start --user podman-auto-update.service
 podman compose -f ~/server/portainer/portainer-compose.yml up -d
 
 #==============================================================================
-# SECTION 9: Cleanup
+# SECTION 8: Cleanup
 #==============================================================================
 
 ## Remove unnecessary files
