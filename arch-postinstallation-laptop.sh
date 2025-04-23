@@ -135,10 +135,6 @@ echo NoDisplay=true > ~/.local/share/applications/org.gnome.Extensions.desktop
 echo NoDisplay=true > ~/.local/share/applications/qv4l2.desktop
 echo NoDisplay=true > ~/.local/share/applications/qvidcap.desktop
 
-## Change name of VSCodium
-cp /usr/share/applications/codium-wayland.desktop ~/.local/share/applications/
-sed -i "s/VSCodium - Wayland/VSCodium/" ~/.local/share/applications/codium-wayland.desktop
-
 ## Add BleachBit as root
 cp /usr/share/applications/org.bleachbit.BleachBit.desktop ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
 sed -i "s/BleachBit/BleachBit (as root)/" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
@@ -159,6 +155,11 @@ font-family = Noto Sans Mono
 font-size = 11
 theme = Adwaita Dark
 EOF
+
+## Configure VSCodium
+cp /usr/share/applications/codium-wayland.desktop ~/.local/share/applications/
+sed -i "s/VSCodium - Wayland/VSCodium/" ~/.local/share/applications/codium-wayland.desktop
+xdg-mime default org.gnome.Nautilus.desktop inode/directory
 
 ## Configure other apps
 gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal ghostty
