@@ -377,8 +377,11 @@ sed -i "s/duck_domain/${duck_domain}/" ~/server/portainer/server-compose.yml
 read -p "Enter your Duck DNS token: " duck_token
 sed -i "s/duck_token/${duck_token}/" ~/server/portainer/server-compose.yml
 
-## Create folder for Grafana
+## Create folders
 mkdir -p ~/server/grafana/plugins
+mkdir -p ~/server/jellyfin
+sudo chmod -R 777 ~/server/jellyfin
+mkdir /mnt/sda1/Filme /mnt/sda1/Musik /mnt/sda1/Serien /mnt/sda1/sabnzbd
 
 ## Set Homarr random token
 homarr_token=$(openssl rand -hex 32)
