@@ -131,6 +131,7 @@ echo NoDisplay=true > ~/.local/share/applications/libreoffice-math.desktop
 echo NoDisplay=true > ~/.local/share/applications/libreoffice-writer.desktop
 echo NoDisplay=true > ~/.local/share/applications/nm-connection-editor.desktop
 echo NoDisplay=true > ~/.local/share/applications/nvim.desktop
+echo NoDisplay=true > ~/.local/share/applications/nvtop.desktop
 echo NoDisplay=true > ~/.local/share/applications/org.gnome.Extensions.desktop
 echo NoDisplay=true > ~/.local/share/applications/qv4l2.desktop
 echo NoDisplay=true > ~/.local/share/applications/qvidcap.desktop
