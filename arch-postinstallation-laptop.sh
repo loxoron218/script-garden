@@ -68,7 +68,6 @@ sudo sed -i "s/^HOOKS=(/HOOKS=(plymouth /" /etc/mkinitcpio.conf
 sudo plymouth-set-default-theme -R bgrt
 sudo sed -i "s/\(rw\)/\1 quiet splash/" /boot/loader/entries/*.conf
 
-
 ## Configure network
 yay -S --noconfirm network-manager-applet
 sudo systemctl enable NetworkManager.service
