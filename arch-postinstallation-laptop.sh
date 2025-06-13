@@ -37,7 +37,7 @@ sudo rm -rf ~/yay
 #==============================================================================
 
 ## Install GUI applications from official repository
-yay -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus pdfarranger picard soundconverter strawberry telegram-desktop vlc
+yay -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus picard soundconverter strawberry telegram-desktop vlc
 
 ## Install other applications from official repository
 yay -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers neovim power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost
@@ -86,8 +86,8 @@ sudo lpoptions -d HLL2350DW # Manual configuaration still needed
 #==============================================================================
 
 ## Install apps that can be replaced by self hosting
-yay -S --noconfirm par2cmdline-turbo
-yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd syncthing syncthing-gtk
+yay -S --noconfirm jre-openjdk par2cmdline-turbo
+yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd stirling-pdf syncthing syncthing-gtk
 
 ## Configure KeePassXC
 mkdir ~/.local/share/applications
@@ -111,6 +111,22 @@ cp /usr/lib/sabnzbd/linux/sabnzbd.desktop ~/.local/share/applications
 sed -i "s|^Exec=.*|Exec=/usr/lib/sabnzbd/SABnzbd.py --browser 1|" ~/.local/share/applications/sabnzbd.desktop
 sed -i "s|^Icon=.*|Icon=/usr/share/pixmaps/logo-arrow.svg|" ~/.local/share/applications/sabnzbd.desktop
 
+## Configure Stirling-PDF
+mkdir -p /home/$(whoami)/configs
+cat > /home/$(whoami)/configs/custom_settings.yml << EOF
+server:
+  host: 0.0.0.0
+  port: 3000
+EOF
+sudo curl -o /usr/share/pixmaps/stirling.svg https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/refs/heads/main/docs/stirling.svg
+cat > ~/.local/share/applications/Stirling-PDF.desktop << EOF
+[Desktop Entry]
+Name=Stirling-PDF
+Exec=bash -c "nohup java -jar /usr/share/java/stirling-pdf.jar & sleep 15 && xdg-open http://localhost:3000" &
+Terminal=False
+Type=Application
+Icon=/usr/share/pixmaps/stirling.svg
+EOF
 
 #==============================================================================
 # SECTION 6: Package Configuration
@@ -128,6 +144,7 @@ echo NoDisplay=true > ~/.local/share/applications/libreoffice-draw.desktop
 echo NoDisplay=true > ~/.local/share/applications/libreoffice-impress.desktop
 echo NoDisplay=true > ~/.local/share/applications/libreoffice-math.desktop
 echo NoDisplay=true > ~/.local/share/applications/libreoffice-writer.desktop
+echo NoDisplay=true > ~/.local/share/applications/lstopo
 echo NoDisplay=true > ~/.local/share/applications/nm-connection-editor.desktop
 echo NoDisplay=true > ~/.local/share/applications/nvim.desktop
 echo NoDisplay=true > ~/.local/share/applications/nvtop.desktop
