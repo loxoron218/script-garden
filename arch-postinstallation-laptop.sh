@@ -138,6 +138,7 @@ echo NoDisplay=true > ~/.local/share/applications/bssh.desktop
 echo NoDisplay=true > ~/.local/share/applications/bvnc.desktop
 echo NoDisplay=true > ~/.local/share/applications/codium.desktop
 echo NoDisplay=true > ~/.local/share/applications/cups.desktop
+echo NoDisplay=true > ~/.local/share/applications/electron36.desktop
 echo NoDisplay=true > ~/.local/share/applications/libreoffice-base.desktop
 echo NoDisplay=true > ~/.local/share/applications/libreoffice-calc.desktop
 echo NoDisplay=true > ~/.local/share/applications/libreoffice-draw.desktop
