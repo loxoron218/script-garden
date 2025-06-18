@@ -46,7 +46,7 @@ yay -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin
 yay -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin whatsapp-for-linux
 
 ## Install other applications from AUR
-yay -S --noconfirm adwaita-qt5 brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell nautilus-open-any-terminal
+yay -S --noconfirm adwaita-qt5 brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden firefox-extension-istilldontcareaboutcookies-bin gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell nautilus-open-any-terminal
 
 ## Install Flatpak applications
 flatpak update
