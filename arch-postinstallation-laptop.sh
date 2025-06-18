@@ -200,10 +200,10 @@ sudo powertop --auto-tune
 yay -Rns --noconfirm powertop
 
 ## Remove unnecessary files
-yay -Yc --noconfirm
 yay -Scc --noconfirm
+yay -Yc --noconfirm
+yay -Ycc --noconfirm
 sudo rm -rf ~/.cache
-sudo rm -rf ~/.cargo
 sudo rm -rf ~/.config/go
 sudo rm -rf ~/.npm
 yay -Syyu --noconfirm
