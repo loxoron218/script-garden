@@ -87,7 +87,7 @@ sudo lpoptions -d HLL2350DW # Manual configuaration still needed
 
 ## Install apps that can be replaced by self hosting
 yay -S --noconfirm jre-openjdk par2cmdline-turbo
-yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd stirling-pdf syncthing syncthing-gtk
+yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd stirling-pdf syncthing syncthing-gtk windsurf-next
 
 ## Configure KeePassXC
 mkdir ~/.local/share/applications
@@ -128,6 +128,9 @@ Type=Application
 Icon=/usr/share/pixmaps/stirling.svg
 EOF
 
+# Configure Windsurf
+echo NoDisplay=true > ~/.local/share/applications/electron36.desktop
+
 #==============================================================================
 # SECTION 6: Package Configuration
 #==============================================================================
@@ -138,7 +141,6 @@ echo NoDisplay=true > ~/.local/share/applications/bssh.desktop
 echo NoDisplay=true > ~/.local/share/applications/bvnc.desktop
 echo NoDisplay=true > ~/.local/share/applications/codium.desktop
 echo NoDisplay=true > ~/.local/share/applications/cups.desktop
-echo NoDisplay=true > ~/.local/share/applications/electron36.desktop
 echo NoDisplay=true > ~/.local/share/applications/libreoffice-base.desktop
 echo NoDisplay=true > ~/.local/share/applications/libreoffice-calc.desktop
 echo NoDisplay=true > ~/.local/share/applications/libreoffice-draw.desktop
