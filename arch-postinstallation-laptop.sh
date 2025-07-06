@@ -110,6 +110,7 @@ sudo curl -o /usr/share/pixmaps/logo-arrow.svg https://raw.githubusercontent.com
 cp /usr/lib/sabnzbd/linux/sabnzbd.desktop ~/.local/share/applications
 sed -i "s|^Exec=.*|Exec=/usr/lib/sabnzbd/SABnzbd.py --browser 1|" ~/.local/share/applications/sabnzbd.desktop
 sed -i "s|^Icon=.*|Icon=/usr/share/pixmaps/logo-arrow.svg|" ~/.local/share/applications/sabnzbd.desktop
+xdg-mime default sabnzbd.desktop application/x-nzb
 
 ## Configure Stirling-PDF
 mkdir -p /home/$(whoami)/configs
