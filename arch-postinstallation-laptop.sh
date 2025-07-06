@@ -37,7 +37,7 @@ sudo rm -rf ~/yay
 #==============================================================================
 
 ## Install GUI applications from official repository
-yay -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus picard soundconverter strawberry telegram-desktop vlc
+yay -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus picard soundconverter strawberry telegram-desktop vlc-plugin-ffmpeg
 
 ## Install other applications from official repository
 yay -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers neovim power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost
