@@ -87,7 +87,21 @@ sudo lpoptions -d HLL2350DW # Manual configuaration still needed
 
 ## Install apps that can be replaced by self hosting
 yay -S --noconfirm jre-openjdk par2cmdline-turbo
-yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd stirling-pdf syncthing syncthing-gtk windsurf-next
+yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd stirling-pdf syncthing syncthing-gtk gemini
+
+## Configure Gemini
+sudo curl -o  /usr/share/pixmaps/gemini.svg https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-gemini-icon.svg
+cat <<EOF > ~/.local/share/applications/gemini.desktop
+[Desktop Entry]
+Name=Gemini CLI
+Comment=Access Gemini space using Ghostty terminal
+Exec=ghostty -e gemini
+Icon=/usr/share/pixmaps/gemini.svg
+Terminal=false
+Type=Application
+Categories=Utility;Network;
+StartupNotify=true
+EOF
 
 ## Configure KeePassXC
 mkdir ~/.local/share/applications
