@@ -143,9 +143,6 @@ Type=Application
 Icon=/usr/share/pixmaps/stirling.svg
 EOF
 
-# Configure Windsurf
-echo NoDisplay=true > ~/.local/share/applications/electron36.desktop
-
 #==============================================================================
 # SECTION 6: Package Configuration
 #==============================================================================
