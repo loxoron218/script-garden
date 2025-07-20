@@ -19,6 +19,22 @@ EOF
 # ============================================
 
 # ----------------------------
+# Gemini Desktop Icon
+# ----------------------------
+sudo curl -o  /usr/share/pixmaps/gemini.svg https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-gemini-icon.svg
+cat <<EOF > ~/.local/share/applications/gemini.desktop
+[Desktop Entry]
+Name=Gemini CLI
+Comment=Access Gemini space using Ghostty terminal
+Exec=ghostty -e gemini
+Icon=/usr/share/pixmaps/gemini.svg
+Terminal=false
+Type=Application
+Categories=Utility;Network;
+StartupNotify=true
+EOF
+
+# ----------------------------
 # Jackett Desktop Icon
 # ----------------------------
 sudo curl -o /usr/share/pixmaps/jacket_medium.svg https://raw.githubusercontent.com/Jackett/Jackett/95384a92ee9d86301743b10d33dd72d3846372da/src/Jackett.Common/Content/jacket_medium.png
