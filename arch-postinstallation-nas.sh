@@ -537,7 +537,17 @@ systemctl enable --user --now podman-auto-update.service
 podman compose -f ~/server/portainer-compose.yaml up -d
 
 #==============================================================================
-# SECTION 8: Cleanup
+# SECTION 8: Perform post-installation configuration
+#==============================================================================
+
+## slskd configuration
+sed -i "/^# soulseek:/,/^#   connection:/s/^# \{0,1\}//" ~/server/slskd/slskd.yml
+sed -i "s/username: ~$/username: $(whoami)/" ~/server/slskd/slskd.yml
+sed -i "s/password: ~$/password: ${secure_psswd}/" ~/server/slskd/slskd.yml
+podman restart slskd
+
+#==============================================================================
+# SECTION 9: Cleanup
 #==============================================================================
 
 ## Remove unnecessary files
