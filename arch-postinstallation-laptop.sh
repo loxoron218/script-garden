@@ -26,27 +26,27 @@ Include = /etc/pacman.d/mirrorlist
 Include = /etc/pacman.d/chaotic-mirrorlist
 EOF"
 
-## Install yay
+## Install paru
 sudo pacman -Syyu --noconfirm git
-git clone https://aur.archlinux.org/yay.git
-(cd yay && makepkg -si --noconfirm)
-sudo rm -rf ~/yay
+git clone https://aur.archlinux.org/paru.git
+(cd paru && makepkg -si --noconfirm)
+sudo rm -rf ~/paru
 
 #==============================================================================
 # SECTION 2: Package Installation
 #==============================================================================
 
 ## Install GUI applications from official repository
-yay -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus picard soundconverter strawberry telegram-desktop vlc-plugin-ffmpeg
+paru -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus picard soundconverter strawberry telegram-desktop vlc-plugin-ffmpeg
 
 ## Install other applications from official repository
-yay -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers neovim power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost
+paru -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers neovim power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost
 
 ## Install GUI applications from AUR
-yay -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin whatsapp-for-linux
+paru -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin whatsapp-for-linux
 
 ## Install other applications from AUR
-yay -S --noconfirm adwaita-qt5 brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden firefox-extension-istilldontcareaboutcookies-bin gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell nautilus-open-any-terminal
+paru -S --noconfirm adwaita-qt5 brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden firefox-extension-istilldontcareaboutcookies-bin gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell nautilus-open-any-terminal
 
 ## Install Flatpak applications
 flatpak update
@@ -57,19 +57,19 @@ flatpak install -y adw-gtk3-dark bottles
 #==============================================================================
 
 ## Configure Graphical User Interface
-yay -S --noconfirm gdm
+paru -S --noconfirm gdm
 gsettings set org.gnome.mutter experimental-features "['autoclose-xwayland' , 'kms-modifiers' , 'scale-monitor-framebuffer' , 'variable-refresh-rate' , 'xwayland-native-scaling']"
 sudo systemctl enable gdm.service
 sudo systemctl set-default graphical.target
 
 ## Configure Plymouth
-yay -S --noconfirm plymouth
+paru -S --noconfirm plymouth
 sudo sed -i "s/^HOOKS=(/HOOKS=(plymouth /" /etc/mkinitcpio.conf
 sudo plymouth-set-default-theme -R bgrt
 sudo sed -i "s/\(rw\)/\1 quiet splash/" /boot/loader/entries/*.conf
 
 ## Configure network
-yay -S --noconfirm network-manager-applet
+paru -S --noconfirm network-manager-applet
 sudo systemctl enable NetworkManager.service
 
 ## Configure Bluetooth
@@ -86,8 +86,8 @@ sudo lpoptions -d HLL2350DW # Manual configuaration still needed
 #==============================================================================
 
 ## Install apps that can be replaced by self hosting
-yay -S --noconfirm jre-openjdk par2cmdline-turbo
-yay -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd stirling-pdf syncthing syncthing-gtk
+paru -S --noconfirm jre-openjdk par2cmdline-turbo
+paru -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd stirling-pdf syncthing syncthing-gtk
 
 ## Configure KeePassXC
 mkdir ~/.local/share/applications
@@ -195,13 +195,18 @@ gsettings set org.gnome.nautilus.preferences show-image-thumbnails always
 ## Use powertop
 sudo powertop --calibrate
 sudo powertop --auto-tune
-yay -Rns --noconfirm powertop
+paru -Rns --noconfirm powertop
 
 ## Remove unnecessary files
-yay -Scc --noconfirm
-yay -Yc --noconfirm
-yay -Ycc --noconfirm
+paru -Scc --noconfirm
+orphans=$(pacman -Qdtq)
+if [[ -n $orphans ]]; then
+  paru -Rns --noconfirm $orphans
+else
+  echo "No orphaned packages to remove."
+fi
 sudo rm -rf ~/.cache
-sudo rm -rf ~/.config/go
+sudo rm -rf ~/.cargo
 sudo rm -rf ~/.npm
-yay -Syyu --noconfirm
+sudo rm -rf ~/.rustup
+paru -Syyu --noconfirm
