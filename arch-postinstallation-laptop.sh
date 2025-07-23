@@ -32,6 +32,11 @@ git clone https://aur.archlinux.org/paru.git
 (cd paru && makepkg -si --noconfirm)
 sudo rm -rf ~/paru
 
+## Configure paru
+sudo sed -i "s/^#\(BottomUp\)/\1/" /etc/paru.conf
+sudo sed -i "s/^#\(CombinedUpgrade\)/\1/" /etc/paru.conf
+sudo sed -i "s/^#\(UpgradeMenu\)/\1/" /etc/paru.conf
+
 #==============================================================================
 # SECTION 2: Package Installation
 #==============================================================================
