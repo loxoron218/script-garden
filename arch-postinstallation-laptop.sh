@@ -54,8 +54,8 @@ paru -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin 
 paru -S --noconfirm adwaita-qt5 brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden firefox-extension-istilldontcareaboutcookies-bin gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell nautilus-open-any-terminal
 
 ## Install Flatpak applications
-flatpak update
-flatpak install -y adw-gtk3-dark bottles
+flatpak update --user
+flatpak install --user -y adw-gtk3-dark bottles
 
 #==============================================================================
 # SECTION 3: System Configuration
