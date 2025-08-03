@@ -139,24 +139,12 @@ EOF
 #==============================================================================
 
 ## Hide unwanted desktop icons
-echo NoDisplay=true > ~/.local/share/applications/avahi-discover.desktop
-echo NoDisplay=true > ~/.local/share/applications/bssh.desktop
-echo NoDisplay=true > ~/.local/share/applications/bvnc.desktop
-echo NoDisplay=true > ~/.local/share/applications/codium.desktop
-echo NoDisplay=true > ~/.local/share/applications/cups.desktop
-echo NoDisplay=true > ~/.local/share/applications/libreoffice-base.desktop
-echo NoDisplay=true > ~/.local/share/applications/libreoffice-calc.desktop
-echo NoDisplay=true > ~/.local/share/applications/libreoffice-draw.desktop
-echo NoDisplay=true > ~/.local/share/applications/libreoffice-impress.desktop
-echo NoDisplay=true > ~/.local/share/applications/libreoffice-math.desktop
-echo NoDisplay=true > ~/.local/share/applications/libreoffice-writer.desktop
-echo NoDisplay=true > ~/.local/share/applications/lstopo.desktop
-echo NoDisplay=true > ~/.local/share/applications/nm-connection-editor.desktop
-echo NoDisplay=true > ~/.local/share/applications/nvim.desktop
-echo NoDisplay=true > ~/.local/share/applications/nvtop.desktop
-echo NoDisplay=true > ~/.local/share/applications/org.gnome.Extensions.desktop
-echo NoDisplay=true > ~/.local/share/applications/qv4l2.desktop
-echo NoDisplay=true > ~/.local/share/applications/qvidcap.desktop
+cp /usr/share/applications/{avahi-discover,bssh,bvnc,codium,cups,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop ~/.local/share/applications/
+
+sed -i \
+    -e '/^NoDisplay=/d' \
+    -e '/^\[Desktop Entry\]/a NoDisplay=true' \
+    ~/.local/share/applications/{avahi-discover,bssh,bvnc,codium,cups,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop
 
 ## Add BleachBit as root
 cp /usr/share/applications/org.bleachbit.BleachBit.desktop ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
