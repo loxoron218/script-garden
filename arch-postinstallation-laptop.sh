@@ -140,7 +140,6 @@ EOF
 
 ## Hide unwanted desktop icons
 cp /usr/share/applications/{avahi-discover,bssh,bvnc,codium,cups,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop ~/.local/share/applications/
-
 sed -i \
     -e '/^NoDisplay=/d' \
     -e '/^\[Desktop Entry\]/a NoDisplay=true' \
