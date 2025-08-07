@@ -456,7 +456,7 @@ DB_DATA_LOCATION=/home/$(whoami)/server/immich/postgres
 IMMICH_VERSION=release
 
 # Connection secret for postgres. You should change it to a random password
-# Please use only the characters `A-Za-z0-9`, without special characters or spaces
+# Please use only the characters \`A-Za-z0-9\`, without special characters or spaces
 DB_PASSWORD=secure_psswd
 
 # The values below this line do not need to be changed
