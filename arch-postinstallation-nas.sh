@@ -123,7 +123,7 @@ services:
     image: docker.io/portainer/portainer-ce:sts
     container_name: portainer
     volumes:
-      - /run/user/1000/podman/podman.sock:/var/run/docker.sock
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock:ro
       - /home/$(whoami)/server/portainer:/data
     ports:
       - 8000:8000
