@@ -186,21 +186,56 @@ EOF
 
 ## Create immich-compose file
 cat >> ~/server/immich-compose.yaml << EOF
+services:
+  database:
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:32324a2f41df5de9efe1af166b7008c3f55646f8d0e00d9550c16c9822366b4a
+    container_name: immich_postgres
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE_NAME}
+      POSTGRES_INITDB_ARGS: --data-checksums
+      # Uncomment the DB_STORAGE_TYPE: HDD var if your database isnt stored on SSDs
+      DB_STORAGE_TYPE: HDD
+    volumes:
+      # Do not edit the next line. If you want to change the database storage location on your system, edit the value of DB_DATA_LOCATION in the stack.env file
+      - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
+    restart: unless-stopped
+    shm_size: 128mb
+
+  immich-machine-learning:
+    # For hardware acceleration, add one of -[armnn, cuda, rocm, openvino, rknn] to the image tag.
+    # Example tag: ${IMMICH_VERSION:-release}-cuda
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-openvino
+    container_name: immich_machine_learning
+    volumes:
+      - /home/$(whoami)/server/immich/model-cache:/cache
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
+    env_file:
+      - stack.env
+    # extends: # uncomment this section for hardware acceleration - see https://immich.app/docs/features/ml-hardware-acceleration
+      # file: hwaccel.ml.yml
+      # service: cpu # set to one of [armnn, cuda, rocm, openvino, openvino-wsl, rknn] for accelerated inference - use the `-wsl` version for WSL2 where applicable
+    healthcheck:
+      disable: false
+
   immich-server:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     container_name: immich_server
     volumes:
-      # Do not edit the next line. If you want to change the media storage location on your system, edit the value of UPLOAD_LOCATION in the .env file
-      - ${UPLOAD_LOCATION}:/usr/src/app/upload
-      # - /etc/localtime:/etc/localtime:ro
+      # Do not edit the next line. If you want to change the media storage location on your system, edit the value of UPLOAD_LOCATION in the stack.env file
+      - ${UPLOAD_LOCATION}:/data
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 2283:2283
     restart: unless-stopped
     env_file:
       - stack.env
     # extends:
-        # file: hwaccel.transcoding.yaml
-        # service: quicksync # set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
+      # file: hwaccel.transcoding.yml
+      # service: cpu # set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
     depends_on:
       - redis
       - database
@@ -209,60 +244,8 @@ cat >> ~/server/immich-compose.yaml << EOF
     healthcheck:
       disable: false
 
-  immich-machine-learning:
-    # For hardware acceleration, add one of -[armnn, cuda, openvino] to the image tag.
-    # Example tag: ${IMMICH_VERSION:-release}-cuda
-    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-openvino
-    container_name: immich_machine_learning
-    volumes:
-      - /home/$(whoami)/server/immich/model-cache:/cache
-      - /dev/bus/usb:/dev/bus/usb
-    restart: unless-stopped
-    # device_cgroup_rules:
-      # - c 189:* rmw
-    devices:
-      - /dev/dri:/dev/dri
-    env_file:
-      - stack.env
-    # extends: # uncomment this section for hardware acceleration - see https://immich.app/docs/features/ml-hardware-acceleration
-      # file: hwaccel.ml.yaml
-      # service: openvino # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the -wsl version for WSL2 where applicable
-    healthcheck:
-      disable: false
-
-  database:
-    image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
-    container_name: immich_postgres
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_DB: ${DB_DATABASE_NAME}
-      POSTGRES_INITDB_ARGS: --data-checksums
-    volumes:
-      # Do not edit the next line. If you want to change the database storage location on your system, edit the value of DB_DATA_LOCATION in the .env file
-      - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
-    restart: unless-stopped
-    command: >-
-      postgres
-      -c shared_preload_libraries=vectors.so
-      -c 'search_path=$$user, public, vectors'
-      -c logging_collector=on
-      -c max_wal_size=2GB
-      -c shared_buffers=512MB
-      -c wal_compression=on
-    healthcheck:
-      test: >-
-        pg_isready --dbname=$${POSTGRES_DB} --username=$${POSTGRES_USER} || exit 1;
-        Chksum=$$(psql --dbname=$${POSTGRES_DB} --username=$${POSTGRES_USER} --tuples-only --no-align
-        --command=SELECT COALESCE(SUM(checksum_failures), 0) FROM pg_stat_database);
-        echo checksum failure count is $$Chksum;
-        [ $$Chksum = 0 ] || exit 1
-      interval: 5m
-      # start_interval: 30s
-      start_period: 5m
-
   redis:
-    image: docker.io/redis:6.2-alpine@sha256:148bb5411c184abd288d9aaed139c98123eeb8824c5d3fce03cf721db58066d8
+    image: docker.io/valkey/valkey:8-bookworm@sha256:facc1d2c3462975c34e10fccb167bfa92b0e0dbd992fc282c29a61c3243afb11
     container_name: immich_redis
     restart: unless-stopped
     healthcheck:
