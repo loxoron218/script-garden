@@ -327,7 +327,7 @@ cat >> ~/server/media-compose.yaml << EOF
     image: docker.io/postgres:16-alpine # at-least version 15 is required
     container_name: ryot-db
     volumes:
-      - /home/enrique/server/ryot-db:/var/lib/postgresql/data
+      - /home/$(whoami)/server/ryot-db:/var/lib/postgresql/data
     environment:
       - TZ=Europe/Amsterdam
       - POSTGRES_DB=postgres
