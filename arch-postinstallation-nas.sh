@@ -445,17 +445,18 @@ cat >> ~/server/immich/.env << EOF
 
 # The location where your uploaded files are stored
 UPLOAD_LOCATION=/home/$(whoami)/server/immich/library
-# The location where your database files are stored
+
+# The location where your database files are stored. Network shares are not supported for the database
 DB_DATA_LOCATION=/home/$(whoami)/server/immich/postgres
 
-# To set a timezone, uncomment the next line and change Etc/U TC to a TZ identifier from this list: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
-# TZ=Europe/Berlin
+# To set a timezone, uncomment the next line and change Etc/UTC to a TZ identifier from this list: https://en.wikipedi  a.org/wiki/List_of_tz_database_time_zones#List
+# TZ=Etc/UTC
 
 # The Immich version to use. You can pin this to a specific version like "v1.71.0"
 IMMICH_VERSION=release
 
 # Connection secret for postgres. You should change it to a random password
-# Please use only the characters A-Za-z0-9, without special characters or spaces
+# Please use only the characters `A-Za-z0-9`, without special characters or spaces
 DB_PASSWORD=secure_psswd
 
 # The values below this line do not need to be changed
