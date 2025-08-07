@@ -406,9 +406,9 @@ services:
     image: docker.io/vaultwarden/server:testing
     container_name: vaultwarden
     # environment:
-      # - DOMAIN=https://vw.domain.tld
+      # DOMAIN: https://vw.domain.tld
     volumes:
-      - /home/$(whoami)/server/vaultwarden:/data:z
+      - /home/$(whoami)/server/vaultwarden:/data
     ports:
       - 8080:80
     restart: unless-stopped
