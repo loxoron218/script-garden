@@ -144,7 +144,7 @@ services:
       - /run/user/1000/podman.sock:/var/run/docker.sock:ro
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - /home/$(whoami)/.local/share/containers/storage:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
+      - /dev/disk:/dev/disk:ro
     ports:
       - 8081:8080
     restart: unless-stopped
@@ -254,33 +254,33 @@ EOF
 
 ## Create media-compose file
 cat >> ~/server/media-compose.yaml << EOF
+services:  
   jellyfin:
     image: docker.io/jellyfin/jellyfin:unstable
     container_name: jellyfin
+    # Optional - alternative address used for autodiscovery
     # environment:
       # - JELLYFIN_PublishedServerUrl=http://example.com
     volumes:
-      - /home/$(whoami)/server/jellyfin/cache:/cache:z
-      - /home/$(whoami)/server/jellyfin/config:/config:z
-      # - /home/$(whoami)/server/jellyfin/fonts:/usr/local/share/fonts/custom:z
+      - /home/$(whoami)/server/jellyfin/config:/config
+      - /home/$(whoami)/server/jellyfin/cache:/cache
       - /mnt/sda1/filme:/media/movies:z
       - /mnt/sda1/musik:/media/music:z
       - /mnt/sda1/serien:/media/tvshows:z
-      - /home/$(whoami)/server/jellyfin/tmp:/tmp/jellyfin:z
+      # - /home/$(whoami)/server/jellyfin/fonts:/usr/local/share/fonts/custom:z
     ports:
       - 8096:8096
     restart: unless-stopped
     devices:
       - /dev/dri:/dev/dri
-    extra_hosts:
-      - host.docker.internal:10.88.0.1
+    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+    # extra_hosts:
+      # - host.docker.internal:host-gateway
     labels:
-      io.containers.autoupdate: registry
+      - io.containers.autoupdate=registry
     # network_mode: host
-    # security_opt:
-      # - label=disable  # Only needed for container-selinux < 2.226
-    # user: 1000:1000
-    # userns_mode: keep-id
+    user: 1000:1000
+    userns_mode: keep-id
 
   makemkv:
     image: docker.io/jlesage/makemkv:latest
