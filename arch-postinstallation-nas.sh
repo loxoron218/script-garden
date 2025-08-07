@@ -166,15 +166,15 @@ services:
     user: "0"
 
   node_exporter:
-    image: docker.io/prom/node-exporter:master
+    image: quay.io/prometheus/node-exporter:latest
     container_name: node_exporter
     volumes:
-      - /:/host
+      - /:/host:ro,rslave
     restart: unless-stopped
     command:
       - --path.rootfs=/host
-    network_mode: host
-    pid: host
+    # network_mode: host
+    # pid: host
 
   prometheus:
     image: docker.io/prom/prometheus:main
