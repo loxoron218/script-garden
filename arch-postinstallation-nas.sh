@@ -133,8 +133,8 @@ services:
     # privileged: true
 EOF
 
-## Create stack-compose file
-cat >> ~/server/stack-compose.yaml << EOF
+## Create monitoring-compose file
+cat >> ~/server/monitoring-compose.yaml << EOF
 # ==============================
 # Monitoring Stack
 # ==============================
@@ -185,7 +185,10 @@ services:
       - 9090:9090
     restart: unless-stopped
     command: --config.file=/etc/prometheus/prometheus.yaml
+EOF
 
+## Create immich-compose file
+cat >> ~/server/immich-compose.yaml << EOF
 # ==============================
 # Immich Stack
 # ==============================
@@ -270,7 +273,10 @@ services:
     restart: unless-stopped
     healthcheck:
       test: redis-cli ping || exit 1
+EOF
 
+## Create media-compose file
+cat >> ~/server/media-compose.yaml << EOF
 # ==============================
 # Media Stack
 # ==============================
@@ -385,13 +391,19 @@ services:
       - 50300:50300
     restart: unless-stopped
     # user: 1000:1000
+EOF
 
+## Create server-compose file
+cat >> ~/server/server-compose.yaml << EOF
 # ==============================
 # Server Stack (Placeholders)
 # ==============================
   # duckdns:
   # traefik:
+EOF
 
+## Create core-compose file
+cat >> ~/server/core-compose.yaml << EOF
 # ==============================
 # Core Tools
 # ==============================
