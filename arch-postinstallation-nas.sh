@@ -502,7 +502,7 @@ while true; do
         echo "Passwords do not match. Please try again."
     fi
 done
-sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/stack-compose.yaml
+sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/media-compose.yaml
 
 #==============================================================================
 # SECTION 7: Install Podman containers
