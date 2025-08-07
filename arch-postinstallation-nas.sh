@@ -418,7 +418,7 @@ EOF
 
 ## Homarr configuration
 homarr_token=$(openssl rand -hex 32)
-sed -i "s/homarr_token/${homarr_token}/" ~/server/stack-compose.yaml
+sed -i "s/homarr_token/${homarr_token}/" ~/server/core-compose.yaml
 
 ## Immich configuration
 mkdir ~/server/immich
