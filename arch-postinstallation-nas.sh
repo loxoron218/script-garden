@@ -375,14 +375,15 @@ EOF
 
 ## Create core-compose file
 cat >> ~/server/core-compose.yaml << EOF
+services:
   homarr:
     image: ghcr.io/homarr-labs/homarr:dev
     container_name: homarr
     environment:
-      - SECRET_ENCRYPTION_KEY=homarr_token # <--- can be generated with openssl rand -hex 32
+      - SECRET_ENCRYPTION_KEY=homarr_token # <--- can be generated with \`openssl rand -hex 32\`
     volumes:
-      - /run/user/1000/podman/podman.sock:/var/run/docker.sock:z # <--- add this line here!
-      - /home/$(whoami)/server/homarr:/appdata:z
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock:ro # Optional, only if you want docker integration
+      - /home/$(whoami)/server/homarr:/appdata
     ports:
       - 7575:7575
     restart: unless-stopped
