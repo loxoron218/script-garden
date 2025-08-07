@@ -319,20 +319,20 @@ cat >> ~/server/media-compose.yaml << EOF
       - SERVER_ADMIN_ACCESS_TOKEN=ryot_token # CHANGE THIS
       - DATABASE_URL=postgres://postgres:postgres@ryot-db:5432/postgres
     ports:
-      - 8000:8000
+      - 8001:8000
     restart: unless-stopped
     pull_policy: always
 
   ryot-db:
     image: docker.io/postgres:16-alpine # at-least version 15 is required
     container_name: ryot-db
-    volumes:
-      - /home/$(whoami)/server/ryot-db:/var/lib/postgresql/data
     environment:
       - TZ=Europe/Amsterdam
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=secure_psswd
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - /home/arch/server/ryot:/var/lib/postgresql/data
     restart: unless-stopped
 
   sabnzbd:
@@ -481,7 +481,7 @@ scrape_configs:
 EOF
 
 ## Ryot configuration
-ryot_token=$(openssl rand -hex 10)
+ryot_token=$(openssl rand -hex 11)
 sed -i "s/ryot_token/${ryot_token}/" ~/server/stack-compose.yaml
 
 ## Folder creation
@@ -500,7 +500,7 @@ while true; do
         echo "Passwords do not match. Please try again."
     fi
 done
-sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/media-compose.yaml
+sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env
 
 #==============================================================================
 # SECTION 7: Install Podman containers
