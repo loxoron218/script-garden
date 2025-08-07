@@ -156,13 +156,14 @@ services:
     # privileged: true
 
   grafana:
-    image: docker.io/grafana/grafana:main
+    image: docker.io/grafana/grafana:latest
     container_name: grafana
     volumes:
       - /home/$(whoami)/server/grafana:/var/lib/grafana
     ports:
       - 3000:3000
     restart: unless-stopped
+    user: "0"
 
   node_exporter:
     image: docker.io/prom/node-exporter:master
