@@ -396,8 +396,8 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /home/$(whoami)/server/nextcloud/config:/config:z
-      - /home/$(whoami)/server/nextcloud/data:/data:z
+      - /home/$(whoami)/server/nextcloud/config:/config
+      - /home/$(whoami)/server/nextcloud/data:/data
     ports:
       - 4443:443
     restart: unless-stopped
