@@ -497,7 +497,7 @@ scrape_configs:
 # Example job for cadvisor
   - job_name: cadvisor
     static_configs:
-      - targets: [cadvisor:8082]
+      - targets: [cadvisor:8080]
 EOF
 
 ## Ryot configuration
