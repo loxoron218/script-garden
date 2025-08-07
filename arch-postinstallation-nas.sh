@@ -312,7 +312,7 @@ cat >> ~/server/media-compose.yaml << EOF
     restart: unless-stopped
 
   ryot:
-    image: docker.io/ignisda/ryot:develop
+    image: docker.io/ignisda/ryot:develop # or ghcr.io/ignisda/ryot:v9
     container_name: ryot
     environment:
       - TZ=Europe/Amsterdam
@@ -324,16 +324,16 @@ cat >> ~/server/media-compose.yaml << EOF
     pull_policy: always
 
   ryot-db:
-    image: docker.io/postgres:16-alpine
+    image: docker.io/postgres:16-alpine # at-least version 15 is required
     container_name: ryot-db
     volumes:
       - /home/enrique/server/ryot-db:/var/lib/postgresql/data
-    restart: unless-stopped
     environment:
       - TZ=Europe/Amsterdam
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=secure_psswd
+    restart: unless-stopped
 
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:nightly
