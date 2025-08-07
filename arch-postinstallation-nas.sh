@@ -345,7 +345,7 @@ cat >> ~/server/media-compose.yaml << EOF
     volumes:
       - /home/$(whoami)/server/sabnzbd:/config
       - /mnt/sda1/.downloads:/downloads #optional
-      - /mnt/sda1/.downloads/sabnzbd:/incomplete-downloads #optional
+      - /mnt/sda1/.downloads/incomplete:/incomplete-downloads #optional
     ports:
       - 8082:8080
     restart: unless-stopped
