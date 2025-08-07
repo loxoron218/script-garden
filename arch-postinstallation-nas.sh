@@ -332,7 +332,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - /home/arch/server/ryot:/var/lib/postgresql/data
+      - /home/$(whoami)/server/ryot:/var/lib/postgresql/data
     restart: unless-stopped
 
   sabnzbd:
