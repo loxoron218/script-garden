@@ -521,9 +521,11 @@ podman compose -f ~/server/portainer-compose.yaml up -d
 #==============================================================================
 
 ## slskd configuration
-sed -i "/^# soulseek:/,/^#   connection:/s/^# \{0,1\}//" ~/server/slskd/slskd.yml
-sed -i "s/username: ~$/username: $(whoami)/" ~/server/slskd/slskd.yml
-sed -i "s/password: ~$/password: ${secure_psswd}/" ~/server/slskd/slskd.yml
+sed -i '/^# soulseek:/,/^#   description:/{/^#   description:/!s/^# \{0,1\}//}' ~/server/slskd/slskd.yml
+sed -i '/^soulseek:/,/^# integration:/ {
+    s/^\(  username: \).*$/\1'$(whoami)$(($RANDOM % 900000 + 100000))'/
+    s/^\(  password: \).*$/\1'${secure_psswd}'/
+}' ~/server/slskd/slskd.yml
 podman restart slskd
 
 #==============================================================================
