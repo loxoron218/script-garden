@@ -135,9 +135,6 @@ EOF
 
 ## Create monitoring-compose file
 cat >> ~/server/monitoring-compose.yaml << EOF
-# ==============================
-# Monitoring Stack
-# ==============================
 services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -189,9 +186,6 @@ EOF
 
 ## Create immich-compose file
 cat >> ~/server/immich-compose.yaml << EOF
-# ==============================
-# Immich Stack
-# ==============================
   immich-server:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     container_name: immich_server
@@ -277,9 +271,6 @@ EOF
 
 ## Create media-compose file
 cat >> ~/server/media-compose.yaml << EOF
-# ==============================
-# Media Stack
-# ==============================
   jellyfin:
     image: docker.io/jellyfin/jellyfin:unstable
     container_name: jellyfin
@@ -395,18 +386,12 @@ EOF
 
 ## Create server-compose file
 cat >> ~/server/server-compose.yaml << EOF
-# ==============================
-# Server Stack (Placeholders)
-# ==============================
   # duckdns:
   # traefik:
 EOF
 
 ## Create core-compose file
 cat >> ~/server/core-compose.yaml << EOF
-# ==============================
-# Core Tools
-# ==============================
   homarr:
     image: ghcr.io/homarr-labs/homarr:dev
     container_name: homarr
