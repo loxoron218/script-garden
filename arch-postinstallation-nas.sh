@@ -318,6 +318,11 @@ services:
       - TZ=Europe/Amsterdam
       - SERVER_ADMIN_ACCESS_TOKEN=ryot_token # CHANGE THIS
       - DATABASE_URL=postgres://postgres:postgres@ryot-db:5432/postgres
+      - DISABLE_TELEMETRY=true
+      - MOVIES_AND_SHOWS_TMDB_ACCESS_TOKEN=tmdb_token # Add manually
+      - MOVIES_AND_SHOWS_TMDB_LOCALE=de
+      - VIDEO_GAMES_TWITCH_CLIENT_ID=twitch_id # Add manually
+      - VIDEO_GAMES_TWITCH_CLIENT_SECRET=twitch_secret # Add manually
     ports:
       - 8001:8000
     restart: unless-stopped
@@ -482,7 +487,7 @@ EOF
 
 ## Ryot configuration
 ryot_token=$(openssl rand -hex 11)
-sed -i "s/ryot_token/${ryot_token}/" ~/server/stack-compose.yaml
+sed -i "s/ryot_token/${ryot_token}/" ~/server/media-compose.yaml
 
 ## Folder creation
 mkdir -p ~/server/grafana/plugins
