@@ -129,6 +129,7 @@ services:
       - 8000:8000
       - 9443:9443
     restart: unless-stopped
+    command: --no-analytics
     # privileged: true
 EOF
 
