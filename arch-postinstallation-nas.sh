@@ -355,16 +355,14 @@ cat >> ~/server/media-compose.yaml << EOF
     container_name: slskd
     environment:
       - SLSKD_REMOTE_CONFIGURATION=true
-      # - SLSKD_SHARED_DIR=/music
     volumes:
-      - /home/$(whoami)/server/slskd:/app:z
-      - /mnt/sda1/musik:/music:z
+      - /home/$(whoami)/server/slskd:/app
+      - /mnt/sda1/.downloads:/downloads
     ports:
       - 5030:5030
       - 5031:5031
       - 50300:50300
     restart: unless-stopped
-    # user: 1000:1000
 EOF
 
 ## Create server-compose file
