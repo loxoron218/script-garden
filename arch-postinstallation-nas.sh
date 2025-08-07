@@ -304,9 +304,9 @@ cat >> ~/server/media-compose.yaml << EOF
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /home/$(whoami)/server/radarr:/config:z
-      - /mnt/sda1/filme:/movies:z #optional
-      - /mnt/sda1/.downloads:/downloads:z #optional
+      - /home/$(whoami)/server/radarr:/config
+      - /mnt/sda1/filme:/movies #optional
+      - /mnt/sda1/.downloads:/downloads #optional
     ports:
       - 7878:7878
     restart: unless-stopped
