@@ -143,13 +143,11 @@ services:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
     volumes:
-      - /:/rootfs
-      - /var/run:/var/run
-      - /sys:/sys
-      - /var/lib/docker/:/var/lib/docker
-      - /dev/disk/:/dev/disk
-      - /run/user/1000/podman:/var/run/podman
-      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /:/rootfs:ro
+      - /run/user/1000/podman.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /home/$(whoami)/.local/share/containers/storage:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
     ports:
       - 8081:8080
     restart: unless-stopped
