@@ -292,8 +292,8 @@ services:
       - /mnt/sda1:/storage:ro,z
       - /mnt/sda1/.downloads:/output:rw,z
     # devices:
-       # - /dev/sr0
-       # - /dev/sg2
+      # - /dev/sr0
+      # - /dev/sg2
     restart: unless-stopped
 
   radarr:
