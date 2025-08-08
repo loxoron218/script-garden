@@ -155,6 +155,10 @@ services:
   grafana:
     image: docker.io/grafana/grafana:latest
     container_name: grafana
+    environment:
+      - GF_ANALYTICS_REPORTING_ENABLED=false
+      - GF_UPDATES_CHECK_FOR_UPDATES=false
+      - GF_PLUGINS_CHECK_FOR_PLUGIN_UPDATES=false
     volumes:
       - /home/$(whoami)/server/grafana:/var/lib/grafana
     ports:
