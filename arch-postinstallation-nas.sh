@@ -296,6 +296,23 @@ services:
       # - /dev/sg2
     restart: unless-stopped
 
+  maloja:
+    image: docker.io/krateng/maloja:latest
+    container_name: maloja
+    ports:
+      - 42010:42010
+    volumes:
+      - /home/$(whoami)/server/maloja:/mljdata  
+    environment:
+      # - PUID=1000
+      # - PGID=1001
+      - MALOJA_DATA_DIRECTORY=/mljdata
+      - MALOJA_FORCE_PASSWORD=secure_psswd
+      - MALOJA_LASTFM_API_KEY=lastfm_key # Add manually
+      - MALOJA_LASTFM_API_SECRET=lastfm_secret # Add manually
+      - MALOJA_SPOTIFY_API_ID=spotify_id # Add manually
+      - MALOJA_SPOTIFY_API_SECRET=spotify_secret # Add manually
+
   radarr:
     image: lscr.io/linuxserver/radarr:nightly
     container_name: radarr
@@ -505,7 +522,7 @@ while true; do
         echo "Passwords do not match. Please try again."
     fi
 done
-sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env
+sed -i "s/secure_psswd/${secure_psswd}/" ~/server/restic-backup.sh ~/server/immich/.env ~/server/media-compose.yaml
 
 #==============================================================================
 # SECTION 7: Install Podman containers
