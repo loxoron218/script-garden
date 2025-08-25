@@ -48,7 +48,7 @@ paru -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-co
 paru -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers neovim noto-fonts-emoji power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost
 
 ## Install GUI applications from AUR
-paru -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin whatsapp-for-linux
+paru -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin wasistlos
 
 ## Install other applications from AUR
 paru -S --noconfirm adwaita-qt5 brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden firefox-extension-istilldontcareaboutcookies-bin gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell nautilus-open-any-terminal
@@ -139,11 +139,11 @@ EOF
 #==============================================================================
 
 ## Hide unwanted desktop icons
-cp /usr/share/applications/{avahi-discover,bssh,bvnc,codium,cups,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop ~/.local/share/applications/
+cp /usr/share/applications/{avahi-discover,bssh,bvnc,cmake-gui,codium,cups,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop ~/.local/share/applications/
 sed -i \
     -e '/^NoDisplay=/d' \
     -e '/^\[Desktop Entry\]/a NoDisplay=true' \
-    ~/.local/share/applications/{avahi-discover,bssh,bvnc,codium,cups,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop
+    ~/.local/share/applications/{avahi-discover,bssh,bvnc,cmake-gui,codium,cups,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop
 
 ## Add BleachBit as root
 cp /usr/share/applications/org.bleachbit.BleachBit.desktop ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
