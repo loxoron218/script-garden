@@ -157,8 +157,8 @@ flatpak override --user com.usebottles.bottles --filesystem=xdg-data/application
 
 ## Configure fastfetch
 fastfetch --gen-config
-echo fastfetch --battery-key Battery >> ~/.bashrc
-echo alias "clearfetch='clear && fastfetch --battery-key Battery'" >> ~/.bashrc
+echo fastfetch >> ~/.bashrc
+echo alias "clearfetch='clear && fastfetch'" >> ~/.bashrc
 
 ## Configure Ghostty
 mkdir ~/.config/ghostty
