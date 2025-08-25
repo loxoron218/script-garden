@@ -157,6 +157,7 @@ flatpak override --user com.usebottles.bottles --filesystem=xdg-data/application
 
 ## Configure fastfetch
 fastfetch --gen-config
+sed -i '/"battery",/c\ \ \ \ {\n\ \ \ \ \ \ "type": "battery",\n\ \ \ \ \ \ "key": "Battery"\n\ \ \ \ },' /home/arch/.config/fastfetch/config.jsonc
 echo fastfetch >> ~/.bashrc
 echo alias "clearfetch='clear && fastfetch'" >> ~/.bashrc
 
