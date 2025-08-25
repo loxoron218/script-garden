@@ -171,6 +171,9 @@ font-size = 11
 theme = Adwaita Dark
 EOF
 
+## Configure Syncthing
+sudo systemctl enable syncthing.service
+
 ## Configure VSCodium
 cp /usr/share/applications/codium-wayland.desktop ~/.local/share/applications/
 sed -i "s/VSCodium - Wayland/VSCodium/" ~/.local/share/applications/codium-wayland.desktop
