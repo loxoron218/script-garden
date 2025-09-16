@@ -11,7 +11,7 @@ sudo sed -i "s/#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
 sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
 sudo pacman-key --lsign-key 3056513887B78AEB
 sudo pacman -U --noconfirm https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst
-sudo pacman -U --noconfirm https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst
+sudo pacman -U --noconfirm https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zstrm -rf ~/.config/nvim/.git^
 
 ## Add repositories
 sudo sh -c "cat >> /etc/pacman.conf << EOF
@@ -170,6 +170,10 @@ font-family = Noto Sans Mono
 font-size = 11
 theme = Adwaita Dark
 EOF
+
+## Configure Neovim
+git clone https://github.com/LazyVim/starter ~/.config/nvim
+rm -rf ~/.config/nvim/.git
 
 ## Configure Syncthing
 sudo systemctl enable syncthing.service
