@@ -11,7 +11,7 @@ sudo sed -i "s/#ParallelDownloads/ParallelDownloads/" /etc/pacman.conf
 sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
 sudo pacman-key --lsign-key 3056513887B78AEB
 sudo pacman -U --noconfirm https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst
-sudo pacman -U --noconfirm https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zstrm -rf ~/.config/nvim/.git^
+sudo pacman -U --noconfirm https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst
 
 ## Add repositories
 sudo sh -c "cat >> /etc/pacman.conf << EOF
@@ -45,7 +45,7 @@ sudo sed -i "s/^#\(UpgradeMenu\)/\1/" /etc/paru.conf
 paru -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus picard soundconverter strawberry telegram-desktop vlc-plugin-ffmpeg
 
 ## Install other applications from official repository
-paru -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers neovim noto-fonts-emoji power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost
+paru -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers nvim-lazy noto-fonts-emoji power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost
 
 ## Install GUI applications from AUR
 paru -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin wasistlos
@@ -139,7 +139,7 @@ EOF
 #==============================================================================
 
 ## Hide unwanted desktop icons
-cp /usr/share/applications/{avahi-discover,bssh,bvnc,cmake-gui,codium,cups,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop ~/.local/share/applications/
+cp /usr/share/applications/{avahi-discover,bssh,bvnc,cmake-gui,codium,cups,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop ~/.local/share/applications/
 sed -i \
     -e '/^NoDisplay=/d' \
     -e '/^\[Desktop Entry\]/a NoDisplay=true' \
@@ -170,10 +170,6 @@ font-family = Noto Sans Mono
 font-size = 11
 theme = Adwaita Dark
 EOF
-
-## Configure Neovim
-git clone https://github.com/LazyVim/starter ~/.config/nvim
-rm -rf ~/.config/nvim/.git
 
 ## Configure Syncthing
 sudo systemctl enable syncthing.service
