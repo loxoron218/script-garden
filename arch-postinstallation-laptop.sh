@@ -164,9 +164,9 @@ echo alias "clearfetch='clear && fastfetch'" >> ~/.bashrc
 ## Configure Ghostty
 mkdir ~/.config/ghostty
 cat > ~/.config/ghostty/config << 'EOF'
-clipboard-paste-bracketed-safe = true
+clipboard-paste-bracketed-safe = false
 clipboard-paste-protection = false
-font-family = Noto Sans Mono
+font-family = Adwaita Mono
 font-size = 11
 theme = Adwaita Dark
 EOF
