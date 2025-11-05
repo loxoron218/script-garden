@@ -51,7 +51,7 @@ paru -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origi
 paru -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin wasistlos
 
 ## Install other applications from AUR
-paru -S --noconfirm adwaita-qt5 brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell nautilus-open-any-terminal
+paru -S --noconfirm adwaita-qt5 brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell gnome-shell-extension-just-perfection-desktop nautilus-open-any-terminal
 
 ## Install Flatpak applications
 flatpak update --user
