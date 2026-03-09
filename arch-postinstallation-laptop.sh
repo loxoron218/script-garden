@@ -13,18 +13,17 @@ sudo pacman-key --lsign-key 3056513887B78AEB
 sudo pacman -U --noconfirm https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst
 sudo pacman -U --noconfirm https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst
 
-## Add repositories
-sudo sh -c "cat >> /etc/pacman.conf << EOF
-
-[gnome-unstable]
-Include = /etc/pacman.d/mirrorlist
-
-[kde-unstable]
-Include = /etc/pacman.d/mirrorlist
-
-[chaotic-aur]
-Include = /etc/pacman.d/chaotic-mirrorlist
-EOF"
+## Add repositories before [core-testing]
+sudo sed -i '/^\[core-testing\]/i\
+[gnome-unstable]\
+Include = /etc/pacman.d/mirrorlist\
+\
+[kde-unstable]\
+Include = /etc/pacman.d/mirrorlist\
+\
+[chaotic-aur]\
+Include = /etc/pacman.d/chaotic-mirrorlist\
+' /etc/pacman.conf
 
 ## Install paru
 sudo pacman -Syyu --noconfirm git
