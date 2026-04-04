@@ -47,14 +47,14 @@ paru -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-co
 paru -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers nvchad-git noto-fonts-emoji power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost
 
 ## Install GUI applications from AUR
-paru -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin wasistlos
+paru -S --noconfirm extension-manager flatseal localsend-bin nuclear-player-bin vscodium-bin
 
 ## Install other applications from AUR
 paru -S --noconfirm adwaita-qt5 brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell gnome-shell-extension-just-perfection-desktop nautilus-open-any-terminal
 
 ## Install Flatpak applications
 flatpak update --user
-flatpak install --user -y adw-gtk3-dark bottles
+flatpak install --user -y adw-gtk3-dark bottles io.github.tobagin.karere
 
 #==============================================================================
 # SECTION 3: System Configuration
