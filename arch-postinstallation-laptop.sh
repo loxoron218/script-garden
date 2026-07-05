@@ -50,11 +50,12 @@ paru -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origi
 paru -S --noconfirm extension-manager flatseal localsend nuclear-player-bin vscodium-bin
 
 ## Install other applications from AUR
-paru -S --noconfirm adwaita-qt5 brother-hll2350dw dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell gnome-shell-extension-just-perfection-desktop nautilus-open-any-terminal
+paru -S --noconfirm adwaita-qt5 dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell gnome-shell-extension-just-perfection-desktop nautilus-open-any-terminal
 
 ## Install Flatpak applications
 flatpak update --user
 flatpak install --user -y adw-gtk3-dark bottles io.github.tobagin.karere
+sed -i 's/^xa.pinned=.*/xa.pinned=/' ~/.local/share/flatpak/repo/config
 
 #==============================================================================
 # SECTION 3: System Configuration
@@ -62,7 +63,7 @@ flatpak install --user -y adw-gtk3-dark bottles io.github.tobagin.karere
 
 ## Configure Graphical User Interface
 paru -S --noconfirm gdm
-gsettings set org.gnome.mutter experimental-features "['autoclose-xwayland' , 'kms-modifiers' , 'scale-monitor-framebuffer' , 'variable-refresh-rate' , 'xwayland-native-scaling']"
+gsettings set org.gnome.mutter experimental-features "['autoclose-xwayland' , 'kms-modifiers' , 'scale-monitor-framebuffer' , 'xwayland-native-scaling']"
 sudo systemctl enable gdm.service
 sudo systemctl set-default graphical.target
 
@@ -80,11 +81,6 @@ sudo systemctl enable NetworkManager.service
 sudo sed -i "s/#AutoEnable=true/AutoEnable=false/" /etc/bluetooth/main.conf
 sudo systemctl enable bluetooth.service
 
-## Configure printer
-sudo systemctl enable cups.service
-sudo lpadmin -p HLL2350DW -v lpd://192.168.178.67/BINARY_P1 -E
-sudo lpoptions -d HLL2350DW # Manual configuaration still needed
-
 #==============================================================================
 # SECTION 5: Delete when self hosting
 #==============================================================================
@@ -92,11 +88,6 @@ sudo lpoptions -d HLL2350DW # Manual configuaration still needed
 ## Install apps that can be replaced by self hosting
 paru -S --noconfirm jre-openjdk par2cmdline-turbo
 paru -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd stirling-pdf syncthing syncthing-gtk
-
-## Configure KeePassXC
-mkdir ~/.local/share/applications
-cp /usr/share/applications/org.keepassxc.KeePassXC.desktop ~/.local/share/applications
-sed -i "/^StartupNotify=true$/d" ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
 
 ## Configure Radarr
 sudo curl -o /usr/share/pixmaps/Radarr.svg https://raw.githubusercontent.com/Radarr/Radarr/refs/heads/develop/Logo/Radarr.svg
@@ -138,11 +129,11 @@ EOF
 #==============================================================================
 
 ## Hide unwanted desktop icons
-cp /usr/share/applications/{avahi-discover,bssh,bvnc,cmake-gui,codium,cups,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop ~/.local/share/applications/
+cp /usr/share/applications/{avahi-discover,bssh,bvnc,cmake-gui,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop ~/.local/share/applications/
 sed -i \
     -e '/^NoDisplay=/d' \
     -e '/^\[Desktop Entry\]/a NoDisplay=true' \
-    ~/.local/share/applications/{avahi-discover,bssh,bvnc,cmake-gui,codium,cups,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop
+    ~/.local/share/applications/{avahi-discover,bssh,bvnc,cmake-gui,libreoffice-base,libreoffice-calc,libreoffice-draw,libreoffice-impress,libreoffice-math,libreoffice-writer,lstopo,nm-connection-editor,nvim,nvtop,org.gnome.Extensions,qv4l2,qvidcap}.desktop
 
 ## Add BleachBit as root
 cp /usr/share/applications/org.bleachbit.BleachBit.desktop ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
@@ -157,25 +148,49 @@ flatpak override --user com.usebottles.bottles --filesystem=xdg-data/application
 ## Configure fastfetch
 fastfetch --gen-config
 sed -i '/"battery",/c\ \ \ \ {\n\ \ \ \ \ \ "type": "battery",\n\ \ \ \ \ \ "key": "Battery"\n\ \ \ \ },' /home/arch/.config/fastfetch/config.jsonc
+sed -i '/"os",/a\    {\n        "type": "command",\n        "text": "birth_install=$(stat -c %W /); current=$(date +%s); time_progression=$((current - birth_install)); days_difference=$((time_progression / 86400)); echo \\"$days_difference days\\"",\n        "key": "OS Age"\n    },' /home/arch/.config/fastfetch/config.jsonc
+python3 << 'PYEOF'
+import json, os, re, subprocess
+
+cmd_text = 'python3 -c "import json,os,re,subprocess; d=json.loads(subprocess.run([\\\"fastfetch\\\",\\\"-s\\\",\\\"packages\\\",\\\"--format\\\",\\\"json\\\"],capture_output=True).stdout); p=d[0][\\\"result\\\"] if isinstance(d,list) else d.get(\\\"packages\\\",{}); p.pop(\\\"all\\\",None); o=[\\\"{} ({})\\\".format(v, re.sub(r\\\"(?<!^)(?=[A-Z])\\\", \\\"-\\\", k).lower()) for k,v in sorted(p.items()) if k and v]; r=\\\"/usr/lib/node_modules/\\\"; n=sum(len(os.listdir(os.path.join(r,e))) if e.startswith(\\\"@\\\") else 1 for e in os.listdir(r) if os.path.isdir(os.path.join(r,e))) if os.path.isdir(r) else 0; n and o.append(\\\"{} (lang)\\\".format(n)); print(\\\", \\\".join(o))"'
+
+with open('/home/arch/.config/fastfetch/config.jsonc') as f:
+    data = json.load(f)
+
+modules = data['modules']
+for i, m in enumerate(modules):
+    if m == 'packages' or (isinstance(m, dict) and m.get('key') == 'Packages'):
+        modules[i] = {"type": "command", "key": "Packages", "text": cmd_text}
+        break
+else:
+    for i, m in enumerate(modules):
+        if m == 'uptime':
+            modules.insert(i + 1, {"type": "command", "key": "Packages", "text": cmd_text})
+            break
+
+with open('/home/arch/.config/fastfetch/config.jsonc', 'w') as f:
+    json.dump(data, f, indent=2)
+    f.write('\n')
+PYEOF
 echo fastfetch >> ~/.bashrc
 echo alias "clearfetch='clear && fastfetch'" >> ~/.bashrc
 
 ## Configure Ghostty
 mkdir ~/.config/ghostty
 cat > ~/.config/ghostty/config << 'EOF'
-clipboard-paste-bracketed-safe = false
-clipboard-paste-protection = false
 font-family = Adwaita Mono
 font-size = 11
+gtk-single-instance = false
+keybind = ctrl+v=paste_from_clipboard
 theme = Adwaita Dark
+window-height = 35
+window-width = 9
 EOF
 
 ## Configure Syncthing
 sudo systemctl enable syncthing.service
 
 ## Configure VSCodium
-cp /usr/share/applications/codium-wayland.desktop ~/.local/share/applications/
-sed -i "s/VSCodium - Wayland/VSCodium/" ~/.local/share/applications/codium-wayland.desktop
 xdg-mime default org.gnome.Nautilus.desktop inode/directory
 
 ## Configure other apps
