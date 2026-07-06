@@ -89,6 +89,10 @@ sudo systemctl enable bluetooth.service
 paru -S --noconfirm jre-openjdk par2cmdline-turbo
 paru -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd stirling-pdf syncthing syncthing-gtk
 
+## Configure KeePassXC
+cp /usr/share/applications/org.keepassxc.KeePassXC.desktop ~/.local/share/applications/
+sed -i "s|^StartupWMClass=keepassxc|StartupWMClass=KeePassXC|" ~/.local/share/applications/org.keepassxc.KeePassXC.desktop
+
 ## Configure Radarr
 sudo curl -o /usr/share/pixmaps/Radarr.svg https://raw.githubusercontent.com/Radarr/Radarr/refs/heads/develop/Logo/Radarr.svg
 cat > ~/.local/share/applications/Radarr.desktop << 'EOF'
@@ -139,7 +143,7 @@ sed -i \
 cp /usr/share/applications/org.bleachbit.BleachBit.desktop ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
 sed -i "s/BleachBit/BleachBit (as root)/" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
 sed -i "s|^Exec=.*|Exec=pkexec bleachbit|" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
-sed -i "s|^StartupWMClass=.*|StartupWMClass=pkexec bleachbit|" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
+sed -i "s|^StartupWMClass=.*|StartupWMClass=Bleachbit|" ~/.local/share/applications/org.bleachbit.BleachBit-sudo.desktop
 
 ## Configure Bottles
 flatpak override --user com.usebottles.bottles --filesystem=host
