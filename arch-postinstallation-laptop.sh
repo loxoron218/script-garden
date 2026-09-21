@@ -86,8 +86,8 @@ sudo systemctl enable bluetooth.service
 #==============================================================================
 
 ## Install apps that can be replaced by self hosting
-paru -S --noconfirm jre-openjdk par2cmdline-turbo
-paru -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd stirling-pdf syncthing syncthing-gtk
+paru -S --noconfirm par2cmdline-turbo
+paru -S --noconfirm 7zip firefox-extension-keepassxc-browser keepassxc makemkv nicotine+ python-orjson radarr sabnzbd stirling-pdf-desktop-bin syncthing syncthing-gtk
 
 ## Configure KeePassXC
 cp /usr/share/applications/org.keepassxc.KeePassXC.desktop ~/.local/share/applications/
@@ -110,23 +110,6 @@ cp /usr/lib/sabnzbd/linux/sabnzbd.desktop ~/.local/share/applications
 sed -i "s|^Exec=.*|Exec=/usr/lib/sabnzbd/SABnzbd.py --browser 1|" ~/.local/share/applications/sabnzbd.desktop
 sed -i "s|^Icon=.*|Icon=/usr/share/pixmaps/logo-arrow.svg|" ~/.local/share/applications/sabnzbd.desktop
 xdg-mime default sabnzbd.desktop application/x-nzb
-
-## Configure Stirling-PDF
-mkdir -p /home/$(whoami)/configs
-cat > /home/$(whoami)/configs/custom_settings.yml << EOF
-server:
-  host: 0.0.0.0
-  port: 3000
-EOF
-sudo curl -o /usr/share/pixmaps/stirling.svg https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/refs/heads/main/docs/stirling.svg
-cat > ~/.local/share/applications/Stirling-PDF.desktop << EOF
-[Desktop Entry]
-Name=Stirling-PDF
-Exec=bash -c "nohup java -jar /usr/share/java/stirling-pdf.jar & sleep 15 && xdg-open http://localhost:3000" &
-Terminal=False
-Type=Application
-Icon=/usr/share/pixmaps/stirling.svg
-EOF
 
 #==============================================================================
 # SECTION 6: Package Configuration
