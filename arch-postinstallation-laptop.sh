@@ -41,16 +41,16 @@ sudo sed -i "s/^#\(UpgradeMenu\)/\1/" /etc/paru.conf
 #==============================================================================
 
 ## Install GUI applications from official repository
-paru -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus picard soundconverter strawberry telegram-desktop vlc-plugin-ffmpeg
+paru -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus picard soundconverter strawberry telegram-desktop vlc-plugin-ffmpeg zed
 
 ## Install other applications from official repository
-paru -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers nvchad-git noto-fonts-emoji power-profiles-daemon powertop ttf-liberation xdg-user-dirs xorg-xhost
+paru -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers nvchad-git noto-fonts-emoji power-profiles-daemon powertop ttf-liberation xdg-user-dirs wl-clipboard xorg-xhost
 
 ## Install GUI applications from AUR
-paru -S --noconfirm extension-manager flatseal localsend nuclear-player-bin vscodium-bin
+paru -S --noconfirm extension-manager flatseal localsend nuclear-player-bin
 
 ## Install other applications from AUR
-paru -S --noconfirm adwaita-qt5 dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell gnome-shell-extension-just-perfection-desktop nautilus-open-any-terminal
+paru -S --noconfirm adwaita-qt5 dcraw-thumbnailer ffmpeg-audio-thumbnailer firefox-arkenfox-autoconfig firefox-extension-bitwarden gnome-shell-extension-bing-wallpaper gnome-shell-extension-blur-my-shell gnome-shell-extension-just-perfection-desktop nautilus-open-any-terminal pi-coding-agent-bin
 
 ## Install Flatpak applications
 flatpak update --user
@@ -176,9 +176,6 @@ EOF
 
 ## Configure Syncthing
 sudo systemctl enable syncthing.service
-
-## Configure VSCodium
-xdg-mime default org.gnome.Nautilus.desktop inode/directory
 
 ## Configure other apps
 gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal ghostty
