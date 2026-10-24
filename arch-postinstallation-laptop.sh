@@ -139,7 +139,7 @@ sed -i '/"os",/a\    {\n        "type": "command",\n        "text": "birth_insta
 python3 << 'PYEOF'
 import json, os, re, subprocess
 
-cmd_text = 'python3 -c "import json,os,re,subprocess; d=json.loads(subprocess.run([\\\"fastfetch\\\",\\\"-s\\\",\\\"packages\\\",\\\"--format\\\",\\\"json\\\"],capture_output=True).stdout); p=d[0][\\\"result\\\"] if isinstance(d,list) else d.get(\\\"packages\\\",{}); p.pop(\\\"all\\\",None); o=[\\\"{} ({})\\\".format(v, re.sub(r\\\"(?<!^)(?=[A-Z])\\\", \\\"-\\\", k).lower()) for k,v in sorted(p.items()) if k and v]; r=\\\"/usr/lib/node_modules/\\\"; n=sum(len(os.listdir(os.path.join(r,e))) if e.startswith(\\\"@\\\") else 1 for e in os.listdir(r) if os.path.isdir(os.path.join(r,e))) if os.path.isdir(r) else 0; n and o.append(\\\"{} (lang)\\\".format(n)); print(\\\", \\\".join(o))"'
+cmd_text = 'python3 -c "import json,os,re,subprocess; d=json.loads(subprocess.run([\\\"fastfetch\\\",\\\"-s\\\",\\\"packages\\\",\\\"--format\\\",\\\"json\\\"],capture_output=True).stdout); p=d[0][\\\"result\\\"] if isinstance(d,list) else d.get(\\\"packages\\\",{}); p.pop(\\\"all\\\",None); o=[\\\"{} ({})\\\".format(v, re.sub(r\\\"(?<!^)(?=[A-Z])\\\", \\\"-\\\", k).lower()) for k,v in sorted(p.items()) if k and v]; r=\\\"/usr/lib/node_modules/\\\"; n=sum(len(os.listdir(os.path.join(r,e))) if e.startswith(\\\"@\\\") else 1 for e in os.listdir(r) if os.path.isdir(os.path.join(r,e))) if os.path.isdir(r) else 0; b=os.path.expanduser(\\\"~/.cargo/bin\\\"); n=n+len([e for e in os.listdir(b) if os.path.isfile(os.path.join(b,e))]) if os.path.isdir(b) else n; n and o.append(\\\"{} (lang)\\\".format(n)); print(\\\", \\\".join(o))"'
 
 with open('/home/arch/.config/fastfetch/config.jsonc') as f:
     data = json.load(f)
