@@ -44,7 +44,7 @@ sudo sed -i "s/^#\(UpgradeMenu\)/\1/" /etc/paru.conf
 paru -S audacity bleachbit dconf-editor evince ghostty gnome-calculator gnome-control-center gnome-disk-utility gnome-software gnome-text-editor gnome-tweaks libreoffice-fresh-de mission-center nautilus picard soundconverter strawberry telegram-desktop vlc-plugin-ffmpeg zed
 
 ## Install other applications from official repository
-paru -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers nvchad-git noto-fonts-emoji power-profiles-daemon powertop ttf-liberation xdg-user-dirs wl-clipboard xorg-xhost
+paru -S --noconfirm adw-gtk-theme bash-completion fastfetch firefox-ublock-origin ffmpegthumbnailer gnome-keyring gnome-shell-extension-appindicator gvfs-mtp kdegraphics-thumbnailers nvchad-git noto-fonts-emoji power-profiles-daemon powertop ttf-liberation xdg-user-dirs wl-clipboard xorg-xhost
 
 ## Install GUI applications from AUR
 paru -S --noconfirm extension-manager flatseal localsend nuclear-player-bin
